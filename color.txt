@@ -1,0 +1,29 @@
+for light mode
+
+| Element          | Color     | Usage                       |
+| ---------------- | --------- | --------------------------- |
+| Background       | `#FFFFFF` | Main background             |
+| Surface / Cards  | `#F9FAFB` | Card/section backgrounds    |
+| Text (Primary)   | `#111827` | Heading and base text       |
+| Text (Secondary) | `#4B5563` | Subtext / placeholders      |
+| Border / Divider | `#E5E7EB` | Inputs, dividers, etc.      |
+| Primary          | `#D32F2F` | Buttons, links              |
+| Primary Hover    | `#B71C1C` | On hover/focus              |
+| Success / Green  | `#2E7D32` | Success feedback (optional) |
+| Alert / Yellow   | `#F59E0B` | Warnings or prompts         |
+
+
+for dark
+
+| Element          | Color     | Usage                             |
+| ---------------- | --------- | --------------------------------- |
+| Background       | `#0F172A` | Main background (deep navy black) |
+| Surface / Cards  | `#1E293B` | Section containers                |
+| Text (Primary)   | `#F8FAFC` | Headings and base text            |
+| Text (Secondary) | `#94A3B8` | Subtext / placeholders            |
+| Border / Divider | `#334155` | Input borders, lines              |
+| Primary          | `#EF5350` | Buttons, highlights               |
+| Primary Hover    | `#F44336` | On hover/focus                    |
+| Success / Green  | `#81C784` | Optional: confirmations           |
+| Alert / Yellow   | `#FCD34D` | Optional: warning messages        |
+
