@@ -126,6 +126,7 @@ const Register = () => {
                             reset()
                             navigate(`${from ? from : '/'}`);
                         } else {
+                            setLoading(false);
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Registration Failed',
@@ -139,6 +140,7 @@ const Register = () => {
 
                     })
                     .catch(err => {
+                        setLoading(false);
                         console.log('error updating user informations from update user profile', err);
                         Swal.fire({
                             icon: 'error',
@@ -152,6 +154,7 @@ const Register = () => {
                     })
             })
             .catch(err => {
+                setLoading(false)
                 console.log('error creating new user with email and password', err);
                 Swal.fire({
                     icon: 'error',
@@ -355,7 +358,9 @@ const Register = () => {
                         whileTap={{ scale: 0.95 }}
                         className="w-full p-3 rounded-md bg-[#D32F2F] dark:bg-[#EF5350] text-white hover:bg-[#B71C1C] dark:hover:bg-[#F44336] transition-colors"
                     >
-                        Register
+                        {
+                            !loading ? "Register" : <span className="loading loading-spinner loading-xl"></span>
+                        }
                     </motion.button>
                 </form>
                 <p className="text-sm text-center mt-4 text-[#4B5563] dark:text-[#94A3B8]">
