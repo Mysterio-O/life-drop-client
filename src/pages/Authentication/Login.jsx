@@ -28,7 +28,7 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Login in LifeDrop</h2>
 
         <input
           {...register("email", { required: "Email is required" })}

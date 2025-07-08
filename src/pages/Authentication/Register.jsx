@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth';
 import { motion } from 'motion/react';
@@ -8,15 +8,20 @@ import axios from 'axios';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Register = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
     const { createUser, setUserProfile } = useAuth();
     const [divisions, setDivisions] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [upazilas, setUpazilas] = useState([]);
     const [selectedDivision, setSelectedDivision] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
+    const location = useLocation();
+    const from = location?.state;
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/;
 
     useEffect(() => {
         fetch('/division.json').then(res => res.json()).then(data => setDivisions(data)).catch(err => console.log('error fetching division data', err));
@@ -33,6 +38,7 @@ const Register = () => {
         : [];
 
     const onSubmit = async (data) => {
+        setLoading(true);
         const division = divisions.find(div => div.id === data.division);
         const district = districts.find(dis => dis.id === data.district);
         const upazila = upazilas.find(up => up.id === data.upazila);
@@ -65,6 +71,17 @@ const Register = () => {
         }
         catch (error) {
             console.log('error uploading image', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Image Upload Failed',
+                text: 'Unable to upload your photo. Please try again.',
+                confirmButtonColor: '#D32F2F', // Light mode error color
+                customClass: {
+                    confirmButton: 'dark:bg-[#EF5350]' // Dark mode error color
+                }
+            });
+            setLoading(false)
+            return; // Stop execution if image upload fails
         }
 
         const userData = {
@@ -92,20 +109,62 @@ const Register = () => {
 
                         const res = await axiosPublic.post('/users', userData);
                         console.log(res.data)
+                        if (res.data.insertedId) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registered Successfully!',
+                                text: 'Your LifeDrop account has been created. Redirecting...',
+                                timer: 1500,
+                                showConfirmButton: false,
+                                background: '#F9FAFB', // Light mode surface color
+                                customClass: {
+                                    title: 'text-[#111827] dark:text-[#F8FAFC]',
+                                    text: 'text-[#4B5563] dark:text-[#94A3B8]',
+                                    popup: 'dark:bg-[#1E293B]' // Dark mode surface color
+                                }
+                            });
+                            reset()
+                            navigate(`${from ? from : '/'}`);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registration Failed',
+                                text: 'Unable to save user data. Please try again.',
+                                confirmButtonColor: '#D32F2F', // Light mode error color
+                                customClass: {
+                                    confirmButton: 'dark:bg-[#EF5350]' // Dark mode error color
+                                }
+                            });
+                        }
 
                     })
                     .catch(err => {
                         console.log('error updating user informations from update user profile', err);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Profile Update Failed',
+                            text: 'Unable to update your profile. Please try again.',
+                            confirmButtonColor: '#D32F2F', // Light mode error color
+                            customClass: {
+                                confirmButton: 'dark:bg-[#EF5350]' // Dark mode error color
+                            }
+                        });
                     })
             })
             .catch(err => {
                 console.log('error creating new user with email and password', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'User Creation Failed',
+                    text: 'Invalid email or password. Please check and try again.',
+                    confirmButtonColor: '#D32F2F', // Light mode error color
+                    customClass: {
+                        confirmButton: 'dark:bg-[#EF5350]' // Dark mode error color
+                    }
+                });
             });
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Registered Successfully!',
-        });
+
     };
 
     return (
@@ -113,7 +172,7 @@ const Register = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0F172A] p-4"
+            className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0F172A] p-4 overflow-hidden"
         >
             <motion.div
                 initial={{ scale: 0.95 }}
@@ -122,7 +181,7 @@ const Register = () => {
                 className="max-w-xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
-                    Register
+                    Register at LifeDrop
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <motion.div
@@ -181,13 +240,44 @@ const Register = () => {
                     >
                         <input
                             type="password"
-                            {...register("password", { required: true })}
+                            {...register("password", {
+                                required: "Password is required",
+                                pattern: {
+                                    value: passwordRegex,
+                                    message: "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+                                },
+                                minLength: {
+                                    value: 6,
+                                    message: "Password must be at least 6 characters long"
+                                }
+                            })}
                             placeholder="Password"
                             className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
                         />
                         {errors.password && (
                             <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
-                                Password is required
+                                {errors.password.message}
+                            </p>
+                        )}
+                    </motion.div>
+                    <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        <input
+                            type="password"
+                            {...register("confirmPassword", {
+                                required: "Please confirm your password",
+                                validate: value =>
+                                    value === watch('password') || "Passwords do not match"
+                            })}
+                            placeholder="Confirm Password"
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                        />
+                        {errors.confirmPassword && (
+                            <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
+                                {errors.confirmPassword.message}
                             </p>
                         )}
                     </motion.div>
