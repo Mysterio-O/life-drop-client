@@ -42,9 +42,9 @@ const Register = () => {
         const division = divisions.find(div => div.id === data.division);
         const district = districts.find(dis => dis.id === data.district);
         const upazila = upazilas.find(up => up.id === data.upazila);
-        const { name, email, password, photo } = data;
+        const { name, email, password, photo,bloodGroup } = data;
         const newData = {
-            name, email, password, division, district, upazila, photo
+            name, email, password, division, district, upazila, photo,bloodGroup
         };
 
         // console.log(newData);
@@ -90,6 +90,7 @@ const Register = () => {
             division: newData?.division?.name,
             district: newData?.district?.name,
             upazila: newData?.upazila?.name,
+            blood_group:bloodGroup,
             created_at: new Date().toISOString(),
             last_log_in: new Date().toISOString()
         }
@@ -287,6 +288,31 @@ const Register = () => {
                     <motion.div
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.9 }}
+                    >
+                        <select
+                            {...register("bloodGroup", { required: true })}
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                        >
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                        {errors.bloodGroup && (
+                            <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
+                                Blood group is required
+                            </p>
+                        )}
+                    </motion.div>
+                    <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.5 }}
                     >
                         <select
@@ -356,6 +382,7 @@ const Register = () => {
                         type="submit"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        disabled={loading}
                         className="w-full p-3 rounded-md bg-[#D32F2F] dark:bg-[#EF5350] text-white hover:bg-[#B71C1C] dark:hover:bg-[#F44336] transition-colors"
                     >
                         {
