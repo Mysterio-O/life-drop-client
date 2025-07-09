@@ -245,7 +245,7 @@ const Navbar = () => {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="absolute right-4 top-16 z-50 bg-[#F9FAFB] dark:bg-[#1E293B] rounded-box shadow p-4 w-52 space-y-2"
+                            className="absolute right-4 top-16 z-50 bg-[#F9FAFB] dark:bg-[#1E293B] rounded-box shadow p-4 w-52 space-y-2 flex flex-col"
                         >
                             {user ? userLinks : guestLinks}
                         </motion.div>
