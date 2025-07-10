@@ -93,7 +93,8 @@ const Register = () => {
             upazila: newData?.upazila?.name,
             blood_group:bloodGroup,
             created_at: new Date().toISOString(),
-            last_log_in: new Date().toISOString()
+            last_log_in: new Date().toISOString(),
+            ...imageObject
         }
         // console.log(userData);
 

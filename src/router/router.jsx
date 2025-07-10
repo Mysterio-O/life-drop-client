@@ -5,6 +5,7 @@ import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../routes/PrivateRoutes"
+import Profile from "../components/Dashboard/Pages/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -16,19 +17,25 @@ export const router = createBrowserRouter([
                 Component: Home
             },
             {
-                path:'/login',
-                Component:Login
+                path: '/login',
+                Component: Login
             },
             {
-                path:'/register',
-                Component:Register
+                path: '/register',
+                Component: Register
             }
         ]
     },
     {
-        path:'/dashboard',
-        element:<PrivateRoute>
-            <DashboardLayout/>
-        </PrivateRoute>
+        path: '/dashboard',
+        element: <PrivateRoute>
+            <DashboardLayout />
+        </PrivateRoute>,
+        children: [
+            {
+                path: 'profile',
+                Component: Profile
+            }
+        ]
     }
 ])
