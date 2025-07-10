@@ -23,7 +23,7 @@ const Banner = () => {
                     className="flex-1 text-center md:text-left space-y-6"
                 >
                     <h1 className="text-4xl md:text-5xl font-bold text-[#D32F2F] dark:text-[#EF5350] leading-tight">
-                        Find Blood Donors, Save Lives
+                        Find Blood Donors, <br /> Save Lives
                     </h1>
                     <p className="text-base md:text-lg text-[#4B5563] dark:text-[#94A3B8]">
                         Connect with donors instantly and join our mission to save lives across Bangladesh.
