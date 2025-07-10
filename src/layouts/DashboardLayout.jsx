@@ -74,7 +74,7 @@ const DashboardLayout = () => {
 
             {/* Dashboard User (Right Sidebar) */}
             <div className={`
-          fixed top-0 right-0 h-screen w-3/4 sm:w-1/3 lg:w-1/4 bg-white dark:bg-gray-400 shadow-lg
+          fixed top-0 right-0 h-screen w-3/4 sm:w-1/3 lg:w-[25%] bg-white dark:bg-gray-400 shadow-lg
           transform transition-transform duration-300 ease-in-out z-50
           ${isUserMenuOpen ? 'translate-x-0' : 'translate-x-full'} lg:translate-x-0
         `}>

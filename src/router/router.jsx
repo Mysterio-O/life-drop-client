@@ -7,6 +7,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../routes/PrivateRoutes"
 import Profile from "../components/Dashboard/Pages/Profile";
 import CreateRequest from "../components/Dashboard/Pages/CreateRequest";
+import OverView from "../components/Dashboard/Pages/OverView";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
             <DashboardLayout />
         </PrivateRoute>,
         children: [
+            {
+                index: true,
+                Component: OverView
+            },
             {
                 path: 'profile',
                 Component: Profile

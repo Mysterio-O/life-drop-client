@@ -38,7 +38,7 @@ const Profile = () => {
     });
 
 
-    console.log(selectedUser);
+    // console.log(selectedUser);
     const { blood_group, district, division, upazila } = selectedUser;
     // console.log(district,division,upazila);
 

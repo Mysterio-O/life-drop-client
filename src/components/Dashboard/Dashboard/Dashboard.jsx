@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
 import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList } from 'react-icons/fa';
@@ -22,7 +22,7 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'Overview', icon: <FaHeart />, path: '/dashboard', end: true },
         { name: 'Profile', icon: <FaUser />, path: '/dashboard/profile', end: true },
         { name: 'Create Request', icon: <FaPlusSquare />, path: '/dashboard/create-donation-request', end: true },
-        { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-requests/${user?.email}`, end: true },
+        { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-requests`, end: true },
         { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-request", end: true }
     ];
 
