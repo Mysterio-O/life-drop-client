@@ -12,7 +12,7 @@ const Banner = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="bg-gradient-to-r from-[#FFFFFF] dark:from-[#0F172A] via-[#F9FAFB] dark:via-[#1E293B] to-[#E5E7EB] dark:to-[#334155] py-16 md:py-24 px-4 md:px-12"
+            className="bg-gradient-to-r from-[#FFFFFF] dark:from-[#0F172A] via-[#F9FAFB] dark:via-[#1E293B] to-[#E5E7EB] dark:to-[#334155] transition-colors duration-300 py-16 md:py-24 px-4 md:px-12"
         >
             <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10">
                 {/* Left Content */}

@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { motion } from "motion/react";
 import Swal from "sweetalert2";
 import logo from '../../assets/logo-transparent.png';
+import ThemeSwitch from "../../shared/ThemeSwitch";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -132,7 +133,7 @@ const Navbar = () => {
                 }`
             }
         >
-           Give Funding
+            Give Funding
         </NavLink>,
         <NavLink
             key="give-funding"
@@ -194,11 +195,11 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#FFFFFF] dark:bg-[#0F172A] shadow-md px-4 py-3"
+            className="bg-[#FFFFFF] dark:bg-[#0F172A] transition-colors duration-300 shadow-md px-4 py-3"
         >
             <div className="flex justify-between items-center">
                 <Link to="/" className="flex-1">
-                    <img src={logo} alt="" className="h-10"/>
+                    <img src={logo} alt="" className="h-10" />
                 </Link>
 
                 <div className="hidden md:flex gap-4 items-center">
@@ -250,6 +251,9 @@ const Navbar = () => {
                             {user ? userLinks : guestLinks}
                         </motion.div>
                     )}
+                </div>
+                <div className="ml-3">
+                    <ThemeSwitch />
                 </div>
             </div>
         </motion.nav>
