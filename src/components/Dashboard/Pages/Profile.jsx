@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import { MdEdit, MdEditOff } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import Tippy from '@tippyjs/react';
 
 const Profile = () => {
 
@@ -256,18 +257,21 @@ const Profile = () => {
                 <h2 className="text-2xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
                     Update you BloodDrop Profile
                 </h2>
-                <motion.span
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    onClick={() => setEdit(!edit)}
-                    className='absolute  top-0 right-0 text-[#111827] dark:text-[#F8FAFC] cursor-pointer transition-colors duration-300'>
-                    {
-                        !edit ? <MdEdit size={30} />
-                            : <MdEditOff size={30} />
-                    }
-                </motion.span>
+
+                <Tippy content={`${edit ? 'Close' : 'Update your profile'}`} placement="top">
+                    <motion.span
+                        initial={{ scale: 1 }}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.8 }}
+                        transition={{ duration: 0.3 }}
+                        onClick={() => setEdit(!edit)}
+                        className='absolute top-2 right-2 text-[#111827] dark:text-[#F8FAFC] cursor-pointer transition-colors duration-300 z-20'
+                    >
+                        {!edit ? <MdEdit size={30} /> : <MdEditOff size={30} />}
+                    </motion.span>
+                </Tippy>
+
+
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <motion.div
                         initial={{ x: -10, opacity: 0 }}

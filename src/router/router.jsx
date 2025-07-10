@@ -6,6 +6,7 @@ import Register from "../pages/Authentication/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../routes/PrivateRoutes"
 import Profile from "../components/Dashboard/Pages/Profile";
+import CreateRequest from "../components/Dashboard/Pages/CreateRequest";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
             {
                 path: 'profile',
                 Component: Profile
+            },
+            {
+                path: 'create-donation-request',
+                Component: CreateRequest
             }
         ]
     }

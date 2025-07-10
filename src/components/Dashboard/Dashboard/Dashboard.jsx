@@ -21,9 +21,9 @@ const Dashboard = ({ closeDashboard }) => {
     const navItems = [
         { name: 'Overview', icon: <FaHeart />, path: '/dashboard', end: true },
         { name: 'Profile', icon: <FaUser />, path: '/dashboard/profile', end: true },
-        { name: 'Add Request', icon: <FaPlusSquare />, path: '/dashboard/add-plant', end: true },
-        { name: 'My Requests', icon: <FaList />, path: `/dashboard/my_requests/${user?.email}`, end: true },
-        { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all_request", end: true }
+        { name: 'Create Request', icon: <FaPlusSquare />, path: '/dashboard/create-donation-request', end: true },
+        { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-requests/${user?.email}`, end: true },
+        { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-request", end: true }
     ];
 
     const handleClick = () => {
