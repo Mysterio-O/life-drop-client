@@ -281,19 +281,38 @@ const Profile = () => {
                             className={`w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] ${!edit ? 'border-0 cursor-not-allowed' : ''}`}
                         />
                     </motion.div>
-                    <motion.div
-                        initial={{ x: -10, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <input
-                            type="file"
-                            {...register("photo")}
-                            accept="image/*"
-                            disabled={!edit}
-                            className={`w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-[#D32F2F] file:text-white file:dark:bg-[#EF5350] hover:file:bg-[#B71C1C] dark:hover:file:bg-[#F44336] ${!edit ? 'border-0 cursor-not-allowed' : ''}`}
-                        />
-                    </motion.div>
+
+                    <AnimatePresence>
+                        {
+                            !edit && <motion.div
+                                initial={{ scale: 0.85, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.75, opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                className='flex justify-center items-center'>
+                                <img src={user.photoURL} alt="" className='size-20 rounded-full' />
+                            </motion.div>
+                        }
+                    </AnimatePresence>
+
+                    <AnimatePresence>
+                        {
+                            edit && <motion.div
+                                initial={{ x: -10, scale: 0.85, opacity: 0 }}
+                                animate={{ x: 0, scale: 1, opacity: 1 }}
+                                exit={{ x: -10, scale: 0.7, opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            >
+                                <input
+                                    type="file"
+                                    {...register("photo")}
+                                    accept="image/*"
+                                    disabled={!edit}
+                                    className={`w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-[#D32F2F] file:text-white file:dark:bg-[#EF5350] hover:file:bg-[#B71C1C] dark:hover:file:bg-[#F44336] ${!edit ? 'border-0 cursor-not-allowed' : ''}`}
+                                />
+                            </motion.div>
+                        }
+                    </AnimatePresence>
                     <motion.div
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
