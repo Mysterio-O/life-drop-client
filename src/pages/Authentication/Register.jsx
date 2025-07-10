@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { motion } from 'motion/react';
 import axios from 'axios';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
+import { setAccountToLocalStorage } from '../../hooks/getAccountsFromLocalStorage';
 
 const Register = () => {
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
@@ -104,6 +105,12 @@ const Register = () => {
         createUser(email, password)
             .then(result => {
                 console.log(result);
+
+                const accountInfo = {
+                    email, name, photo:imageObject?.photoURL, provider:'password'
+                }
+                setAccountToLocalStorage(accountInfo)
+
                 setUserProfile(userObject)
                     .then(async () => {
                         console.log('profile informations updated');

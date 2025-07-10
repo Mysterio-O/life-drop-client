@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { motion } from "motion/react";
 import { useState } from "react";
+import { setAccountToLocalStorage } from "../../hooks/getAccountsFromLocalStorage";
 
 const Login = () => {
   const { loginUser } = useAuth();
@@ -20,7 +21,15 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await loginUser(data.email, data.password);
+      const userCredentials = await loginUser(data.email, data.password);
+      const user = userCredentials.user;
+      const { displayName, photoURL } = user;
+
+      const accountInfo = {
+        email: user?.email, displayName, photoURL, provider: 'password'
+      }
+      setAccountToLocalStorage(accountInfo);
+
       setLoading(false);
       Swal.fire({
         icon: 'success',
