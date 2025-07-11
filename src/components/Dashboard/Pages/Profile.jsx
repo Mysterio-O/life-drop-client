@@ -83,11 +83,30 @@ const Profile = () => {
 
     if (isLoading) {
         return (
-            <div className='min-h-screen flex justify-center items-center'>
-                <p className="text-2xl text-black dark:text-white">Loading user info</p>
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0F172A] p-4 overflow-hidden">
+                <div className="max-w-xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md space-y-4 animate-pulse">
+                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-2/3 mx-auto" />
+                    <div className="absolute top-2 right-2">
+                        <div className="h-8 w-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
+                    </div>
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="flex justify-center">
+                        <div className="h-20 w-20 bg-gray-300 dark:bg-gray-700 rounded-full" />
+                    </div>
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-12 bg-gray-400 dark:bg-gray-600 rounded w-full mt-4" />
+                </div>
             </div>
-        )
+        );
     }
+
 
     if (isError) {
         <div className='min-h-screen flex justify-center items-center'>
