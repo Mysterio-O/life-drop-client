@@ -117,7 +117,7 @@ const MyDonationRequest = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-4 dark:text-white">
             <h2 className="text-2xl font-semibold mb-4">My Donation Requests</h2>
 
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -143,7 +143,7 @@ const MyDonationRequest = () => {
                     <div className="text-center py-10">Loading...</div>
                 ) : (
                     <table className="table w-full">
-                        <thead>
+                        <thead className="dark:text-white">
                             <tr>
                                 <th>#</th>
                                 <th>Recipient</th>
