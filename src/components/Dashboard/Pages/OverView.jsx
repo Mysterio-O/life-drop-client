@@ -117,15 +117,16 @@ const OverView = () => {
     if (loading || isPending) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center p-4">
-                <div className="skeleton h-8 w-1/2 mb-6"></div>
-                <div className="max-w-3xl w-full bg-base-200 p-6 rounded-lg shadow-md space-y-4">
-                    <div className="skeleton h-6 w-full"></div>
-                    <div className="skeleton h-6 w-full"></div>
-                    <div className="skeleton h-6 w-full"></div>
-                    <div className="skeleton h-6 w-full"></div>
-                    <div className="skeleton h-6 w-full"></div>
+                <div className="skeleton h-8 w-1/2 mb-6 dark:bg-gray-800"></div>
+                <div className="max-w-3xl w-full bg-base-200 dark:bg-gray-900 p-6 rounded-lg shadow-md space-y-4">
+                    <div className="skeleton h-6 w-full dark:bg-gray-800"></div>
+                    <div className="skeleton h-6 w-full dark:bg-gray-800"></div>
+                    <div className="skeleton h-6 w-full dark:bg-gray-800"></div>
+                    <div className="skeleton h-6 w-full dark:bg-gray-800"></div>
+                    <div className="skeleton h-6 w-full dark:bg-gray-800"></div>
                 </div>
             </div>
+
         );
     };
 
@@ -157,7 +158,7 @@ const OverView = () => {
                                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                             >
                                 <Link to="/dashboard/create-donation-request" className="flex items-center justify-center gap-2 text-xl mt-5">
-                                    Create Request
+                                    Create Your First Request
                                     <FaPlusSquare />
                                 </Link>
                             </motion.div>
@@ -219,12 +220,12 @@ const OverView = () => {
                                                         <FaEye />
                                                     </button>
                                                     <button
-                                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
-                                                                onClick={() => handleDelete(req._id)}
-                                                                title="Delete Request"
-                                                            >
-                                                                <FaTrash />
-                                                            </button>
+                                                        className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                        onClick={() => handleDelete(req._id)}
+                                                        title="Delete Request"
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
                                                     {req.status === "in_progress" && (
                                                         <>
                                                             <button

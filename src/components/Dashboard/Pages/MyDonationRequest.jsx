@@ -71,7 +71,7 @@ const MyDonationRequest = () => {
         });
     };
 
-    const handleStatusUpdate = async (id, newStatus) => {
+    const handleStatusUpdate = async (id, newStatus, donor_email) => {
         const statusMessages = {
             done: {
                 title: "Mark as Done?",
@@ -97,7 +97,7 @@ const MyDonationRequest = () => {
 
         if (confirm.isConfirmed) {
             try {
-                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus });
+                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus, donorEmail: donor_email });
                 if (res.data.result.modifiedCount) {
                     Swal.fire("Success!", statusMessages[newStatus].success, "success");
                     refetch();
@@ -131,15 +131,29 @@ const MyDonationRequest = () => {
         initial: { scale: 0.75, opacity: 0, filter: 'blur(20px)' },
         animate: { scale: 1, opacity: 1, filter: 'blur(0px' },
         transition: { duration: 0.3, ease: 'easeInOut' }
+    };
+
+    const formatDateTimeSimple = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
     }
+    // Example output: "Friday, July 11, 2025, 8:33 PM"
 
     return (
         <motion.div
-        variants={parentVariants}
-        initial="initial"
-        animate="animate"
-        transition="transition"
-        className="p-4 dark:text-white">
+            variants={parentVariants}
+            initial="initial"
+            animate="animate"
+            transition="transition"
+            className="p-4 dark:text-white">
             <h2 className="text-2xl font-semibold mb-4">My Donation Requests</h2>
 
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -214,7 +228,7 @@ const MyDonationRequest = () => {
                                             </span>
                                         </td>
                                         <td>
-                                            {request.status === 'in_progress' || request.status === 'done' ? `${request.donor_name} (${request.donor_email || '--'})` : '--'}
+                                            {request.status === 'in_progress' || request.status === 'done' ? `${request.donor_name} (${request.donor_email || '--'})(${request.donor_number || '--'})` : '--'}
                                         </td>
                                         <td className="flex justify-center gap-2">
                                             <button
@@ -235,14 +249,14 @@ const MyDonationRequest = () => {
                                                 <>
                                                     <button
                                                         className="btn btn-sm btn-outline btn-error cursor-pointer"
-                                                        onClick={() => handleStatusUpdate(request._id, 'canceled')}
+                                                        onClick={() => handleStatusUpdate(request._id, 'canceled', request.donor_email)}
                                                         title="Cancel Request"
                                                     >
                                                         <FaTimes />
                                                     </button>
                                                     <button
                                                         className="btn btn-sm btn-outline btn-success cursor-pointer"
-                                                        onClick={() => handleStatusUpdate(request._id, 'done')}
+                                                        onClick={() => handleStatusUpdate(request._id, 'done', request.donor_email)}
                                                         title="Mark as Done"
                                                     >
                                                         <FaCheck />
@@ -283,7 +297,7 @@ const MyDonationRequest = () => {
                         animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
                         exit={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="fixed inset-0 backdrop-blur-sm bg-black/20 bg-opacity-50 flex items-center justify-center z-50">
+                        className="fixed inset-0 backdrop-blur-md bg-black/20 bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg max-w-md w-full relative">
                             <h3 className="text-xl font-bold mb-4">Donation Request Details</h3>
                             <p><strong>Recipient:</strong> {selectedRequest.recipientName}</p>
@@ -296,9 +310,21 @@ const MyDonationRequest = () => {
                             <p><strong>Donation Time:</strong> {fnHandleTime(selectedRequest.donationTime)}</p>
                             <p><strong>Status:</strong> {selectedRequest.status}</p>
                             <p><strong>Requester:</strong> {selectedRequest.requesterName} ({selectedRequest.requesterEmail})</p>
-                            {selectedRequest.status === 'done' && (
-                                <p><strong>Donate By:</strong> {selectedRequest.donor_name}({selectedRequest.donor_email ? selectedRequest.donor_email : '--'})</p>
+                            {selectedRequest.status === 'done' || selectedRequest.status === 'in_progress' && (
+                                <p><strong>
+                                    {
+                                        selectedRequest.status === 'done' ? 'Donate By:' : selectedRequest.status === 'in_progress' ? 'Donor Info:' : ''
+                                    }
+                                </strong> {selectedRequest.donor_name}  ({selectedRequest.donor_email ? selectedRequest.donor_email : '--'}) ({selectedRequest.donor_number ? selectedRequest.donor_number : '--'})</p>
                             )}
+                            {
+                                selectedRequest.status === 'done' || selectedRequest.status === 'canceled' && <p><strong>
+                                    {
+                                        selectedRequest.status === 'done' ? 'Donated By:' : 'Canceld'
+                                    }
+                                    </strong> {selectedRequest.status === 'done' ? selectedRequest.donated_by : ''} at {selectedRequest.status === 'done' ? formatDateTimeSimple(selectedRequest.donated_at) 
+                                    : formatDateTimeSimple(selectedRequest.canceled_at)}</p>
+                            }
                             <div className="mt-6 text-right">
                                 <button
                                     onClick={closeModal}

@@ -32,7 +32,7 @@ const DonationRequests = () => {
                             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-1"></div>
                             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-1"></div>
                             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-4"></div>
-                            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+                            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
                         </div>
                     ))}
                 </div>
@@ -42,12 +42,20 @@ const DonationRequests = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-4xl text-center font-semibold mb-6 text-[#111827] dark:text-[#F8FAFC]">
+            <motion.h2
+                initial={{ x: -20, opacity: 0, scale: 0.85 }}
+                animate={{ x: 0, scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="text-4xl text-center font-semibold mb-6 text-[#111827] dark:text-[#F8FAFC]">
                 Pending Donation Requests
-            </h2>
+            </motion.h2>
 
             {pendingRequests.length === 0 ? (
-                <p className="text-gray-500 dark:text-gray-400 text-center">No pending requests found.</p>
+                <motion.p
+                    initial={{ x: -20, opacity: 0, scale: 0.85 }}
+                    animate={{ x: 0, scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="text-gray-500 dark:text-gray-400 text-center">No pending requests found.</motion.p>
             ) : (
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -56,13 +64,13 @@ const DonationRequests = () => {
                     className="space-y-6"
                 >
                     <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 gap-5">
-                        {pendingRequests.map((req) => (
+                        {pendingRequests.map((req, idx) => (
                             <motion.div
                                 key={req._id}
                                 initial={{ scale: 0.95, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                transition={{ duration: 0.3 }}
-                                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-all duration-200 text-center md:text-start"
+                                transition={{ duration: 0.3, delay: idx * 0.1 }}
+                                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-all duration-200 text-center md:text-start dark:hover:bg-gray-700 hover:bg-gray-200"
                             >
                                 <h3 className="text-lg font-bold text-[#D32F2F] dark:text-red-400">{req.recipientName}</h3>
                                 <p className="text-gray-600 dark:text-gray-300">
