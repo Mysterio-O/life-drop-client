@@ -4,13 +4,15 @@ import Navbar from '../components/Navbar/Navbar';
 
 const RootLayout = () => {
     return (
-        <div className='max-w-[1600px] mx-auto'>
-            <div>
-                <Navbar />
+        <div className='bg-[#FFFFFF] dark:bg-[#0F172A] transition-colors duration-300'>
+            <div className='max-w-[1600px] mx-auto'>
+                <div>
+                    <Navbar />
+                </div>
+                <section>
+                    <Outlet />
+                </section>
             </div>
-            <section>
-                <Outlet />
-            </section>
         </div>
     );
 };

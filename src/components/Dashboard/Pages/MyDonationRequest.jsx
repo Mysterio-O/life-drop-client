@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import { FaEye, FaCheck, FaTimes } from "react-icons/fa";
+import { FaEye, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
+import { AnimatePresence, motion } from "motion/react";
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled"];
 
@@ -70,25 +71,39 @@ const MyDonationRequest = () => {
         });
     };
 
-    const handleMarkDone = async (id) => {
+    const handleStatusUpdate = async (id, newStatus) => {
+        const statusMessages = {
+            done: {
+                title: "Mark as Done?",
+                text: "This will complete the request.",
+                icon: "question",
+                success: "Request marked as done."
+            },
+            canceled: {
+                title: "Cancel Request?",
+                text: "This will mark the request as canceled but keep it in your history.",
+                icon: "warning",
+                success: "Request has been canceled."
+            }
+        };
+
         const confirm = await Swal.fire({
-            title: "Mark as Done?",
-            text: "This will complete the request.",
-            icon: "question",
+            title: statusMessages[newStatus].title,
+            text: statusMessages[newStatus].text,
+            icon: statusMessages[newStatus].icon,
             showCancelButton: true,
-            confirmButtonText: "Yes, mark done",
+            confirmButtonText: `Yes, ${newStatus === 'done' ? 'mark done' : 'cancel it'}`,
         });
 
         if (confirm.isConfirmed) {
             try {
-                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: 'done' });
+                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus });
                 if (res.data.result.modifiedCount) {
-                    Swal.fire("Success!", "Request marked as done.", "success");
+                    Swal.fire("Success!", statusMessages[newStatus].success, "success");
                     refetch();
                 }
-
             } catch (err) {
-                console.log('error updating status', err);
+                console.log(`error updating status to ${newStatus}`, err);
                 Swal.fire("Error", "Something went wrong.", "error");
             }
         }
@@ -108,12 +123,8 @@ const MyDonationRequest = () => {
         const [hourStr, minute] = time.split(":");
         let hour = parseInt(hourStr);
         const ampm = hour >= 12 ? "PM" : "AM";
-
-        // Convert hour to 12-hour format
         hour = hour % 12 || 12;
-
-        const formattedTime = `${hour}:${minute} ${ampm}`;
-        return formattedTime;
+        return `${hour}:${minute} ${ampm}`;
     };
 
     return (
@@ -121,15 +132,19 @@ const MyDonationRequest = () => {
             <h2 className="text-2xl font-semibold mb-4">My Donation Requests</h2>
 
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                <label className="text-sm font-medium">
+                <label className="text-sm font-medium dark:text-white">
                     Filter by Status:
                     <select
                         value={statusFilter}
                         onChange={handleStatusChange}
-                        className="select select-bordered ml-2"
+                        className="select select-bordered ml-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
                     >
                         {statusOptions.map((status) => (
-                            <option key={status} value={status}>
+                            <option
+                                key={status}
+                                value={status}
+                                className="dark:bg-gray-800 dark:text-white"
+                            >
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                             </option>
                         ))}
@@ -137,63 +152,89 @@ const MyDonationRequest = () => {
                 </label>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto">
                 {isLoading ? (
-                    <div className="text-center py-10">Loading...</div>
+                    <div className="space-y-4">
+                        {[...Array(5)].map((_, i) => (
+                            <div key={i} className="animate-pulse flex space-x-4">
+                                <div className="h-6 bg-gray-300 rounded w-6"></div>
+                                <div className="flex-1 space-y-2 py-1">
+                                    <div className="h-4 bg-gray-300 rounded"></div>
+                                    <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
-                    <table className="table w-full">
+                    <table className="table w-full border-separate border-spacing-0 dark:text-white">
                         <thead className="dark:text-white">
                             <tr>
-                                <th>#</th>
-                                <th>Recipient</th>
-                                <th>Location</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th className="text-center">#</th>
+                                <th className="text-left">Recipient</th>
+                                <th className="text-left">Location</th>
+                                <th className="text-center">Date</th>
+                                <th className="text-center">Time</th>
+                                <th className="text-center">Blood</th>
+                                <th className="text-center">Status</th>
+                                <th className="text-left">Donor Info</th>
+                                <th className="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {donationRequests?.requests?.length > 0 ? (
                                 donationRequests.requests.map((request, index) => (
-                                    <tr key={request._id}>
-                                        <td>{(currentPage - 1) * limit + index + 1}</td>
+                                    <tr key={request._id} className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                                        <td className="text-center">{(currentPage - 1) * limit + index + 1}</td>
                                         <td>{request.recipientName}</td>
-                                        <td>{request.district}, {request.division}</td>
-                                        <td>{request.donationDate}</td>
-                                        <td>
+                                        <td>{`${request.district}, ${request.division}`}</td>
+                                        <td className="text-center">{request.donationDate}</td>
+                                        <td className="text-center">{fnHandleTime(request.donationTime)}</td>
+                                        <td className="text-center">{request.bloodGroup || '--'}</td>
+                                        <td className="text-center">
                                             <span className={`badge ${request.status === "done"
                                                 ? "badge-success"
                                                 : request.status === "pending"
                                                     ? "badge-warning"
-                                                    : request.status === "inprogress"
+                                                    : request.status === "in_progress"
                                                         ? "badge-info"
                                                         : "badge-error"
                                                 }`}>
                                                 {request.status}
                                             </span>
                                         </td>
-                                        <td className="flex gap-2">
+                                        <td>
+                                            {request.status === 'in_progress' || request.status === 'done' ? `${request.donor_name} (${request.donor_email || '--'})` : '--'}
+                                        </td>
+                                        <td className="flex justify-center gap-2">
                                             <button
-                                                className="btn btn-sm btn-outline btn-info"
+                                                className="btn btn-sm btn-outline btn-info cursor-pointer"
                                                 onClick={() => openModal(request)}
                                                 title="View Details"
                                             >
                                                 <FaEye />
                                             </button>
                                             {(request.status === "pending" || request.status === "in_progress") && (
-                                                <button
-                                                    className="btn btn-sm btn-outline btn-error"
-                                                    onClick={() => handleDelete(request._id)}
-                                                    title="Cancel Request"
-                                                >
-                                                    <FaTimes />
-                                                </button>
+                                                <>
+                                                    <button
+                                                        className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                        onClick={() => handleStatusUpdate(request._id, 'canceled')}
+                                                        title="Cancel Request"
+                                                    >
+                                                        <FaTimes />
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                        onClick={() => handleDelete(request._id)}
+                                                        title="Delete Request"
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
+                                                </>
                                             )}
                                             {request.status === "in_progress" && (
                                                 <button
-                                                    className="btn btn-sm btn-outline btn-success"
-                                                    onClick={() => handleMarkDone(request._id)}
+                                                    className="btn btn-sm btn-outline btn-success cursor-pointer"
+                                                    onClick={() => handleStatusUpdate(request._id, 'done')}
                                                     title="Mark as Done"
                                                 >
                                                     <FaCheck />
@@ -204,7 +245,7 @@ const MyDonationRequest = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="text-center py-10 text-gray-400">
+                                    <td colSpan="9" className="text-center py-10 text-gray-400">
                                         No donation requests found.
                                     </td>
                                 </tr>
@@ -214,7 +255,6 @@ const MyDonationRequest = () => {
                 )}
             </div>
 
-            {/* Pagination */}
             <div className="flex justify-center mt-6 space-x-2">
                 {[...Array(totalPages).keys()].map((i) => (
                     <button
@@ -227,30 +267,41 @@ const MyDonationRequest = () => {
                 ))}
             </div>
 
-            {/* Modal */}
-            {isModalOpen && selectedRequest && (
-                <div className="fixed inset-0 backdrop-blur-sm bg-black/20 bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg max-w-md w-full relative">
-                        <h3 className="text-xl font-bold mb-4">Donation Request Details</h3>
-                        <p><strong>Recipient:</strong> {selectedRequest.recipientName}</p>
-                        <p><strong>Location:</strong> {selectedRequest.district}, {selectedRequest.division}</p>
-                        <p><strong>Donation Date:</strong> {selectedRequest.donationDate}</p>
-                        <p><strong>Donation Time:</strong> {fnHandleTime(selectedRequest.donationTime)}</p>
-                        <p><strong>Status:</strong> {selectedRequest.status}</p>
-                        <p><strong>Requester:</strong> {selectedRequest.requesterName} ({selectedRequest.requesterEmail})</p>
-                        {/* You can include more fields if needed */}
-
-                        <div className="mt-6 text-right">
-                            <button
-                                onClick={closeModal}
-                                className="btn btn-sm btn-outline"
-                            >
-                                Close
-                            </button>
+            <AnimatePresence>
+                {isModalOpen && selectedRequest && (
+                    <motion.div
+                        initial={{ scale: 0.75, opacity: 0, filter: 'blur(20px)' }}
+                        animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
+                        exit={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="fixed inset-0 backdrop-blur-sm bg-black/20 bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg max-w-md w-full relative">
+                            <h3 className="text-xl font-bold mb-4">Donation Request Details</h3>
+                            <p><strong>Recipient:</strong> {selectedRequest.recipientName}</p>
+                            <p><strong>Blood Group:</strong> {selectedRequest.bloodGroup}</p>
+                            <p><strong>Description:</strong> {selectedRequest.requestMessage}</p>
+                            <p><strong>Location:</strong> {selectedRequest.district}, {selectedRequest.division}</p>
+                            <p><strong>Hospital Name:</strong> {selectedRequest.hospitalName}</p>
+                            <p><strong>Address:</strong> {selectedRequest.address}</p>
+                            <p><strong>Donation Date:</strong> {selectedRequest.donationDate}</p>
+                            <p><strong>Donation Time:</strong> {fnHandleTime(selectedRequest.donationTime)}</p>
+                            <p><strong>Status:</strong> {selectedRequest.status}</p>
+                            <p><strong>Requester:</strong> {selectedRequest.requesterName} ({selectedRequest.requesterEmail})</p>
+                            {selectedRequest.status === 'done' && (
+                                <p><strong>Donate By:</strong> {selectedRequest.donor_name}({selectedRequest.donor_email ? selectedRequest.donor_email : '--'})</p>
+                            )}
+                            <div className="mt-6 text-right">
+                                <button
+                                    onClick={closeModal}
+                                    className="btn btn-sm btn-outline"
+                                >
+                                    Close
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

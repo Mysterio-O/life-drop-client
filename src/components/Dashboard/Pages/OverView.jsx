@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { easeInOut, motion } from 'motion/react';
+import { motion,AnimatePresence } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
-import { MdEdit, MdDelete, MdVisibility, MdCheckCircle, MdCancel } from 'react-icons/md';
+import { FaEye, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 import { FaPlusSquare } from 'react-icons/fa';
 
 const OverView = () => {
@@ -22,6 +22,7 @@ const OverView = () => {
     });
 
     const [selectedRequest, setSelectedRequest] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -57,17 +58,61 @@ const OverView = () => {
         });
     };
 
-    const handleStatusUpdate = (id, status) => {
-        axiosSecure.patch(`/donation-requests/${id}`, { status })
-            .then(res => {
-                if (res.data.modifiedCount > 0) {
+    const handleStatusUpdate = async (id, newStatus) => {
+        const statusMessages = {
+            done: {
+                title: "Mark as Done?",
+                text: "This will complete the request.",
+                icon: "question",
+                success: "Request marked as done."
+            },
+            canceled: {
+                title: "Cancel Request?",
+                text: "This will mark the request as canceled but keep it in your history.",
+                icon: "warning",
+                success: "Request has been canceled."
+            }
+        };
+
+        const confirm = await Swal.fire({
+            title: statusMessages[newStatus].title,
+            text: statusMessages[newStatus].text,
+            icon: statusMessages[newStatus].icon,
+            showCancelButton: true,
+            confirmButtonText: `Yes, ${newStatus === 'done' ? 'mark done' : 'cancel it'}`,
+        });
+
+        if (confirm.isConfirmed) {
+            try {
+                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus });
+                if (res.data.result.modifiedCount) {
+                    Swal.fire("Success!", statusMessages[newStatus].success, "success");
                     refetch();
                 }
-            });
+            } catch (err) {
+                console.log(`error updating status to ${newStatus}`, err);
+                Swal.fire("Error", "Something went wrong.", "error");
+            }
+        }
     };
 
-    const openModal = (request) => setSelectedRequest(request);
-    const closeModal = () => setSelectedRequest(null);
+    const openModal = (request) => {
+        setSelectedRequest(request);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedRequest(null);
+    };
+
+    const fnHandleTime = (time) => {
+        const [hourStr, minute] = time.split(":");
+        let hour = parseInt(hourStr);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${ampm}`;
+    };
 
     if (loading || isPending) {
         return (
@@ -83,18 +128,6 @@ const OverView = () => {
             </div>
         );
     };
-
-    const fnHandleTime = (time) => {
-    const [hourStr, minute] = time.split(":");
-    let hour = parseInt(hourStr);
-    const ampm = hour >= 12 ? "PM" : "AM";
-
-    // Convert hour to 12-hour format
-    hour = hour % 12 || 12;
-
-    const formattedTime = `${hour}:${minute} ${ampm}`;
-    return formattedTime;
-};
 
     return (
         <motion.div
@@ -162,26 +195,56 @@ const OverView = () => {
                                                 <td className="text-center">{req.donationDate}</td>
                                                 <td className="text-center">{fnHandleTime(req.donationTime)}</td>
                                                 <td className="text-center">{req.bloodGroup}</td>
-                                                <td className="capitalize text-center">{req.status}</td>
+                                                <td className="text-center">
+                                                    <span className={`badge ${req.status === 'done'
+                                                        ? 'badge-success'
+                                                        : req.status === 'pending'
+                                                            ? 'badge-warning'
+                                                            : req.status === 'in_progress'
+                                                                ? 'badge-info'
+                                                                : 'badge-error'
+                                                        }`}>
+                                                        {req.status}
+                                                    </span>
+                                                </td>
                                                 <td>
-                                                    {req.status === 'in_progress' ? `${req.donor_name} (${req.donor_email})` : '--'}
+                                                    {req.status === 'in_progress' || req.status === 'done' ? `${req.donor_name} (${req.donor_email || '--'})` : '--'}
                                                 </td>
                                                 <td className="flex justify-center gap-2">
-                                                    {req.status === 'in_progress' && (
+                                                    <button
+                                                        className="btn btn-sm btn-outline btn-info cursor-pointer"
+                                                        onClick={() => openModal(req)}
+                                                        title="View Details"
+                                                    >
+                                                        <FaEye />
+                                                    </button>
+                                                    {(req.status === "pending" || req.status === "in_progress") && (
                                                         <>
-                                                            <button className='cursor-pointer' onClick={() => handleStatusUpdate(req._id, 'done')}>
-                                                                <MdCheckCircle />
+                                                            <button
+                                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                                onClick={() => handleStatusUpdate(req._id, 'canceled')}
+                                                                title="Cancel Request"
+                                                            >
+                                                                <FaTimes />
                                                             </button>
-                                                            <button className='cursor-pointer' onClick={() => handleStatusUpdate(req._id, 'canceled')}>
-                                                                <MdCancel />
+                                                            <button
+                                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                                onClick={() => handleDelete(req._id)}
+                                                                title="Delete Request"
+                                                            >
+                                                                <FaTrash />
                                                             </button>
                                                         </>
                                                     )}
-                                                    {
-                                                        req.status !== 'done' && <Link to={`/dashboard/edit-request/${req._id}`}><MdEdit /></Link>
-                                                    }
-                                                    <button className='cursor-pointer' onClick={() => handleDelete(req._id)}><MdDelete /></button>
-                                                    <button className='cursor-pointer' onClick={() => openModal(req)}><MdVisibility /></button>
+                                                    {req.status === "in_progress" && (
+                                                        <button
+                                                            className="btn btn-sm btn-outline btn-success cursor-pointer"
+                                                            onClick={() => handleStatusUpdate(req._id, 'done')}
+                                                            title="Mark as Done"
+                                                        >
+                                                            <FaCheck />
+                                                        </button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
@@ -198,52 +261,43 @@ const OverView = () => {
                     )
                 }
 
-                {selectedRequest && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50"
-                        onClick={closeModal}
-                    >
+                <AnimatePresence>
+                    {isModalOpen && selectedRequest && (
                         <motion.div
-                            initial={{ scale: 0.9, y: 20 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.9, y: 20 }}
-                            transition={{ duration: 0.3 }}
-                            className="bg-[#F9FAFB] dark:bg-[#1E293B] p-6 rounded-xl shadow-lg max-w-sm w-full relative"
-                            onClick={(e) => e.stopPropagation()}
+                            initial={{ scale: 0.75, opacity: 0, filter: 'blur(20px)' }}
+                            animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
+                            exit={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50"
                         >
-                            <h3 className="text-xl font-bold mb-4">Request Details</h3>
-                            <button onClick={closeModal} className="absolute top-2 right-2">
-                                ✕
-                            </button>
-                            <div className="space-y-3">
+                            <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg max-w-md w-full relative dark:text-white">
+                                <h3 className="text-xl font-bold mb-4">Donation Request Details</h3>
                                 <p><strong>Recipient:</strong> {selectedRequest.recipientName}</p>
-                                <p><strong>Location:</strong> {selectedRequest.district}, {selectedRequest.upazila}</p>
-                                <p><strong>Date:</strong> {selectedRequest.donationDate}</p>
-                                <p><strong>Time:</strong> {fnHandleTime(selectedRequest.donationTime)}</p>
                                 <p><strong>Blood Group:</strong> {selectedRequest.bloodGroup}</p>
-                                <p><strong>Status:</strong> {selectedRequest.status}</p>
-                                {selectedRequest.status === 'in_progress' && (
-                                    <>
-                                        <p><strong>Donor Name:</strong> {selectedRequest.donor_name}</p>
-                                        <p><strong>Donor Email:</strong> {selectedRequest.donor_email}</p>
-                                    </>
-                                )}
-                                <p><strong>Hospital:</strong> {selectedRequest.hospitalName}</p>
+                                <p><strong>Description:</strong> {selectedRequest.requestMessage}</p>
+                                <p><strong>Location:</strong> {selectedRequest.district}, {selectedRequest.upazila}</p>
+                                <p><strong>Hospital Name:</strong> {selectedRequest.hospitalName}</p>
                                 <p><strong>Address:</strong> {selectedRequest.address}</p>
-                                <p><strong>Message:</strong> {selectedRequest.requestMessage}</p>
+                                <p><strong>Donation Date:</strong> {selectedRequest.donationDate}</p>
+                                <p><strong>Donation Time:</strong> {fnHandleTime(selectedRequest.donationTime)}</p>
+                                <p><strong>Status:</strong> {selectedRequest.status}</p>
+                                <p><strong>Requester:</strong> {selectedRequest.requesterName} ({selectedRequest.requesterEmail})</p>
                                 {
-                                    selectedRequest.status === 'done' && <>
-                                        <p><strong>Donated by:</strong> {selectedRequest.donor_name}</p>
-                                        <p><strong>Donor email:</strong> {selectedRequest.donor_email}</p>
-                                    </>
+                                    selectedRequest.status === 'done' && <p><strong>Donate By:</strong> {selectedRequest.donor_name}({selectedRequest.donor_email ? selectedRequest.donor_email : '--'})</p>
                                 }
+
+                                <div className="mt-6 text-right">
+                                    <button
+                                        onClick={closeModal}
+                                        className="btn btn-sm btn-outline"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
-                    </motion.div>
-                )}
+                    )}
+                </AnimatePresence>
             </motion.div>
         </motion.div>
     );

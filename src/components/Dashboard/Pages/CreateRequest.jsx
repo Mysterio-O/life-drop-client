@@ -161,11 +161,29 @@ const CreateRequest = () => {
                         <input
                             {...register('recipientName', { required: 'Recipient name is required' })}
                             placeholder="Recipient Name"
+                            type='text'
                             className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
                         />
                         {errors.recipientName && (
                             <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
                                 {errors.recipientName.message}
+                            </p>
+                        )}
+                    </motion.div>
+                    <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <input
+                            {...register('recipientNumber', { required: 'Recipient number is required' })}
+                            placeholder="Recipient Number"
+                            type='number'
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                        />
+                        {errors.recipientNumber && (
+                            <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
+                                {errors.recipientNumber.message}
                             </p>
                         )}
                     </motion.div>
