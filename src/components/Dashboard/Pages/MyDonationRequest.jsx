@@ -127,8 +127,19 @@ const MyDonationRequest = () => {
         return `${hour}:${minute} ${ampm}`;
     };
 
+    const parentVariants = {
+        initial: { scale: 0.75, opacity: 0, filter: 'blur(20px)' },
+        animate: { scale: 1, opacity: 1, filter: 'blur(0px' },
+        transition: { duration: 0.3, ease: 'easeInOut' }
+    }
+
     return (
-        <div className="p-4 dark:text-white">
+        <motion.div
+        variants={parentVariants}
+        initial="initial"
+        animate="animate"
+        transition="transition"
+        className="p-4 dark:text-white">
             <h2 className="text-2xl font-semibold mb-4">My Donation Requests</h2>
 
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -213,7 +224,14 @@ const MyDonationRequest = () => {
                                             >
                                                 <FaEye />
                                             </button>
-                                            {(request.status === "pending" || request.status === "in_progress") && (
+                                            <button
+                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                onClick={() => handleDelete(request._id)}
+                                                title="Delete Request"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                            {request.status === "in_progress" && (
                                                 <>
                                                     <button
                                                         className="btn btn-sm btn-outline btn-error cursor-pointer"
@@ -223,22 +241,13 @@ const MyDonationRequest = () => {
                                                         <FaTimes />
                                                     </button>
                                                     <button
-                                                        className="btn btn-sm btn-outline btn-error cursor-pointer"
-                                                        onClick={() => handleDelete(request._id)}
-                                                        title="Delete Request"
+                                                        className="btn btn-sm btn-outline btn-success cursor-pointer"
+                                                        onClick={() => handleStatusUpdate(request._id, 'done')}
+                                                        title="Mark as Done"
                                                     >
-                                                        <FaTrash />
+                                                        <FaCheck />
                                                     </button>
                                                 </>
-                                            )}
-                                            {request.status === "in_progress" && (
-                                                <button
-                                                    className="btn btn-sm btn-outline btn-success cursor-pointer"
-                                                    onClick={() => handleStatusUpdate(request._id, 'done')}
-                                                    title="Mark as Done"
-                                                >
-                                                    <FaCheck />
-                                                </button>
                                             )}
                                         </td>
                                     </tr>
@@ -302,7 +311,7 @@ const MyDonationRequest = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion,AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { Link } from 'react-router';
@@ -218,7 +218,14 @@ const OverView = () => {
                                                     >
                                                         <FaEye />
                                                     </button>
-                                                    {(req.status === "pending" || req.status === "in_progress") && (
+                                                    <button
+                                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                                onClick={() => handleDelete(req._id)}
+                                                                title="Delete Request"
+                                                            >
+                                                                <FaTrash />
+                                                            </button>
+                                                    {req.status === "in_progress" && (
                                                         <>
                                                             <button
                                                                 className="btn btn-sm btn-outline btn-error cursor-pointer"
@@ -228,22 +235,13 @@ const OverView = () => {
                                                                 <FaTimes />
                                                             </button>
                                                             <button
-                                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
-                                                                onClick={() => handleDelete(req._id)}
-                                                                title="Delete Request"
+                                                                className="btn btn-sm btn-outline btn-success cursor-pointer"
+                                                                onClick={() => handleStatusUpdate(req._id, 'done')}
+                                                                title="Mark as Done"
                                                             >
-                                                                <FaTrash />
+                                                                <FaCheck />
                                                             </button>
                                                         </>
-                                                    )}
-                                                    {req.status === "in_progress" && (
-                                                        <button
-                                                            className="btn btn-sm btn-outline btn-success cursor-pointer"
-                                                            onClick={() => handleStatusUpdate(req._id, 'done')}
-                                                            title="Mark as Done"
-                                                        >
-                                                            <FaCheck />
-                                                        </button>
                                                     )}
                                                 </td>
                                             </tr>
