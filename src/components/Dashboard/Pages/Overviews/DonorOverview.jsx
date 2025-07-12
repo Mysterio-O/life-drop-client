@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import useAuth from '../../../hooks/useAuth';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import { FaEye, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 import { FaPlusSquare } from 'react-icons/fa';
+import useAuth from '../../../../hooks/useAuth';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 
-const OverView = () => {
+const DonorOverview = () => {
+
     const { user, loading } = useAuth();
     const axiosSecure = useAxiosSecure();
 
@@ -129,6 +130,7 @@ const OverView = () => {
 
         );
     };
+
 
     return (
         <motion.div
@@ -302,4 +304,4 @@ const OverView = () => {
     );
 };
 
-export default OverView;
+export default DonorOverview;

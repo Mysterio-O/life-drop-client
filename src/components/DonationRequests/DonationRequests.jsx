@@ -78,21 +78,23 @@ const DonationRequests = () => {
                                 initial={{ scale: 0.95, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ duration: 0.3, delay: idx * 0.1 }}
-                                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-all duration-200 text-center md:text-start dark:hover:bg-gray-700 hover:bg-gray-200"
+                                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-all duration-200 text-center md:text-start dark:hover:bg-gray-700 hover:bg-gray-200 flex flex-col justify-between"
                             >
-                                <h3 className="text-lg font-bold text-[#D32F2F] dark:text-red-400">{req.recipientName}</h3>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                    <strong>Location:</strong> {req.district}, {req.division}
-                                </p>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                    <strong>Blood Group:</strong> {req.bloodGroup}
-                                </p>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                    <strong>Date:</strong> {req.donationDate}
-                                </p>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                    <strong>Time:</strong> {fnHandleTime(req.donationTime)}
-                                </p>
+                                <div>
+                                    <h3 className="text-lg font-bold text-[#D32F2F] dark:text-red-400">{req.recipientName}</h3>
+                                    <p className="text-gray-600 dark:text-gray-300">
+                                        <strong>Location:</strong> {req.district}, {req.division}
+                                    </p>
+                                    <p className="text-gray-600 dark:text-gray-300">
+                                        <strong>Blood Group:</strong> {req.bloodGroup}
+                                    </p>
+                                    <p className="text-gray-600 dark:text-gray-300">
+                                        <strong>Date:</strong> {req.donationDate}
+                                    </p>
+                                    <p className="text-gray-600 dark:text-gray-300">
+                                        <strong>Time:</strong> {fnHandleTime(req.donationTime)}
+                                    </p>
+                                </div>
                                 <div className="mt-4">
                                     <Link
                                         to={`/donation-request/${req._id}`}

@@ -7,11 +7,42 @@ import { motion } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
 import { Tooltip } from 'react-tooltip';
 import logo from "../../../assets/logo-transparent.png"
+import useUserRole from '../../../hooks/useUserRole';
+import LifeDropLoader from '../../../shared/LifeDropLoader';
 
 const Dashboard = ({ closeDashboard }) => {
-    const { user } = useAuth();
+    const { user, loading: AuthLoading } = useAuth();
+    const { role, role_loading } = useUserRole();
 
-    const plantPulseVariant = {
+    if (role_loading || AuthLoading) {
+        return <div className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen'>
+            {/* Skeleton for Logo and Theme Toggle */}
+            <div>
+                <div className='flex items-center justify-around gap-2 mb-8'>
+                    <div className='flex items-center justify-center gap-2'>
+                        <div className='h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse'></div>
+                    </div>
+                    <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse'></div>
+                </div>
+
+                {/* Skeleton for Navigation Links */}
+                <nav className='flex flex-col gap-3'>
+                    {[...Array(5)].map((_, idx) => (
+                        <div key={idx} className='flex items-center gap-3 p-3 rounded-md'>
+                            <div className='h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse'></div>
+                            <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse'></div>
+                        </div>
+                    ))}
+                </nav>
+            </div>
+
+            {/* Skeleton for Logout Button */}
+            <div className='h-10 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse'></div>
+        </div>
+    }
+
+
+    const lifeDropVariants = {
         initial: { scale: 1, x: 0 },
         whileHover: { scale: 1.3 },
         whileTap: { scale: 0.9 },
@@ -23,8 +54,8 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'Profile', icon: <FaUser />, path: '/dashboard/profile', end: true },
         { name: 'Create Request', icon: <FaPlusSquare />, path: '/dashboard/create-donation-request', end: true },
         { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-donation-requests`, end: true },
-        { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-request", end: true }
-    ];
+        role === 'admin' && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-request", end: true }
+    ].filter(Boolean);
 
     const handleClick = () => {
         closeDashboard();
@@ -40,7 +71,7 @@ const Dashboard = ({ closeDashboard }) => {
             <div>
                 <div className='flex items-center justify-around gap-2 mb-8'>
                     <motion.div
-                        variants={plantPulseVariant}
+                        variants={lifeDropVariants}
                         initial="initial"
                         whileHover="whileHover"
                         whileTap="whileTap"
@@ -77,7 +108,7 @@ const Dashboard = ({ closeDashboard }) => {
                 <nav className='flex flex-col gap-3'>
                     {navItems.map((item, idx) => (
                         <motion.div
-                            key={item.name}
+                            key={item.name_idx}
                             initial={{ x: -30, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.3, delay: idx * 0.1, ease: 'easeInOut' }}
