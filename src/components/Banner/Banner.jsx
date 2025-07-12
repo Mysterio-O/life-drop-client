@@ -41,7 +41,7 @@ const Banner = () => {
                         )}
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Link
-                                to="/donors"
+                                to="/search-donors"
                                 className="btn w-full md:w-auto px-6 py-3 border-2 border-[#D32F2F] dark:border-[#EF5350] text-[#D32F2F] dark:text-[#EF5350] rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] dark:hover:text-white transition-all duration-300"
                             >
                                 Search Donors

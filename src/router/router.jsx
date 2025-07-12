@@ -10,6 +10,7 @@ import CreateRequest from "../components/Dashboard/Pages/CreateRequest";
 import OverView from "../components/Dashboard/Pages/OverView";
 import MyDonationRequest from "../components/Dashboard/Pages/MyDonationRequest";
 import Request from "../components/DonationRequests/Request";
+import SearchDonor from "../pages/SearchDonor/SearchDonor";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <Request />
                 </PrivateRoute>
+            },
+            {
+                path: '/search-donors',
+                Component: SearchDonor
             }
         ]
     },
