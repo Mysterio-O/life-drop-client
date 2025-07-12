@@ -17,6 +17,7 @@ const MyDonationRequest = () => {
     const [statusFilter, setStatusFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [limit] = useState(10);
+    const [allowDelete]=useState(true);
 
 
     const { data: donationRequests = [], refetch, isLoading } = useQuery({
@@ -114,7 +115,7 @@ const MyDonationRequest = () => {
 
     return (
         <>
-            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} />
+            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} allowDelete={allowDelete}/>
         </>
     );
 };

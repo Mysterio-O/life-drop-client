@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import DonationRequestLayout from './Overviews/shared/DonationRequestLayout';
@@ -7,13 +7,20 @@ import useUserRole from '../../../hooks/useUserRole';
 
 const AllDonations = () => {
 
-    const {role,role_loading}=useUserRole();
+    const { role, role_loading } = useUserRole();
     console.log(role);
 
     const limit = 10;
     const [currentPage, setCurrentPage] = useState(1);
     const axiosSecure = useAxiosSecure();
     const [statusFilter, setStatusFilter] = useState("all");
+    const [allowDelete, setAllowDelete] = useState(true);
+
+    useEffect(() => {
+        if (role === 'volunteer') {
+            setAllowDelete(false)
+        }
+    }, [role])
 
     const { data: donationRequests = [], isLoading, refetch } = useQuery({
         queryKey: ['all-blood-donation-request', limit, currentPage, statusFilter],
@@ -114,7 +121,7 @@ const AllDonations = () => {
 
     return (
         <>
-            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading}/>
+            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} allowDelete={allowDelete} />
         </>
     );
 };

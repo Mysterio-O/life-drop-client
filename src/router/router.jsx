@@ -13,7 +13,9 @@ import SearchDonor from "../pages/SearchDonor/SearchDonor";
 import Forbidden from "../shared/Forbidden";
 import OverView from "../components/Dashboard/Pages/Overviews/Overview";
 import AllDonations from "../components/Dashboard/Pages/AllDonations";
-import AdminRoute from "../routes/AdminRoute";
+import SharedRoute from "../routes/SharedRoute";
+import ContentManagement from "../components/Dashboard/Pages/ContentManagement/ContentManagement";
+import AddBlog from "../components/Dashboard/Pages/ContentManagement/AddBlog";
 
 export const router = createBrowserRouter([
     {
@@ -71,10 +73,22 @@ export const router = createBrowserRouter([
                 Component: MyDonationRequest
             },
             {
-                path:'all-blood-donation-request',
-                element:<AdminRoute>
-                    <AllDonations/>
-                </AdminRoute>
+                path: 'all-blood-donation-request',
+                element: <SharedRoute>
+                    <AllDonations />
+                </SharedRoute>
+            },
+            {
+                path: 'content-management',
+                element: <SharedRoute>
+                    <ContentManagement />
+                </SharedRoute>
+            },
+            {
+                path: 'content-management/add-blog',
+                element: <SharedRoute>
+                    <AddBlog />
+                </SharedRoute>
             }
         ]
     }

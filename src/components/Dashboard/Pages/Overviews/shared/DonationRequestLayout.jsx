@@ -3,12 +3,11 @@ import { FaEye, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react";
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled"];
-const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading }) => {
+const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete }) => {
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
-
 
     const openModal = (request) => {
         setSelectedRequest(request);
@@ -138,13 +137,15 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, do
                                             >
                                                 <FaEye />
                                             </button>
-                                            <button
+                                            {
+                                                allowDelete && <button
                                                 className="btn btn-sm btn-outline btn-error cursor-pointer"
                                                 onClick={() => handleDelete(request._id)}
                                                 title="Delete Request"
                                             >
                                                 <FaTrash />
                                             </button>
+                                            }
                                             {request.status === "in_progress" && (
                                                 <>
                                                     <button
@@ -225,7 +226,7 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, do
                                             selectedRequest.status === 'done' ? 'Donated ' : 'Canceled '
                                         }
                                     </strong>
-                                     at {selectedRequest.status === 'done' ? formatDateTimeSimple(selectedRequest.donated_at)
+                                    at {selectedRequest.status === 'done' ? formatDateTimeSimple(selectedRequest.donated_at)
                                         : formatDateTimeSimple(selectedRequest.canceled_at)}
                                 </p>
                             }
