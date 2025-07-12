@@ -69,18 +69,40 @@ const Navbar = () => {
         });
     };
 
+    const handleCategories = () => {
+        // console.log('clicked');
+        if (window.location.pathname === '/') {
+            const element = document.getElementById('categories');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' })
+            } else {
+                setTimeout(() => {
+                    const retryElement = document.getElementById('categories');
+                    if (retryElement) {
+                        retryElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 500);
+            }
+        }
+        else {
+            navigate('/#categories');
+        }
+
+    }
+
     // Define guestLinks as an array of JSX elements
     const guestLinks = [
-        <NavLink
-            key="donation-requests"
-            to="/donation-requests"
-            className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
-                }`
-            }
-        >
-            Donation Requests
-        </NavLink>,
+        <span onClick={handleCategories}>
+            <NavLink
+                key="donation-requests"
+                to="/#donation-requests"
+                className={
+                    `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
+                }
+            >
+                Donation Requests
+            </NavLink>
+        </span>,
         <NavLink
             key="blog"
             to="/blog"
@@ -105,16 +127,17 @@ const Navbar = () => {
 
     // Define userLinks as an array of JSX elements
     const userLinks = [
-        <NavLink
-            key="donation-requests"
-            to="/donation-requests"
-            className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
-                }`
-            }
-        >
-            Donation Requests
-        </NavLink>,
+        <span onClick={handleCategories}>
+            <NavLink
+                key="donation-requests"
+                to="/#donation-requests"
+                className={
+                    `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
+                }
+            >
+                Donation Requests
+            </NavLink>
+        </span>,
         <NavLink
             key="blog"
             to="/blog"

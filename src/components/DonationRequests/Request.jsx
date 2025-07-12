@@ -44,6 +44,14 @@ const Request = () => {
         },
     });
 
+    const fnHandleTime = (time) => {
+        const [hourStr, minute] = time.split(":");
+        let hour = parseInt(hourStr);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${ampm}`;
+    };
+
     if (isLoading) {
         return (
             <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4">
@@ -102,7 +110,7 @@ const Request = () => {
                     </div>
                     <div className='flex justify-between items-center py-2'>
                         <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Donation Date:</strong> {donationRequest.donationDate}</p>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Donation Time:</strong> {donationRequest.donationTime}</p>
+                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Donation Time:</strong> {fnHandleTime(donationRequest.donationTime)}</p>
                     </div>
 
 

@@ -11,6 +11,7 @@ import OverView from "../components/Dashboard/Pages/OverView";
 import MyDonationRequest from "../components/Dashboard/Pages/MyDonationRequest";
 import Request from "../components/DonationRequests/Request";
 import SearchDonor from "../pages/SearchDonor/SearchDonor";
+import Forbidden from "../shared/Forbidden";
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
             {
                 path: '/search-donors',
                 Component: SearchDonor
+            },
+            {
+                path: 'forbidden',
+                Component: Forbidden
             }
         ]
     },

@@ -21,6 +21,14 @@ const DonationRequests = () => {
     const totalRequests = responseData.total || 0;
     const totalPages = Math.ceil(totalRequests / limit);
 
+    const fnHandleTime = (time) => {
+        const [hourStr, minute] = time.split(":");
+        let hour = parseInt(hourStr);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${ampm}`;
+    };
+
     if (isLoading) {
         return (
             <div className="p-6 text-center">
@@ -83,7 +91,7 @@ const DonationRequests = () => {
                                     <strong>Date:</strong> {req.donationDate}
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-300">
-                                    <strong>Time:</strong> {req.donationTime}
+                                    <strong>Time:</strong> {fnHandleTime(req.donationTime)}
                                 </p>
                                 <div className="mt-4">
                                     <Link
