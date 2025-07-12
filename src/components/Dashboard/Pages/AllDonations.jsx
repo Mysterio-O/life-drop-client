@@ -1,35 +1,35 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import Swal from "sweetalert2";
-import DonationRequestLayout from "./Overviews/shared/DonationRequestLayout";
-import useUserRole from "../../../hooks/useUserRole";
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import DonationRequestLayout from './Overviews/shared/DonationRequestLayout';
+import useUserRole from '../../../hooks/useUserRole';
 
+const AllDonations = () => {
 
+    const {role,role_loading}=useUserRole();
+    console.log(role);
 
-
-const MyDonationRequest = () => {
-    const { user } = useAuth();
-    const axiosSecure = useAxiosSecure();
-    const { role, role_loading } = useUserRole();
-
-    const [statusFilter, setStatusFilter] = useState("all");
+    const limit = 10;
     const [currentPage, setCurrentPage] = useState(1);
-    const [limit] = useState(10);
+    const axiosSecure = useAxiosSecure();
+    const [statusFilter, setStatusFilter] = useState("all");
 
-
-    const { data: donationRequests = [], refetch, isLoading } = useQuery({
-        queryKey: ["my-donation-requests", user?.email, statusFilter, currentPage],
+    const { data: donationRequests = [], isLoading, refetch } = useQuery({
+        queryKey: ['all-blood-donation-request', limit, currentPage, statusFilter],
         queryFn: async () => {
-            const statusQuery = statusFilter === "all" ? "" : `&status=${statusFilter}`;
-            const res = await axiosSecure.get(
-                `/donation-requests?email=${user?.email}${statusQuery}&page=${currentPage}&limit=${limit}`
-            );
+            const statusQuery = statusFilter === "all" ? "all" : `${statusFilter}`;
+            const res = await axiosSecure.get('/all-blood-donation-request', {
+                params: {
+                    page: currentPage, limit, status: statusQuery
+                }
+            });
             return res.data;
-        },
-        enabled: !!user?.email,
+        }
     });
+
+    // console.log(donationRequests);
+    // console.log(statusFilter);
 
     const totalPages = donationRequests?.totalPages || 1;
 
@@ -98,7 +98,7 @@ const MyDonationRequest = () => {
 
         if (confirm.isConfirmed) {
             try {
-                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus, donorEmail: donor_email});
+                const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus, donorEmail: donor_email });
                 if (res.data.result.modifiedCount) {
                     Swal.fire("Success!", statusMessages[newStatus].success, "success");
                     refetch();
@@ -110,13 +110,13 @@ const MyDonationRequest = () => {
         }
     };
 
-    const title = 'My Donation Requests'
+    const title = 'All Donation Requests'
 
     return (
         <>
-            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} />
+            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading}/>
         </>
     );
 };
 
-export default MyDonationRequest;
+export default AllDonations;

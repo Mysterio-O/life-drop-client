@@ -54,7 +54,7 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'Profile', icon: <FaUser />, path: '/dashboard/profile', end: true },
         { name: 'Create Request', icon: <FaPlusSquare />, path: '/dashboard/create-donation-request', end: true },
         { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-donation-requests`, end: true },
-        role === 'admin' && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-request", end: true }
+        role === 'admin' && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-blood-donation-request", end: true }
     ].filter(Boolean);
 
     const handleClick = () => {

@@ -12,6 +12,8 @@ import Request from "../components/DonationRequests/Request";
 import SearchDonor from "../pages/SearchDonor/SearchDonor";
 import Forbidden from "../shared/Forbidden";
 import OverView from "../components/Dashboard/Pages/Overviews/Overview";
+import AllDonations from "../components/Dashboard/Pages/AllDonations";
+import AdminRoute from "../routes/AdminRoute";
 
 export const router = createBrowserRouter([
     {
@@ -67,6 +69,12 @@ export const router = createBrowserRouter([
             {
                 path: 'my-donation-requests',
                 Component: MyDonationRequest
+            },
+            {
+                path:'all-blood-donation-request',
+                element:<AdminRoute>
+                    <AllDonations/>
+                </AdminRoute>
             }
         ]
     }
