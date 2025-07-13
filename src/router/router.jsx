@@ -16,6 +16,8 @@ import AllDonations from "../components/Dashboard/Pages/AllDonations";
 import SharedRoute from "../routes/SharedRoute";
 import ContentManagement from "../components/Dashboard/Pages/ContentManagement/ContentManagement";
 import AddBlog from "../components/Dashboard/Pages/ContentManagement/AddBlog";
+import UpdateContent from "../components/Dashboard/Pages/ContentManagement/UpdateContent";
+import Blogs from "../pages/Blog/Blogs";
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +49,10 @@ export const router = createBrowserRouter([
             {
                 path: 'forbidden',
                 Component: Forbidden
+            },
+            {
+                path:'/blog',
+                Component: Blogs
             }
         ]
     },
@@ -88,6 +94,12 @@ export const router = createBrowserRouter([
                 path: 'content-management/add-blog',
                 element: <SharedRoute>
                     <AddBlog />
+                </SharedRoute>
+            },
+            {
+                path: 'content-management/edit-blog/:id',
+                element: <SharedRoute>
+                    <UpdateContent />
                 </SharedRoute>
             }
         ]
