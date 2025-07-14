@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useUserStatus from '../../../hooks/useUserStatus';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 const CreateRequest = () => {
 
@@ -11,6 +13,9 @@ const CreateRequest = () => {
 
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
+
+    const { status, status_loading } = useUserStatus();
+    console.log(status);
 
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -102,6 +107,54 @@ const CreateRequest = () => {
             requestMessage: '',
         });
     };
+
+    if (status_loading) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="max-w-xl mx-auto w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md space-y-6"
+            >
+                {[...Array(11)].map((_, idx) => (
+                    <div key={idx} className="flex flex-col space-y-2">
+                        <div className="h-10 w-full bg-gray-300 dark:bg-gray-700 animate-pulse rounded-md"></div>
+                        {idx === 10 && (
+                            <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 animate-pulse rounded-md"></div>
+                        )}
+                    </div>
+                ))}
+            </motion.div>
+        )
+    }
+
+
+    if (status === 'blocked') {
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="min-h-screen flex items-center justify-center bg-[#FFFFFF] dark:bg-[#0F172A] p-4 overflow-hidden"
+            >
+                <motion.div
+                    initial={{ scale: 0.95 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-w-md w-full bg-[#D32F2F] dark:bg-[#EF5350] p-8 rounded-xl shadow-md text-center text-white"
+                >
+                    <FaExclamationTriangle className="text-4xl mb-4 mx-auto" />
+                    <h2 className="text-xl font-bold mb-2">Account Blocked</h2>
+                    <p className="mb-4">Your account is currently blocked. You cannot create a request at this time.</p>
+                    <p className="mb-4">Please contact the admin for more information.</p>
+                    <a href="/contact-admin" className="text-[#F8FAFC] hover:underline">Contact Admin</a>
+                </motion.div>
+            </motion.div>
+        );
+    }
+
+
+
 
     return (
         <motion.div

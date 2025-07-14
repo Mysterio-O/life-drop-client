@@ -56,7 +56,7 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-donation-requests`, end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-blood-donation-request", end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'Content Management', icon: <FaFileAlt />, path: "/dashboard/content-management", end: true },
-        (role === 'admin' || role === 'volunteer') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true }
+        (role === 'admin') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true }
     ].filter(Boolean);
 
     const handleClick = () => {

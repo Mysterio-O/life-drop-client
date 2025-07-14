@@ -19,11 +19,14 @@ import AddBlog from "../components/Dashboard/Pages/ContentManagement/AddBlog";
 import UpdateContent from "../components/Dashboard/Pages/ContentManagement/UpdateContent";
 import Blogs from "../pages/Blog/Blogs";
 import AllUsers from "../components/Dashboard/Pages/AllUsers";
+import AdminRoute from "../routes/AdminRoute";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: RootLayout,
+        errorElement: <ErrorPage/>,
         children: [
             {
                 index: true,
@@ -105,9 +108,9 @@ export const router = createBrowserRouter([
             },
             {
                 path: "all-users",
-                element: <SharedRoute>
+                element: <AdminRoute>
                     <AllUsers/>
-                </SharedRoute>
+                </AdminRoute>
             }
         ]
     }
