@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
-import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt } from 'react-icons/fa';
+import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog } from 'react-icons/fa';
 import LogoutButton from '../../../shared/LogoutButton';
 import { motion } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
@@ -55,7 +55,8 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'Create Request', icon: <FaPlusSquare />, path: '/dashboard/create-donation-request', end: true },
         { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-donation-requests`, end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-blood-donation-request", end: true },
-        (role === 'admin' || role === 'volunteer') && { name: 'Content Management', icon: <FaFileAlt />, path: "/dashboard/content-management", end: true }
+        (role === 'admin' || role === 'volunteer') && { name: 'Content Management', icon: <FaFileAlt />, path: "/dashboard/content-management", end: true },
+        (role === 'admin' || role === 'volunteer') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true }
     ].filter(Boolean);
 
     const handleClick = () => {

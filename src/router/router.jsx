@@ -18,6 +18,7 @@ import ContentManagement from "../components/Dashboard/Pages/ContentManagement/C
 import AddBlog from "../components/Dashboard/Pages/ContentManagement/AddBlog";
 import UpdateContent from "../components/Dashboard/Pages/ContentManagement/UpdateContent";
 import Blogs from "../pages/Blog/Blogs";
+import AllUsers from "../components/Dashboard/Pages/AllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -51,7 +52,7 @@ export const router = createBrowserRouter([
                 Component: Forbidden
             },
             {
-                path:'/blog',
+                path: '/blog',
                 Component: Blogs
             }
         ]
@@ -100,6 +101,12 @@ export const router = createBrowserRouter([
                 path: 'content-management/edit-blog/:id',
                 element: <SharedRoute>
                     <UpdateContent />
+                </SharedRoute>
+            },
+            {
+                path: "all-users",
+                element: <SharedRoute>
+                    <AllUsers/>
                 </SharedRoute>
             }
         ]

@@ -148,7 +148,7 @@ const Profile = () => {
                 const res = await axios.post(uploadURL, formData, {
                     'content-type': 'multipart/form-data'
                 })
-                // console.log('image after upload->', res.data.data);
+                console.log('image after upload->', res.data.data);
                 imageObject = {
                     delete_url: res?.data?.data?.delete_url,
                     photoURL: res?.data?.data?.url

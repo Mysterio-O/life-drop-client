@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'motion/react';
-import { FaHeart, FaShareAlt, FaTimes } from 'react-icons/fa';
+import { FaHeart, FaShareAlt, FaTimes, FaCheckCircle } from 'react-icons/fa'; // Added FaCheckCircle for feedback
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -102,10 +102,132 @@ const Blogs = () => {
         }
     };
 
-    const handleShare = (blogId) => {
-        const blogUrl = window.location.origin + `/blog/${blogId}`;
-        alert(`Share this blog: ${blogUrl}`);
+    const handleShare = async (blogId, blogTitle) => {
+        const blogUrl = `${window.location.origin}/blog/${blogId}`;
+        const shareText = `Check out this blog post: ${blogTitle}`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: blogTitle,
+                    text: shareText,
+                    url: blogUrl,
+                });
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    openCustomShareDialog(blogUrl, blogTitle);
+                }
+            }
+        } else {
+            openCustomShareDialog(blogUrl, blogTitle);
+        }
     };
+
+    const openCustomShareDialog = (url, title) => {
+        Swal.fire({
+            title: 'Share this blog',
+            html: `
+            <div>
+                <button id="facebook-share">Facebook</button>
+                <button id="twitter-share">Twitter</button>
+                <button id="linkedin-share">LinkedIn</button>
+                <button id="email-share">Email</button>
+                <button id="copy-link">Copy Link</button>
+            </div>`,
+            showConfirmButton: false,
+            showCloseButton: true,
+            didOpen: () => {
+                document.getElementById('facebook-share').onclick = () => {
+                    shareToSocial('facebook', url, title);
+                    Swal.close();
+                };
+                document.getElementById('twitter-share').onclick = () => {
+                    shareToSocial('twitter', url, title);
+                    Swal.close();
+                };
+                document.getElementById('linkedin-share').onclick = () => {
+                    shareToSocial('linkedin', url, title);
+                    Swal.close();
+                };
+                document.getElementById('email-share').onclick = () => {
+                    shareToSocial('email', url, title);
+                    Swal.close();
+                };
+                document.getElementById('copy-link').onclick = () => {
+                    copyToClipboard(url);
+                    Swal.close();
+                };
+            }
+        });
+    };
+
+    const shareToSocial = (platform, url, title) => {
+        let shareUrl = '';
+        const encodedUrl = encodeURIComponent(url);
+        const encodedTitle = encodeURIComponent(title);
+
+        switch (platform) {
+            case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                break;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+                break;
+            case 'linkedin':
+                shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`;
+                break;
+            case 'email':
+                shareUrl = `mailto:?subject=${encodedTitle}&body=Check out this blog: ${encodedUrl}`;
+                window.location.href = shareUrl;
+                showSuccessToast('Email client opened!');
+                return;
+            default:
+                return;
+        }
+
+        const popup = window.open(shareUrl, '_blank', 'width=600,height=400');
+        if (popup) {
+            showSuccessToast('Share window opened!');
+        } else {
+            showErrorToast('Popup blocked! Please allow popups.');
+        }
+    };
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => showSuccessToast('Link copied to clipboard!'))
+            .catch(() => showErrorToast('Failed to copy link.'));
+    };
+    const showSuccessToast = (message) => {
+        Swal.fire({
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            customClass: {
+                popup: 'bg-gray-800 text-white rounded-lg shadow-lg',
+                icon: 'text-green-500 text-xl',
+            },
+            html: `<span>${message}</span>`
+        });
+    };
+
+    const showErrorToast = (message) => {
+        Swal.fire({
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            customClass: {
+                popup: 'bg-gray-800 text-white rounded-lg shadow-lg',
+                icon: 'text-red-500 text-xl',
+            },
+            html: `<span>${message}</span>`
+        });
+    };
+
 
     const [selectedBlog, setSelectedBlog] = useState(null);
 
@@ -172,7 +294,7 @@ const Blogs = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 }}
-                                className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-200 flex"
+                                className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-200 flex flex-col md:flex-row"
                             >
                                 {/* Left Part: Thumbnail */}
                                 <div className="w-[45%] mr-4">
@@ -205,7 +327,7 @@ const Blogs = () => {
                                         <span className="ml-4">Date: {new Date(blog.created_at).toLocaleDateString()}</span>
                                     </div>
                                     {user && (
-                                        <div className="flex justify-between items-center">
+                                        <div className="flex flex-col lg:flex-row justify-between gap-4 lg:gap-0 lg:items-center">
                                             {/* Like Button */}
                                             <button
                                                 onClick={() => handleLike(blog._id, user.email)}
@@ -253,7 +375,7 @@ const Blogs = () => {
                                         <>
                                             <div className="space-y-3 divide-y p-2">
                                                 {visibleComments.map((comment, idx) => (
-                                                    <div className="flex gap-2 items-center" key={idx}>
+                                                    <div className="flex gap-4 items-center" key={idx}>
                                                         <ProfilePicture email={comment.commented_by} />
                                                         <div>
                                                             <p className="text-lg font-medium text-balance dark:text-white">

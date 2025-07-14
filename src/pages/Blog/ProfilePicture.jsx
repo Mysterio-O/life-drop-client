@@ -17,7 +17,12 @@ const ProfilePicture = ({ email }) => {
     });
 
     if (isLoading) {
-        return '...loading' // skeleton
+        return (
+            <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+                <div className="w-16 h-4 mt-1 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"></div>
+            </div>
+        );
     }
 
     // console.log(userInfo);
