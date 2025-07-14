@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'motion/react';
-import { FaHeart, FaShareAlt } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'motion/react';
+import { FaHeart, FaShareAlt, FaTimes } from 'react-icons/fa';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import ProfilePicture from './ProfilePicture';
 
 const Blogs = () => {
     const axiosPublic = useAxiosPublic();
@@ -13,10 +14,7 @@ const Blogs = () => {
     const { user, loading } = useAuth();
     const queryClient = useQueryClient();
 
-    // Added missing comments state
-    const [comments, setComments] = useState({});
-
-    const { data: blogs = [], isLoading } = useQuery({
+    const { data: blogs = [], isLoading, refetch } = useQuery({
         queryKey: ['published-blogs'],
         queryFn: async () => {
             const res = await axiosPublic.get('/all-blogs-public');
@@ -28,12 +26,10 @@ const Blogs = () => {
         mutationFn: async ({ blogId, email }) => {
             const like = { blogId, email };
             const res = await axiosSecure.patch('/like-blog', like);
-            // console.log(res);
             return res.data;
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(['published-blogs']);
-            console.log(data);
             Swal.fire({
                 icon: data.action === 'liked' ? 'success' : 'info',
                 toast: true,
@@ -69,15 +65,40 @@ const Blogs = () => {
         }
     };
 
-    const handleComment = (blogId, e) => {
+    const handleComment = async (blogId, e) => {
         e.preventDefault();
-        const commentText = e.target.comment.value;
-        if (commentText.trim()) {
-            setComments((prev) => ({
-                ...prev,
-                [blogId]: [...(prev[blogId] || []), commentText],
-            }));
-            e.target.reset();
+        const form = e.target;
+        const commentText = form.comment.value;
+        if (!commentText || !blogId) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please write a comment',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        } else {
+            const commentBody = {
+                email: user.email,
+                comment: commentText
+            };
+            const res = await axiosSecure.patch(`/blog/${blogId}/add-comment/`, commentBody);
+            if (res.data.result.modifiedCount > 0) {
+                form.reset();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Comment added!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                refetch();
+            }
         }
     };
 
@@ -85,6 +106,11 @@ const Blogs = () => {
         const blogUrl = window.location.origin + `/blog/${blogId}`;
         alert(`Share this blog: ${blogUrl}`);
     };
+
+    const [selectedBlog, setSelectedBlog] = useState(null);
+
+    const openModal = (blog) => setSelectedBlog(blog);
+    const closeModal = () => setSelectedBlog(null);
 
     if (isLoading || loading) {
         return (
@@ -137,6 +163,8 @@ const Blogs = () => {
                     {blogs.map((blog) => {
                         const isLikedByUser = blog.liked_by?.includes(user?.email);
                         const likeCount = blog.liked_by?.length || 0;
+                        const visibleComments = blog.comments?.slice(0, 3) || [];
+                        const hasMoreComments = blog.comments?.length > 3;
 
                         return (
                             <motion.div
@@ -176,56 +204,87 @@ const Blogs = () => {
                                         <span>By: {blog.created_by}</span>
                                         <span className="ml-4">Date: {new Date(blog.created_at).toLocaleDateString()}</span>
                                     </div>
-                                    <div className="flex justify-between items-center">
-                                        {/* Like Button */}
-                                        <button
-                                            onClick={() => handleLike(blog._id, user.email)}
-                                            className={`flex items-center space-x-2 ${isLikedByUser ? 'text-[#D32F2F]' : 'text-gray-500 dark:text-gray-400'}`}
-                                        >
-                                            <motion.span
-                                                initial={{ scale: 1 }}
-                                                whileHover={{ scale: 1.15 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                            >
-                                                <FaHeart size={30} className='hover:text-[#D32F2F] transition-colors duration-300' />
-                                            </motion.span>
-                                            <span className='text-lg'>{likeCount} Likes</span>
-                                        </button>
-
-                                        {/* Comment Input and Button */}
-                                        <form onSubmit={(e) => handleComment(blog._id, e)} className="flex space-x-2">
-                                            <input
-                                                type="text"
-                                                name="comment"
-                                                placeholder="Write a comment..."
-                                                className="input input-bordered w-48 bg-white dark:bg-gray-800 text-[#111827] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
-                                            />
+                                    {user && (
+                                        <div className="flex justify-between items-center">
+                                            {/* Like Button */}
                                             <button
-                                                type="submit"
+                                                onClick={() => handleLike(blog._id, user.email)}
+                                                className={`flex items-center space-x-2 ${isLikedByUser ? 'text-[#D32F2F]' : 'text-gray-500 dark:text-gray-400'}`}
+                                            >
+                                                <motion.span
+                                                    initial={{ scale: 1 }}
+                                                    whileHover={{ scale: 1.15 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                                >
+                                                    <FaHeart size={30} className="hover:text-[#D32F2F] transition-colors duration-300" />
+                                                </motion.span>
+                                                <span className="text-lg">{likeCount} Likes</span>
+                                            </button>
+
+                                            {/* Comment Input and Button */}
+                                            <form onSubmit={(e) => handleComment(blog._id, e)} className="flex space-x-2">
+                                                <input
+                                                    type="text"
+                                                    name="comment"
+                                                    placeholder="Write a comment..."
+                                                    className="input input-bordered w-48 bg-white dark:bg-gray-800 text-[#111827] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
+                                                >
+                                                    Comment
+                                                </button>
+                                            </form>
+
+                                            {/* Share Button */}
+                                            <button
+                                                onClick={() => handleShare(blog._id)}
                                                 className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
                                             >
-                                                Comment
+                                                <FaShareAlt />
                                             </button>
-                                        </form>
-
-                                        {/* Share Button */}
-                                        <button
-                                            onClick={() => handleShare(blog._id)}
-                                            className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
-                                        >
-                                            <FaShareAlt />
-                                        </button>
-                                    </div>
-                                    {comments[blog._id] && (
-                                        <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                                            <h4 className="font-semibold">Comments:</h4>
-                                            <ul>
-                                                {comments[blog._id].map((comment, index) => (
-                                                    <li key={index} className="ml-4">{comment}</li>
-                                                ))}
-                                            </ul>
                                         </div>
+                                    )}
+                                    <div className="divider"></div>
+                                    <h4 className="font-semibold">Comments:</h4>
+                                    {blog.comments && blog.comments.length > 0 ? (
+                                        <>
+                                            <div className="space-y-3 divide-y p-2">
+                                                {visibleComments.map((comment, idx) => (
+                                                    <div className="flex gap-2 items-center" key={idx}>
+                                                        <ProfilePicture email={comment.commented_by} />
+                                                        <div>
+                                                            <p className="text-lg font-medium text-balance dark:text-white">
+                                                                {comment.comment}
+                                                            </p>
+                                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                {new Date(comment.created_at).toLocaleString('en-US', {
+                                                                    month: 'short',
+                                                                    day: 'numeric',
+                                                                    year: 'numeric',
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit',
+                                                                    hour12: true,
+                                                                    timeZone: 'Asia/Dhaka',
+                                                                })}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            {hasMoreComments && (
+                                                <button
+                                                    onClick={() => openModal(blog)}
+                                                    className="btn btn-sm bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 mt-2"
+                                                >
+                                                    View More Comments
+                                                </button>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <p className="text-gray-500 dark:text-gray-400">No comments yet.</p>
                                     )}
                                 </div>
                             </motion.div>
@@ -233,6 +292,60 @@ const Blogs = () => {
                     })}
                 </div>
             )}
+
+            {/* Modal for All Comments */}
+            <AnimatePresence>
+                {selectedBlog && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                    >
+                        <motion.div
+                            initial={{ y: 50, scale: 0.9 }}
+                            animate={{ y: 0, scale: 1 }}
+                            exit={{ y: 50, scale: 0.9 }}
+                            className="bg-white dark:bg-gray-900 rounded-lg p-6 w-11/12 md:w-2/3 lg:w-1/2 max-h-[80vh] overflow-y-auto shadow-lg"
+                        >
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-2xl font-bold text-[#111827] dark:text-[#F8FAFC]">
+                                    Comments for "{selectedBlog.title}"
+                                </h3>
+                                <button
+                                    onClick={closeModal}
+                                    className="text-[#D32F2F] hover:text-red-700 dark:hover:text-red-500 text-2xl"
+                                >
+                                    <FaTimes />
+                                </button>
+                            </div>
+                            <div className="divide-y overflow-scroll overflow-y-auto overflow-x-hidden p-2">
+                                {selectedBlog.comments?.map((comment, idx) => (
+                                    <div className="flex gap-2 items-center" key={idx}>
+                                        <ProfilePicture email={comment.commented_by} />
+                                        <div>
+                                            <p className="text-lg font-medium text-balance dark:text-white">
+                                                {comment.comment}
+                                            </p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                {new Date(comment.created_at).toLocaleString('en-US', {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                    timeZone: 'Asia/Dhaka',
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 };
