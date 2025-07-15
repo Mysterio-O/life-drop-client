@@ -110,7 +110,7 @@ const Login = () => {
             />
             <span
               onClick={() => setIsClosed(!isClosed)}
-              className="absolute right-[37%] top-[56%]">
+              className="absolute right-[31%] top-[59%]">
               {
                 isClosed ? <FaEyeSlash size={30} />
                   : <FaEye size={30} />

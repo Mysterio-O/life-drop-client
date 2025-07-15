@@ -8,6 +8,7 @@ import axios from 'axios';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { setAccountToLocalStorage } from '../../hooks/getAccountsFromLocalStorage';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import logo from "../../assets/logo-transparent.png"
 
 const Register = () => {
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
@@ -199,9 +200,12 @@ const Register = () => {
                 transition={{ duration: 0.3 }}
                 className="max-w-xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
-                    Register at LifeDrop
-                </h2>
+                <div className='flex justify-between items-center'>
+                    <h2 className="text-2xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
+                        Register at LifeDrop
+                    </h2>
+                    <img src={logo} alt="" className='h-12 mb-6'/>
+                </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <motion.div
                         initial={{ x: -10, opacity: 0 }}
@@ -275,7 +279,7 @@ const Register = () => {
                         />
                         <span
                             onClick={() => setIsClosed(!isClosed)}
-                            className="absolute right-[37%] top-[47%]"
+                            className="absolute right-[31%] top-[64%]"
                         >
                             {
                                 isClosed ? <FaEyeSlash size={30} />
@@ -305,7 +309,7 @@ const Register = () => {
                         />
                         <span
                             onClick={() => setIsClosedConfirm(!isClosedConfirm)}
-                            className="absolute right-[37%] top-[54%]"
+                            className="absolute right-[31%] top-[75%]"
                         >
                             {
                                 isClosedConfirm ? <FaEyeSlash size={28} />
