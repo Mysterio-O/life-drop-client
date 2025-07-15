@@ -107,7 +107,7 @@ const Navbar = () => {
             key="blog"
             to="/blog"
             className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                 }`
             }
         >
@@ -117,7 +117,7 @@ const Navbar = () => {
             key="login"
             to="/login"
             className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                 }`
             }
         >
@@ -142,7 +142,7 @@ const Navbar = () => {
             key="blog"
             to="/blog"
             className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                 }`
             }
         >
@@ -152,21 +152,21 @@ const Navbar = () => {
             key="funding"
             to="/funding"
             className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                 }`
             }
         >
-            Give Funding
+            Funding
         </NavLink>,
         <NavLink
             key="give-funding"
             to="/give-funding"
             className={({ isActive }) =>
-                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                 }`
             }
         >
-            Funding
+            Give Funding
         </NavLink>,
         <div key="dropdown" className="dropdown dropdown-end">
             <motion.div
@@ -194,7 +194,7 @@ const Navbar = () => {
                     <NavLink
                         to="/dashboard"
                         className={({ isActive }) =>
-                            `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold underline" : ""
+                            `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
                             }`
                         }
                     >

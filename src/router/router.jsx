@@ -21,12 +21,13 @@ import Blogs from "../pages/Blog/Blogs";
 import AllUsers from "../components/Dashboard/Pages/AllUsers";
 import AdminRoute from "../routes/AdminRoute";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import GiveFunding from "../pages/Funding/GiveFunding";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: RootLayout,
-        errorElement: <ErrorPage/>,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
@@ -57,6 +58,12 @@ export const router = createBrowserRouter([
             {
                 path: '/blog',
                 Component: Blogs
+            },
+            {
+                path: '/give-funding',
+                element: <PrivateRoute>
+                    <GiveFunding />
+                </PrivateRoute>
             }
         ]
     },
@@ -109,7 +116,7 @@ export const router = createBrowserRouter([
             {
                 path: "all-users",
                 element: <AdminRoute>
-                    <AllUsers/>
+                    <AllUsers />
                 </AdminRoute>
             }
         ]

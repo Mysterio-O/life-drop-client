@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useUserStatus from '../../../hooks/useUserStatus';
 import { FaExclamationTriangle } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const CreateRequest = () => {
 
@@ -16,6 +17,8 @@ const CreateRequest = () => {
 
     const { status, status_loading } = useUserStatus();
     console.log(status);
+
+    const navigate = useNavigate();
 
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -126,6 +129,28 @@ const CreateRequest = () => {
                 ))}
             </motion.div>
         )
+    };
+
+
+    const handleContact = () => {
+        // console.log('clicked');
+        if (window.location.pathname === '/') {
+            const element = document.getElementById('contact-us');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' })
+            } else {
+                setTimeout(() => {
+                    const retryElement = document.getElementById('contact-us');
+                    if (retryElement) {
+                        retryElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 500);
+            }
+        }
+        else {
+            navigate('/#contact-us');
+        }
+
     }
 
 
@@ -147,7 +172,7 @@ const CreateRequest = () => {
                     <h2 className="text-xl font-bold mb-2">Account Blocked</h2>
                     <p className="mb-4">Your account is currently blocked. You cannot create a request at this time.</p>
                     <p className="mb-4">Please contact the admin for more information.</p>
-                    <a href="/contact-admin" className="text-[#F8FAFC] hover:underline">Contact Admin</a>
+                    <a href="/#contact-us" className="text-[#F8FAFC] hover:underline">Contact Admin</a>
                 </motion.div>
             </motion.div>
         );

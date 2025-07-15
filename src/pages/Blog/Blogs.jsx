@@ -297,7 +297,7 @@ const Blogs = () => {
                                 className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-200 flex flex-col md:flex-row"
                             >
                                 {/* Left Part: Thumbnail */}
-                                <div className="w-[45%] mr-4">
+                                <div className="md:w-[45%] mr-4">
                                     {blog.thumbnail && (
                                         <img
                                             src={blog.thumbnail}
@@ -309,7 +309,7 @@ const Blogs = () => {
                                 </div>
 
                                 {/* Right Part: Content and Actions */}
-                                <div className="w-[55%]">
+                                <div className="md:w-[55%]">
                                     <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] mb-2">
                                         {blog.title}
                                     </h3>

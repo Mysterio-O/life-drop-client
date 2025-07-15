@@ -6,10 +6,12 @@ import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 import { motion } from 'motion/react';
 import { IoIosDoneAll } from 'react-icons/io';
+import useUserStatus from '../../hooks/useUserStatus';
 
 const Request = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
+    const {status,status_loading}=useUserStatus();
     const { id } = useParams();
     const queryClient = useQueryClient();
     const [showModal, setShowModal] = useState(false);
@@ -52,7 +54,7 @@ const Request = () => {
         return `${hour}:${minute} ${ampm}`;
     };
 
-    if (isLoading) {
+    if (isLoading || status_loading) {
         return (
             <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4">
                 <div className="skeleton h-10 w-2/3 mb-6 dark:bg-gray-700"></div>
@@ -116,7 +118,7 @@ const Request = () => {
 
                 </div>
 
-                {donationRequest.status === 'pending' && user.email !== donationRequest.requesterEmail && (
+                {status === 'active' && donationRequest.status === 'pending' && user.email !== donationRequest.requesterEmail && (
                     <div className="flex justify-center mt-6">
                         <motion.button
                             whileHover={{ scale: 1.05 }}

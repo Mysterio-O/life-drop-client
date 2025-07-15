@@ -24,6 +24,19 @@ const Home = () => {
                 }, 500);
             }
         }
+        if (location.hash === "#contact-us") {
+            const element = document.getElementById('contact-us');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                setTimeout(() => {
+                    const retryElement = document.getElementById('contact-us');
+                    if (retryElement) {
+                        retryElement.scrollIntoView({ behavior: "smooth" });
+                    }
+                }, 500)
+            }
+        }
     }, [location])
 
     return (

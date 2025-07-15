@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TbWorldSearch } from 'react-icons/tb';
 import 'react-circular-progressbar/dist/styles.css';
 import OverviewCard from './OverviewCard';
-import { FaLeaf, FaSeedling, FaUsers } from 'react-icons/fa';
+import { FaHeart, FaHandHoldingHeart, FaUsers } from 'react-icons/fa';
 import OverviewCharts from './OverviewCharts';
 import useAuth from '../../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ const AdminOverview = () => {
     const [funding, setFunding] = useState(10);
     const axiosSecure = useAxiosSecure();
 
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const { email } = user;
 
     const { data: users = 0, isLoading: userLoading } = useQuery({
@@ -25,16 +25,15 @@ const AdminOverview = () => {
         }
     });
 
-    const { data: requests = 0,isLoading: requestLoading } = useQuery({
+    const { data: requests = 0, isLoading: requestLoading } = useQuery({
         queryKey: ['donation-request'],
         queryFn: async () => {
             const res = await axiosSecure.get('/all-donation-request');
             return res.data;
         }
-    })
+    });
 
     console.log(requests);
-
 
     const cardData = [
         {
@@ -44,7 +43,7 @@ const AdminOverview = () => {
             color: '#7E22CE', // purple
             change: '+14% Inc',
             changeColor: '#7E22CE',
-            Icon: FaUsers,
+            Icon: FaHeart,
             iconColor: 'text-[#7E22CE]',
             to: '/dashboard/all-blood-donation-request'
         },
@@ -55,7 +54,7 @@ const AdminOverview = () => {
             color: '#facc15', // yellow
             change: '+06% Inc',
             changeColor: '#eab308',
-            Icon: FaSeedling,
+            Icon: FaHandHoldingHeart,
             iconColor: 'text-[#facc15]',
             to: `/dashboard/my_plants/${email}`
         },
@@ -72,15 +71,33 @@ const AdminOverview = () => {
         }
     ];
 
-    return (
-        <div className='transition-colors duration-300'>
+    if (loading || userLoading || requestLoading) {
+        return (
+            <div className="transition-colors duration-300 p-4">
+                <header className="flex justify-between items-center gap-4 md:pt-16 mb-8">
+                    <div className="h-10 w-40 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"></div>
+                    <div className="flex items-center bg-[#eef0fc] rounded-full px-2 py-1 w-40 md:w-64">
+                        <div className="h-8 w-full bg-gray-300 dark:bg-gray-700 animate-pulse rounded-full"></div>
+                        <div className="h-8 w-10 bg-gray-300 dark:bg-gray-700 animate-pulse rounded-xl ml-1"></div>
+                    </div>
+                </header>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[...Array(3)].map((_, idx) => (
+                        <div key={idx} className="h-40 bg-gray-300 dark:bg-gray-700 animate-pulse rounded-lg"></div>
+                    ))}
+                </div>
+                <div className="mt-6 h-64 bg-gray-300 dark:bg-gray-700 animate-pulse rounded-lg"></div>
+            </div>
+        );
+    }
 
+    return (
+        <div className="transition-colors duration-300">
             {/* header part */}
             <header className="flex justify-between items-center gap-4 md:pt-16 mb-8">
-                <h1 className='text-2xl md:text-3xl font-semibold text-black dark:text-white'>
-                    Dashboard
-                </h1>
-
+                <h2 className="text-3xl font-semibold text-center text-[#111827] dark:text-[#F8FAFC]">
+                Welcome Back {user.displayName}!
+            </h2>
                 <form className="flex items-center bg-[#eef0fc] rounded-full px-2 py-1 focus-within:ring-2 focus-within:ring-purple-600">
                     <input
                         type="search"
@@ -100,7 +117,7 @@ const AdminOverview = () => {
             </header>
 
             {/* card stats */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cardData.map((card, idx) => (
                     <OverviewCard key={idx} card={card} idx={idx} />
                 ))}
