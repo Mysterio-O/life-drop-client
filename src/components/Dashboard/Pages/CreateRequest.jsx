@@ -132,25 +132,21 @@ const CreateRequest = () => {
     };
 
 
-    const handleContact = () => {
-        // console.log('clicked');
-        if (window.location.pathname === '/') {
-            const element = document.getElementById('contact-us');
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' })
-            } else {
-                setTimeout(() => {
-                    const retryElement = document.getElementById('contact-us');
-                    if (retryElement) {
-                        retryElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 500);
-            }
+    if (window.location.pathname === '/') {
+        const element = document.getElementById('contact-us');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+        } else {
+            setTimeout(() => {
+                const retryElement = document.getElementById('contact-us');
+                if (retryElement) {
+                    retryElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
         }
-        else {
-            navigate('/#contact-us');
-        }
-
+    }
+    else {
+        navigate('/#contact-us');
     }
 
 

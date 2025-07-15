@@ -1,8 +1,29 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { FaExclamationCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const ErrorPage = () => {
+
+    const navigate = useNavigate();
+
+    if (window.location.pathname === '/') {
+        const element = document.getElementById('contact-us');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+        } else {
+            setTimeout(() => {
+                const retryElement = document.getElementById('contact-us');
+                if (retryElement) {
+                    retryElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
+        }
+    }
+    else {
+        navigate('/#contact-us');
+    }
+
     return (
         <motion.div
             initial={{ opacity: 0, backgroundColor: '#FFFFFF' }}
@@ -62,7 +83,7 @@ const ErrorPage = () => {
                         Go Back Home
                     </motion.a>
                     <motion.a
-                        href="/contact"
+                        href="#contact-us"
                         className="px-6 py-3 bg-transparent border border-[#D32F2F] dark:border-[#EF5350] text-[#D32F2F] dark:text-[#EF5350] rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] dark:hover:text-white transition-colors duration-300"
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}

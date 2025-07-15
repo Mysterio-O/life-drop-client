@@ -1,4 +1,5 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import {
     BarChart,
     Bar,
@@ -14,13 +15,77 @@ import {
     Pie,
     Cell,
 } from 'recharts';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 
 const OverviewCharts = () => {
-    // Sample data for charts (replace with your API data)
+
+    const [done, setDone] = useState(0);
+    const [inProgress, setInProgress] = useState(0);
+    const [canceled, setCanceled] = useState(0);
+
+    const [active, setActive] = useState(0);
+    const [blocked, setBlocked] = useState(0);
+
+    const axiosSecure = useAxiosSecure();
+
+    const { data: donationStatus = [], isLoading: doantionLoading } = useQuery({
+        queryKey: ['donation-status'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/donation-status-distribution');
+            return res.data
+        }
+    });
+    // console.log(donationStatus)
+
+    const { data: users, isLoading: userLoading } = useQuery({
+        queryKey: ['user-status'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/user-status-distribution');
+            return res.data;
+        }
+    })
+    console.log(users);
+
+
+
+
+
+
+    useEffect(() => {
+        donationStatus.map(status => {
+            console.log(status);
+            if (status.name === 'done') {
+                setDone(status.value || 0)
+            } else if (status.name === 'in_progress') {
+                setInProgress(status.value || 0);
+            }
+            else if (status.name === 'canceled') {
+                setCanceled(status.value || 0);
+            }
+        });
+
+        users.map(user => {
+            if (user.status === 'active') {
+                setActive(user.value);
+            }
+            if (user.status === 'blocked') {
+                setBlocked(user.value);
+            }
+        })
+    });
+
+    if (doantionLoading || userLoading) {
+        return '...loading'
+    }
+
+    // console.log(done, inProgress, canceled);
+
+
+
     const barData = [
-        { name: 'Done', value: 80 },
-        { name: 'In Progress', value: 60 },
-        { name: 'Canceled', value: 40 },
+        { name: 'Done', value: done },
+        { name: 'In Progress', value: inProgress },
+        { name: 'Canceled', value: canceled },
     ];
 
     const lineData = [
@@ -31,8 +96,8 @@ const OverviewCharts = () => {
     ];
 
     const pieData = [
-        { name: 'Active Users', value: 70 },
-        { name: 'Inactive Users', value: 30 },
+        { name: 'Active Users', value: active },
+        { name: 'Blocked Users', value: blocked },
     ];
 
     const colors = ['#7E22CE', '#facc15', '#f87171'];

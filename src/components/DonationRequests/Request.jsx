@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
@@ -11,11 +11,13 @@ import useUserStatus from '../../hooks/useUserStatus';
 const Request = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-    const {status,status_loading}=useUserStatus();
+    const { status, status_loading } = useUserStatus();
     const { id } = useParams();
     const queryClient = useQueryClient();
     const [showModal, setShowModal] = useState(false);
     const [mobile, setMobile] = useState('');
+
+    const navigate = useNavigate();
 
     const { data: donationRequest = {}, isLoading } = useQuery({
         queryKey: ['donation-request', id],
@@ -65,6 +67,24 @@ const Request = () => {
                 </div>
             </div>
         );
+    };
+
+
+    if (window.location.pathname === '/') {
+        const element = document.getElementById('contact-us');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+        } else {
+            setTimeout(() => {
+                const retryElement = document.getElementById('contact-us');
+                if (retryElement) {
+                    retryElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
+        }
+    }
+    else {
+        navigate('/#contact-us');
     }
 
     return (
@@ -130,6 +150,16 @@ const Request = () => {
                         </motion.button>
                     </div>
                 )}
+
+                {
+                    status === 'blocked' && <p className='text-balance text-red-500 text-center font-semibold underline'>Your account has been blocked. An user cannot donate while they are blocked!
+                        <span>
+                            <a href="#contact-us"> Contact Admin</a>
+                        </span>
+
+                    </p>
+                }
+
             </motion.div>
 
             {/* Modal */}

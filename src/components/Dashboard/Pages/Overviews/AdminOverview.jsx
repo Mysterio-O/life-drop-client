@@ -7,12 +7,14 @@ import OverviewCharts from './OverviewCharts';
 import useAuth from '../../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
+import useUserRole from '../../../../hooks/useUserRole';
 
 const AdminOverview = () => {
     const [searchText, setSearchText] = useState('');
 
     const [funding, setFunding] = useState(10);
     const axiosSecure = useAxiosSecure();
+    const { role } = useUserRole();
 
     const { user, loading } = useAuth();
     const { email } = user;
@@ -33,13 +35,21 @@ const AdminOverview = () => {
         }
     });
 
+    const { data: fundingAmount = 0, isLoading: fundLoading } = useQuery({
+        queryKey: ['all-funding'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/all-funding');
+            return res.data.totalAmount;
+        }
+    })
+
     console.log(requests);
 
     const cardData = [
         {
             title: 'Total Donation Requests',
             value: requests,
-            progress: requests * 50 / 100,
+            progress: requests * 500 / 100,
             color: '#7E22CE', // purple
             change: '+14% Inc',
             changeColor: '#7E22CE',
@@ -49,14 +59,14 @@ const AdminOverview = () => {
         },
         {
             title: 'Total Funding',
-            value: funding,
-            progress: funding * 50 / 100,
+            value: fundingAmount,
+            progress: fundingAmount * 50 / 100,
             color: '#facc15', // yellow
             change: '+06% Inc',
             changeColor: '#eab308',
             Icon: FaHandHoldingHeart,
             iconColor: 'text-[#facc15]',
-            to: `/dashboard/my_plants/${email}`
+            to: '/dashboard/all-funding'
         },
         {
             title: 'Total Users',
@@ -67,7 +77,7 @@ const AdminOverview = () => {
             changeColor: '#f87171',
             Icon: FaUsers,
             iconColor: 'text-[#f87171]',
-            to: '/dashboard/all-users'
+            ...(role === 'admin' && { to: '/dashboard/all-users' })
         }
     ];
 
@@ -96,8 +106,8 @@ const AdminOverview = () => {
             {/* header part */}
             <header className="flex justify-between items-center gap-4 md:pt-16 mb-8">
                 <h2 className="text-3xl font-semibold text-center text-[#111827] dark:text-[#F8FAFC]">
-                Welcome Back {user.displayName}!
-            </h2>
+                    Welcome Back {user.displayName}!
+                </h2>
                 <form className="flex items-center bg-[#eef0fc] rounded-full px-2 py-1 focus-within:ring-2 focus-within:ring-purple-600">
                     <input
                         type="search"
