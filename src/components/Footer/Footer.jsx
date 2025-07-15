@@ -131,7 +131,7 @@ const Footer = () => {
 
     return (
         <motion.footer
-            initial={{ opacity: 0,y:100,scale:0.75 }}
+            initial={{ opacity: 0,y:100,scale:0.95 }}
             whileInView={{ opacity: 1,y:0,scale:1 }}
             transition={{ duration: 0.5 }}
             className="bg-[#F9FAFB] dark:bg-[#1E293B] py-6 border-t border-[#E5E7EB] dark:border-[#334155]"

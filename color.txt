@@ -26,4 +26,3 @@ for dark
 | Primary Hover    | `#F44336` | On hover/focus                    |
 | Success / Green  | `#81C784` | Optional: confirmations           |
 | Alert / Yellow   | `#FCD34D` | Optional: warning messages        |
-
