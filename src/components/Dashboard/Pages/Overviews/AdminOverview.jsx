@@ -66,7 +66,7 @@ const AdminOverview = () => {
             changeColor: '#eab308',
             Icon: FaHandHoldingHeart,
             iconColor: 'text-[#facc15]',
-            to: '/dashboard/all-funding'
+            to: '/funding'
         },
         {
             title: 'Total Users',

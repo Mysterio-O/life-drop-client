@@ -81,20 +81,20 @@ const Footer = () => {
     const additionalLinks = [
         <NavLink
             key="about"
-            to="/about"
+            to="/about-us"
             className="text-[#111827] dark:text-[#F8FAFC] px-2 py-1 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors"
         >
             About Us
         </NavLink>,
         <NavLink
             key="privacy"
-            to="/privacy"
+            to="/privacy-policy"
             className="text-[#111827] dark:text-[#F8FAFC] px-2 py-1 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors"
         >
             Privacy Policy
         </NavLink>,
         <NavLink
-            key="terms"
+        key="terms"
             to="/terms"
             className="text-[#111827] dark:text-[#F8FAFC] px-2 py-1 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors"
         >
@@ -104,7 +104,7 @@ const Footer = () => {
 
     const socialLinks = [
         <a
-            href="https://facebook.com/lifedrop"
+            href="https://facebook.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#D32F2F] dark:text-[#EF5350] hover:text-[#B71C1C] dark:hover:text-[#F44336] transition-colors mx-2"
@@ -112,7 +112,7 @@ const Footer = () => {
             <FaFacebookF className="text-2xl" />
         </a>,
         <a
-            href="https://twitter.com/lifedrop"
+            href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#D32F2F] dark:text-[#EF5350] hover:text-[#B71C1C] dark:hover:text-[#F44336] transition-colors mx-2"
@@ -120,7 +120,7 @@ const Footer = () => {
             <FaTwitter className="text-2xl" />
         </a>,
         <a
-            href="https://instagram.com/lifedrop"
+            href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#D32F2F] dark:text-[#EF5350] hover:text-[#B71C1C] dark:hover:text-[#F44336] transition-colors mx-2"
@@ -131,8 +131,8 @@ const Footer = () => {
 
     return (
         <motion.footer
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0,y:100,scale:0.75 }}
+            whileInView={{ opacity: 1,y:0,scale:1 }}
             transition={{ duration: 0.5 }}
             className="bg-[#F9FAFB] dark:bg-[#1E293B] py-6 border-t border-[#E5E7EB] dark:border-[#334155]"
         >

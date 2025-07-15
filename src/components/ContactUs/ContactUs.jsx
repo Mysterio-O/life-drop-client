@@ -45,10 +45,10 @@ const ContactUs = () => {
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y:-150, scale:0.75 }}
+            whileInView={{ opacity: 1, y:0,scale:1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen flex items-center justify-center bg-[#FFFFFF] dark:bg-[#0F172A] p-4"
+            className="min-h-screen flex items-center justify-center bg-red-600/10 dark:bg-[#0F172A] p-4 my-10 rounded-xl"
         >
             <motion.div
                 initial={{ scale: 0.95 }}

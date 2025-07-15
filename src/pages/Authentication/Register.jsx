@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import axios from 'axios';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { setAccountToLocalStorage } from '../../hooks/getAccountsFromLocalStorage';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = () => {
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
@@ -17,6 +18,12 @@ const Register = () => {
     const [selectedDivision, setSelectedDivision] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [loading, setLoading] = useState(false);
+
+
+    const [isClosed, setIsClosed] = useState(false);
+    const [isClosedConfirm, setIsClosedConfirm] = useState(false);
+
+
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
     const location = useLocation();
@@ -43,9 +50,9 @@ const Register = () => {
         const division = divisions.find(div => div.id === data.division);
         const district = districts.find(dis => dis.id === data.district);
         const upazila = upazilas.find(up => up.id === data.upazila);
-        const { name, email, password, photo,bloodGroup } = data;
+        const { name, email, password, photo, bloodGroup } = data;
         const newData = {
-            name, email, password, division, district, upazila, photo,bloodGroup
+            name, email, password, division, district, upazila, photo, bloodGroup
         };
 
         // console.log(newData);
@@ -91,7 +98,7 @@ const Register = () => {
             division: newData?.division?.name,
             district: newData?.district?.name,
             upazila: newData?.upazila?.name,
-            blood_group:bloodGroup,
+            blood_group: bloodGroup,
             created_at: new Date().toISOString(),
             last_log_in: new Date().toISOString(),
             ...imageObject
@@ -108,7 +115,7 @@ const Register = () => {
                 console.log(result);
 
                 const accountInfo = {
-                    email, name, photo:imageObject?.photoURL, provider:'password'
+                    email, name, photo: imageObject?.photoURL, provider: 'password'
                 }
                 setAccountToLocalStorage(accountInfo)
 
@@ -251,7 +258,7 @@ const Register = () => {
                         transition={{ delay: 0.4 }}
                     >
                         <input
-                            type="password"
+                            type={`${isClosed ? 'text' : 'password'}`}
                             {...register("password", {
                                 required: "Password is required",
                                 pattern: {
@@ -264,8 +271,17 @@ const Register = () => {
                                 }
                             })}
                             placeholder="Password"
-                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
                         />
+                        <span
+                            onClick={() => setIsClosed(!isClosed)}
+                            className="absolute right-[37%] top-[47%]"
+                        >
+                            {
+                                isClosed ? <FaEyeSlash size={30} />
+                                    : <FaEye size={30} />
+                            }
+                        </span>
                         {errors.password && (
                             <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
                                 {errors.password.message}
@@ -278,15 +294,24 @@ const Register = () => {
                         transition={{ delay: 0.5 }}
                     >
                         <input
-                            type="password"
+                            type={`${isClosedConfirm ? 'text' : 'password'}`}
                             {...register("confirmPassword", {
                                 required: "Please confirm your password",
                                 validate: value =>
                                     value === watch('password') || "Passwords do not match"
                             })}
                             placeholder="Confirm Password"
-                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
                         />
+                        <span
+                            onClick={() => setIsClosedConfirm(!isClosedConfirm)}
+                            className="absolute right-[37%] top-[54%]"
+                        >
+                            {
+                                isClosedConfirm ? <FaEyeSlash size={28} />
+                                    : <FaEye size={28} />
+                            }
+                        </span>
                         {errors.confirmPassword && (
                             <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
                                 {errors.confirmPassword.message}

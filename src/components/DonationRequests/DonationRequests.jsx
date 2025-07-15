@@ -49,7 +49,7 @@ const DonationRequests = () => {
     }
 
     return (
-        <div className="p-6">
+        <div className="p-6 my-10">
             <motion.h2
                 initial={{ x: -20, opacity: 0, scale: 0.85 }}
                 animate={{ x: 0, scale: 1, opacity: 1 }}

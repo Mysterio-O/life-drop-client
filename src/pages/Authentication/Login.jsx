@@ -5,10 +5,14 @@ import useAuth from "../../hooks/useAuth";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { setAccountToLocalStorage } from "../../hooks/getAccountsFromLocalStorage";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { loginUser } = useAuth();
   const [loading, setLoading] = useState(false)
+
+  const [isClosed, setIsClosed] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state;
@@ -100,10 +104,20 @@ const Login = () => {
           >
             <input
               {...register("password", { required: "Password is required" })}
-              type="password"
+              type={`${isClosed ? 'text' : 'password'}`}
               placeholder="Password"
-              className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
+              className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
             />
+            <span
+              onClick={() => setIsClosed(!isClosed)}
+              className="absolute right-[37%] top-[56%]">
+              {
+                isClosed ? <FaEyeSlash size={30} />
+                  : <FaEye size={30} />
+              }
+
+
+            </span>
             {errors.password && (
               <p className="text-[#D32F2F] dark:text-[#EF5350] text-sm mt-1">
                 {errors.password.message}

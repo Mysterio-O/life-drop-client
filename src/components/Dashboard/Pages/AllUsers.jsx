@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaEllipsisV, FaLock, FaUnlock, FaUserShield, FaUserTie, FaUserTimes } from 'react-icons/fa';
@@ -206,7 +206,7 @@ const AllUsers = () => {
             <div className="overflow-x-auto">
                 <table className="table w-full bg-white dark:bg-gray-900 text-[#111827] dark:text-[#F8FAFC] rounded-lg shadow-md">
                     <thead>
-                        <tr className="bg-gray-100 dark:bg-gray-800 border-b-2 border-[#D32F2F]">
+                        <tr className="bg-gray-100 dark:bg-gray-800 border-b-2 border-[#D32F2F] dark:text-white">
                             <th className="p-3 text-left">Avatar</th>
                             <th className="p-3 text-left">Email</th>
                             <th className="p-3 text-left">Name</th>

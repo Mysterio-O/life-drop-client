@@ -71,7 +71,7 @@ const Navbar = () => {
 
     const handleCategories = () => {
         // console.log('clicked');
-        if (window.location.pathname === '/') {
+        if (window.location.pathname === '/#categories') {
             const element = document.getElementById('categories');
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' })

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useNavigate } from 'react-router';
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled"];
-const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete }) => {
+const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete, isUser }) => {
     const navigate = useNavigate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -165,7 +165,7 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, do
                                                     </button>
                                                 </>
                                             )}
-                                            {request.status === "pending" && (
+                                            {request.status === "pending" && isUser && (
                                                 <button
                                                     className="btn btn-sm btn-outline btn-warning cursor-pointer"
                                                     onClick={() => navigate(`/dashboard/edit-request/${request._id}`)}

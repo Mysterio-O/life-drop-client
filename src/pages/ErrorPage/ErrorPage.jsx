@@ -7,7 +7,7 @@ const ErrorPage = () => {
 
     const navigate = useNavigate();
 
-    if (window.location.pathname === '/') {
+    if (window.location.hash === '/#contact-us') {
         const element = document.getElementById('contact-us');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
@@ -83,7 +83,7 @@ const ErrorPage = () => {
                         Go Back Home
                     </motion.a>
                     <motion.a
-                        href="#contact-us"
+                        href="/#contact-us"
                         className="px-6 py-3 bg-transparent border border-[#D32F2F] dark:border-[#EF5350] text-[#D32F2F] dark:text-[#EF5350] rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] dark:hover:text-white transition-colors duration-300"
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}

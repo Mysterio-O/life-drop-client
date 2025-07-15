@@ -70,23 +70,6 @@ const Request = () => {
     };
 
 
-    if (window.location.pathname === '/') {
-        const element = document.getElementById('contact-us');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        } else {
-            setTimeout(() => {
-                const retryElement = document.getElementById('contact-us');
-                if (retryElement) {
-                    retryElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 500);
-        }
-    }
-    else {
-        navigate('/#contact-us');
-    }
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -152,11 +135,7 @@ const Request = () => {
                 )}
 
                 {
-                    status === 'blocked' && <p className='text-balance text-red-500 text-center font-semibold underline'>Your account has been blocked. An user cannot donate while they are blocked!
-                        <span>
-                            <a href="#contact-us"> Contact Admin</a>
-                        </span>
-
+                    status === 'blocked' && <p className='text-balance text-red-500 text-center font-semibold underline'>Your account has been blocked. An user cannot donate while they are blocked! Contact Admin
                     </p>
                 }
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
-import { FaEye, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaEye, FaCheck, FaTimes, FaTrash, FaEdit } from 'react-icons/fa';
 import { FaPlusSquare } from 'react-icons/fa';
 import useAuth from '../../../../hooks/useAuth';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
@@ -12,7 +12,7 @@ const DonorOverview = () => {
 
     const { user, loading } = useAuth();
     const axiosSecure = useAxiosSecure();
-
+    const navigate = useNavigate();
     const { data: donationRequests = [], isPending, refetch } = useQuery({
         queryKey: ['donation_requests', user?.email],
         enabled: !!user,
@@ -228,6 +228,15 @@ const DonorOverview = () => {
                                                     >
                                                         <FaTrash />
                                                     </button>
+                                                    {req.status === "pending" && (
+                                                        <button
+                                                            className="btn btn-sm btn-outline btn-warning cursor-pointer"
+                                                            onClick={() => navigate(`/dashboard/edit-request/${req._id}`)}
+                                                            title="Edit Request"
+                                                        >
+                                                            <FaEdit />
+                                                        </button>
+                                                    )}
                                                     {req.status === "in_progress" && (
                                                         <>
                                                             <button

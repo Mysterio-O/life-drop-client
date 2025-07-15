@@ -25,6 +25,9 @@ import GiveFunding from "../pages/Funding/GiveFunding";
 import Messages from "../components/Dashboard/Pages/Message/Messages";
 import Funding from "../pages/Funding/Funding";
 import UpdateDonationRequest from "../components/Dashboard/Pages/UpdateDonationRequest";
+import AboutUs from "../pages/AboutUs/AboutUs";
+import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
+import TermsAndService from "../pages/TermsAndService/TermsAndService";
 
 export const router = createBrowserRouter([
     {
@@ -73,6 +76,18 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <Funding />
                 </PrivateRoute>
+            },
+            {
+                path: '/about-us',
+                Component: AboutUs
+            },
+            {
+                path: '/privacy-policy',
+                Component: PrivacyPolicy
+            },
+            {
+                path: '/terms',
+                Component: TermsAndService
             }
         ]
     },
@@ -135,7 +150,7 @@ export const router = createBrowserRouter([
                 </SharedRoute>
             },
             {
-                path:'edit-request/:id',
+                path: 'edit-request/:id',
                 Component: UpdateDonationRequest
             }
         ]
