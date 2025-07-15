@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
@@ -47,6 +47,10 @@ const Request = () => {
             Swal.fire('Error', 'Something went wrong.', 'error');
         },
     });
+
+    useEffect(()=> {
+        document.title = "Donation Details"
+    },[])
 
     const fnHandleTime = (time) => {
         const [hourStr, minute] = time.split(":");

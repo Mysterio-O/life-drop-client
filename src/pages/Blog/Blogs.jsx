@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'motion/react';
 import { FaHeart, FaShareAlt, FaTimes, FaCheckCircle } from 'react-icons/fa'; // Added FaCheckCircle for feedback
@@ -64,6 +64,12 @@ const Blogs = () => {
             addLike({ blogId, email });
         }
     };
+
+
+    useEffect(()=> {
+        document.title = 'Blogs'
+    },[])
+
 
     const handleComment = async (blogId, e) => {
         e.preventDefault();

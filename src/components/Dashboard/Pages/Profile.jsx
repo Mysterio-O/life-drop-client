@@ -57,6 +57,9 @@ const Profile = () => {
         fetch('/division.json').then(res => res.json()).then(data => setDivisions(data)).catch(err => console.log('error fetching division data', err));
         fetch('/district.json').then(res => res.json()).then(data => setDistricts(data)).catch(err => console.log('error fetching districts data', err));
         fetch('/upazilas.json').then(res => res.json()).then(data => setUpazilas(data)).catch(err => console.log('error fetching upazilas data', err));
+
+        document.title = 'My Profile';
+
     }, []);
 
     useEffect(() => {

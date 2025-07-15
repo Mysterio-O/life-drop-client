@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -19,6 +19,11 @@ const MyDonationRequest = () => {
     const [limit] = useState(10);
     const [allowDelete] = useState(true);
     const [isUser] = useState(true);
+
+
+    useEffect(()=> {
+        document.title = 'My Requests'
+    },[])
 
 
     const { data: donationRequests = [], refetch, isLoading } = useQuery({

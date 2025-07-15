@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { FaUser, FaEllipsisV } from 'react-icons/fa';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
@@ -18,6 +18,10 @@ const Messages = () => {
     });
 
     const [dropdownOpen, setDropdownOpen] = useState(null);
+
+    useEffect(()=> {
+        document.title = "All Messages"
+    },[])
 
 
     const { mutate: handleRead } = useMutation({

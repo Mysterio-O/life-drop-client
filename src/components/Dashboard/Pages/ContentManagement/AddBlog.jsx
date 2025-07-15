@@ -44,7 +44,7 @@ const AddBlog = () => {
             };
 
             // Then save the blog with all data
-            const res = await axiosSecure.post('https://life-drop-server.vercel.app/create-blog', blogData);
+            const res = await axiosSecure.post('http://localhost:3000/create-blog', blogData);
             if (res.data.result.insertedId) {
                 Swal.fire({
                     icon: 'success',

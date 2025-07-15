@@ -22,7 +22,11 @@ const AllDonations = () => {
         if (role === 'volunteer') {
             setAllowDelete(false)
         }
-    }, [role])
+    }, [role]);
+
+    useEffect(()=> {
+        document.title = "All Requests"
+    },[])
 
     const { data: donationRequests = [], isLoading, refetch } = useQuery({
         queryKey: ['all-blood-donation-request', limit, currentPage, statusFilter],

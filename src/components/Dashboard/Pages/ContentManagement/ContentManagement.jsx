@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import { MdOutlineUnpublished, MdPublishedWithChanges } from 'react-icons/md';
@@ -31,6 +31,10 @@ const ContentManagement = () => {
             return res.data.blogs;
         }
     });
+
+    useEffect(()=> {
+        document.title = "Content Management";
+    },[])
 
     // Mutation for publishing/unpublishing a blog
     const { mutate: togglePublishStatus } = useMutation({

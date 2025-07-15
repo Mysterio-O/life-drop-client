@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router';
 
 const AboutUs = () => {
     const navigate = useNavigate();
+
+    useEffect(()=> {
+        document.title = "About Us"
+    },[])
 
     return (
         <motion.div

@@ -47,6 +47,10 @@ const CreateRequest = () => {
             .then(res => res.json())
             .then(data => setUpazilas(data))
             .catch(err => console.log('error fetching upazilas data', err));
+
+
+        document.title = 'Create Request';
+
     }, []);
 
     const filteredDistricts = districts.filter(d => d.division_id === selectedDivision);
@@ -137,26 +141,26 @@ const CreateRequest = () => {
 
     if (status === 'blocked') {
 
-        const handleContactAdmin = ()=>{
+        const handleContactAdmin = () => {
             if (window.location.pathname === '/#contact-us') {
-            const element = document.getElementById('contact-us');
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' })
-            } else {
-                setTimeout(() => {
-                    const retryElement = document.getElementById('contact-us');
-                    if (retryElement) {
-                        retryElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 500);
+                const element = document.getElementById('contact-us');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' })
+                } else {
+                    setTimeout(() => {
+                        const retryElement = document.getElementById('contact-us');
+                        if (retryElement) {
+                            retryElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 500);
+                }
+            }
+            else {
+                navigate('/#contact-us');
             }
         }
-        else {
-            navigate('/#contact-us');
-        }
-        }
 
-        
+
 
         return (
             <motion.div

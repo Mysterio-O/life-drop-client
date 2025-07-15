@@ -71,13 +71,13 @@ const Navbar = () => {
 
     const handleCategories = () => {
         // console.log('clicked');
-        if (window.location.pathname === '/#categories') {
-            const element = document.getElementById('categories');
+        if (window.location.pathname === '/#donation-requests') {
+            const element = document.getElementById('donation-requests');
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' })
             } else {
                 setTimeout(() => {
-                    const retryElement = document.getElementById('categories');
+                    const retryElement = document.getElementById('donation-requests');
                     if (retryElement) {
                         retryElement.scrollIntoView({ behavior: 'smooth' });
                     }
@@ -85,7 +85,7 @@ const Navbar = () => {
             }
         }
         else {
-            navigate('/#categories');
+            navigate('/#donation-requests');
         }
 
     }

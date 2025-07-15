@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -18,6 +18,12 @@ const Funding = () => {
             return res.data || {};
         },
     });
+
+
+
+useEffect(()=> {
+    document.title = 'Fundings'
+},[])
 
     const totalItems = fundingData.count;
     const totalPages = Math.ceil(totalItems / itemsPerPage);

@@ -38,7 +38,11 @@ const Home = () => {
                 }, 500)
             }
         }
-    }, [location])
+    }, [location]);
+
+    useEffect(()=> {
+        document.title = 'LifeDrop || Home'
+    },[])
 
     return (
         <div>

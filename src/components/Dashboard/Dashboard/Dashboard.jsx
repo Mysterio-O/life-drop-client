@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
 import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog, FaEnvelope } from 'react-icons/fa';
@@ -13,6 +13,10 @@ import LifeDropLoader from '../../../shared/LifeDropLoader';
 const Dashboard = ({ closeDashboard }) => {
     const { user, loading: AuthLoading } = useAuth();
     const { role, role_loading } = useUserRole();
+
+    useEffect(()=> {
+        document.title = 'Dashboard'
+    },[])
 
     if (role_loading || AuthLoading) {
         return <div className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen'>
