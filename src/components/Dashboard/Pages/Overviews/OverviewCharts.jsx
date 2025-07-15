@@ -37,7 +37,7 @@ const OverviewCharts = () => {
     });
     // console.log(donationStatus)
 
-    const { data: users, isLoading: userLoading } = useQuery({
+    const { data: users = [], isLoading: userLoading } = useQuery({
         queryKey: ['user-status'],
         queryFn: async () => {
             const res = await axiosSecure.get('/user-status-distribution');

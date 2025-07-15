@@ -2,10 +2,14 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { NavLink } from 'react-router';
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
-
+import useAuth from '../../hooks/useAuth';
+import logo from '../../assets/logo-transparent.png';
 const Footer = () => {
+
+    const { user } = useAuth();
+
     const guestLinks = [
-        <span onClick={() => {}}>
+        <span onClick={() => { }}>
             <NavLink
                 key="donation-requests"
                 to="/#donation-requests"
@@ -35,7 +39,7 @@ const Footer = () => {
     ];
 
     const userLinks = [
-        <span onClick={() => {}}>
+        <span onClick={() => { }}>
             <NavLink
                 key="donation-requests"
                 to="/#donation-requests"
@@ -71,7 +75,7 @@ const Footer = () => {
         >
             Funding
         </NavLink>,
-        
+
     ];
 
     const additionalLinks = [
@@ -139,14 +143,14 @@ const Footer = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-center md:text-left"
+                        className="text-center md:text-left space-y-3"
                     >
-                        <h3 className="text-lg font-semibold text-[#111827] dark:text-[#F8FAFC] mb-4">
-                            Quick Links
-                        </h3>
+                        <img src={logo} alt="" className='h-10 mx-auto md:mx-0'/>
                         <ul className="space-y-2">
-                            {guestLinks}
-                            {userLinks}
+
+                            {
+                                user ? userLinks : guestLinks
+                            }
                         </ul>
                     </motion.div>
                     {/* Additional Links */}
@@ -157,7 +161,7 @@ const Footer = () => {
                         className="text-center"
                     >
                         <h3 className="text-lg font-semibold text-[#111827] dark:text-[#F8FAFC] mb-4">
-                            More Info
+                            More About Us
                         </h3>
                         <ul className="space-y-2">
                             {additionalLinks}

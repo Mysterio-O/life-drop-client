@@ -133,7 +133,7 @@ const Register = () => {
                                 }
                             });
                             reset()
-                            navigate(`${from ? from : '/'}`);
+                            navigate(`${from ? from : '/dashboard'}`);
                         } else {
                             setLoading(false);
                             Swal.fire({

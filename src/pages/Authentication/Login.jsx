@@ -44,7 +44,7 @@ const Login = () => {
           popup: 'dark:bg-[#1E293B]' // Dark mode surface color
         }
       });
-      navigate(`${from ? from : '/'}`);
+      navigate(`${from ? from : '/dashboard'}`);
     } catch (error) {
       setLoading(false);
       Swal.fire({

@@ -4,11 +4,11 @@ import { useForm } from 'react-hook-form';
 import { FaPhoneAlt } from 'react-icons/fa';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const ContactUs = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic()
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -18,9 +18,11 @@ const ContactUs = () => {
     });
 
     const onSubmit = async (data) => {
+        console.log(data);
+
         try {
-            const res = await axiosSecure.post('/contact-messages', data);
-            if (res.data.insertedId) {
+            const res = await axiosPublic.post('/contact-messages', data);
+            if (res.data.result.insertedId) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Message Sent!',

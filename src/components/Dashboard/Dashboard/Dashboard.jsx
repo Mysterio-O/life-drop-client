@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
-import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog } from 'react-icons/fa';
+import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog, FaEnvelope } from 'react-icons/fa';
 import LogoutButton from '../../../shared/LogoutButton';
 import { motion } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
@@ -56,7 +56,8 @@ const Dashboard = ({ closeDashboard }) => {
         { name: 'My Requests', icon: <FaList />, path: `/dashboard/my-donation-requests`, end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-blood-donation-request", end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'Content Management', icon: <FaFileAlt />, path: "/dashboard/content-management", end: true },
-        (role === 'admin') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true }
+        (role === 'admin') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true },
+        (role === 'admin' || role === 'volunteer') && { name: 'All Messages', icon: <FaEnvelope />, path: "/dashboard/all-message", end: true },
     ].filter(Boolean);
 
     const handleClick = () => {

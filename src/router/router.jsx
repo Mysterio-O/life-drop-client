@@ -22,6 +22,7 @@ import AllUsers from "../components/Dashboard/Pages/AllUsers";
 import AdminRoute from "../routes/AdminRoute";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import GiveFunding from "../pages/Funding/GiveFunding";
+import Messages from "../components/Dashboard/Pages/Message/Messages";
 
 export const router = createBrowserRouter([
     {
@@ -118,6 +119,12 @@ export const router = createBrowserRouter([
                 element: <AdminRoute>
                     <AllUsers />
                 </AdminRoute>
+            },
+            {
+                path: 'all-message',
+                element: <SharedRoute>
+                    <Messages />
+                </SharedRoute>
             }
         ]
     }
