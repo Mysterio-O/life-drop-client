@@ -1,50 +1,189 @@
-# LifeDrop
+# LifeDrop — Blood Donation Platform  
 
-Welcome to **LifeDrop**, a web application designed to facilitate blood donation and requests across Bangladesh. This project aims to save lives by connecting donors with those in urgent need of blood, featuring a user-friendly interface, secure data handling, and real-time updates.
+LifeDrop is a full-stack web application that bridges the gap between blood donors and recipients. It allows users to request blood, search for donors, donate, contribute funds, and interact with community content — all under a well-structured role-based system.
 
-- **Live Site**: [https://life-drop-bd.netlify.app](https://life-drop-bd.netlify.app)
-- **Client-Side Repository**: [https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O)
-- **Server-Side Repository**: [https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O)
+## 🛠️ Tech Stack  
 
-## Project Overview
+- **Frontend:** React, Tailwind CSS, DaisyUI, React Hook Form, Motion, React Query, Axios, SweetAlert2, Recharts, Jodit-React, Stripe Integration  
+- **Backend:** Node.js, Express.js, MongoDB, JWT Authentication, Stripe Payment API  
+- **Authentication:** Firebase Authentication  
+- **Deployment:** Vercel (Frontend), Render (Backend), MongoDB Atlas  
 
-LifeDrop is a full-stack web application built as part of the Programming Hero Web Course. It provides features like donation requests, updates, with admin and volunteer guidence. Here users can search for blood and donate bloods, and and can donate to others. 
+---
 
-### Features
-- **Donation Requests**: Users can create and update blood donation requests with location-specific details.
-- **Featured Section**: A dynamic homepage highlight with animations and calls-to-action.
-- **Static Pages**: About Us, Privacy Policy, and Terms and Service pages with professional content.
-- **Authentication**: Secure user login and data management using Firebase.
-- **Real-Time Data**: Integration with a backend API for seamless updates.
-- **Responsive Design**: Optimized for desktop and mobile devices with Tailwind CSS.
-- **Admin Support** : Help center with admin support
+## 🚀 Live Demo  
 
-## Getting Started
+- Live URL: `https://life-drop-bd.netlify.app`
 
-### Prerequisites
-- Node.js (v18 or later)
-- npm or yarn
-- Git
+- Client: `https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O`  
 
-### Dependencies
- - **"@stripe/react-stripe-js": "^3.7.0"**
- - **"@stripe/stripe-js": "^7.4.0"**
- - **"@tailwindcss/vite": "^4.1.11"**
- - **"@tanstack/react-query": "^5.81.5"**
-    - **"@tippyjs/react": "^4.2.6"**
-    - **"axios": "^1.10.0"**
-    - **"dotenv": "^17.1.0"**
-    - **"firebase": "^11.10.0"**
-    - **"jodit-react": "^5.2.19"**
-    - **"motion": "^12.23.0"**
-    - **"react": "^19.1.0",**
-    - **"react-circular-progressbar": "^2.2.0"**
-    - **"react-dom": "^19.1.0"**
-    - **"react-hook-form": "^7.60.0"**
-    - **"react-icons": "^5.5.0"**
-    "react-loading-skeleton": "^3.5.0",
-    "react-router": "^7.6.3",
-    "react-tooltip": "^5.29.1",
-    "recharts": "^3.1.0",
-    "sweetalert2": "^11.22.2",
-    "tailwindcss": "^4.1.11*
+- Server: `https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O`  
+
+---
+
+## 🧑‍💻 User Roles & Permissions  
+
+| Role      | Permissions |
+|-----------|-------------|
+| **Donor** | Browse & view donation requests, donate, search donors, donate funds, view blogs, comment, and send messages. |
+| **Volunteer** | Manage all donation requests, create & manage blogs, view messages, mark requests as done. |
+| **Admin** | Full access: manage users, donation requests, blogs, messages, publish/delete blogs, block/unblock users, assign roles. |
+
+---
+
+## 📝 Features Overview  
+
+### 🩸 Blood Donation Features  
+- Public access to **pending donation requests** (card format) on the home page  
+- **Request Details Page** (login required): View full details & donate  
+- **Donate Modal:** Captures donor info (auto-filled name/email, optional phone)  
+- Donation status changes: `Pending` ➔ `In Progress` ➔ `Done` or `Canceled`  
+
+### 🔍 Search Donor  
+- Filter donors by **Blood Group**, **Division**, **District**, **Upazila**  
+
+### 💳 Funding System  
+- Donate funds via **Stripe Card Payment**  
+- View all user contributions on the **Funding Page**  
+
+### 📰 Blog System  
+- View blogs posted by **Admin/Volunteers**  
+- Like & comment on blogs  
+
+### 📬 Contact Us  
+- Contact form to send messages directly to **Volunteers/Admins**  
+
+---
+
+## 🎛️ Dashboard Overview  
+
+The dashboard is role-based with server-side verification and contains:  
+- **Sidebar Navigation**  
+- **Main Content Panel**  
+- **Account Management** (Switch Account / Logout)  
+
+---
+
+### 👤 User Dashboard  
+- **Overview:** Recent 3 donation requests (view, update, delete)  
+- **My Requests:** Manage all created donation requests with status filters  
+- **Profile:** Update profile info (except email)  
+
+---
+
+### 🧑‍🤝‍🧑 Volunteer Dashboard  
+- **All Donation Requests:** View & mark as done  
+- **Content Management:**  
+  - View, create, update blogs (blog content)  
+  - Add blog with image upload & rich text editor  
+- **Messages:**  
+  - View unread messages, mark as read, delete  
+
+---
+
+### 🛡️ Admin Dashboard  
+- Access to **all User** & **Volunteer** features  
+- **All Users Management:**  
+  - Filter users (Active/Blocked)  
+  - Block/Unblock users  
+  - Assign roles (Make Volunteer/Admin)  
+- **All Messages:** Same as Volunteer view  
+- **Content Management:** Full control over publishing & deleting blogs  
+
+---
+
+## 📊 Overview Section (Admin/Volunteer Dashboard)  
+- Welcome message with dummy search bar  
+- **3 Dynamic Data Cards:**  
+  - Total Donation Requests  
+  - Total Funding Amount  
+  - Total Users Count  
+- **3 Analytics Charts:**  
+  - Bar Chart: Donation Requests by Status  
+  - Line Chart: Static Data  
+  - Pie Chart: Active vs Blocked Users  
+
+---
+
+## 📦 Package Dependencies  
+
+### Key Frontend Dependencies  
+- **React**  
+- **React Router**  
+- **Tailwind CSS & DaisyUI**  
+- **React Hook Form**  
+- **TanStack React Query**  
+- **Motion**  
+- **Jodit React (Rich Text Editor)**  
+- **Axios**  
+- **Firebase**  
+- **Stripe Payment Integration**  
+
+### Backend Dependencies  
+- **Express.js**  
+- **MongoDB & Mongoose**  
+- **Stripe Node SDK**  
+- **dotenv**  
+- **CORS**  
+- **JWT**  
+
+---
+
+## 🛠️ Scripts  
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Run Vite development server |
+| `npm run build` | Build project for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Lint the project |
+
+---
+
+## 🔒 Authentication & Authorization  
+
+- **Firebase Authentication** with JWT secured APIs  
+- Role-based access control on both client & server side  
+- Private Routes with dynamic navigation  
+
+---
+
+## 💳 Stripe Payment Integration  
+
+- Integrated with **Stripe React SDK** for secure payments  
+- Funding records saved with donor details and amount  
+
+---
+
+## 📝 Future Improvements  
+
+- Conversation-based messaging  
+- Advanced analytics dashboard  
+- Multi-language support  
+- User activity logs  
+
+---
+
+## 🧑‍🎓 Developed By  
+
+**Mysterio** — Full Stack Developer  
+
+---
+
+## 📄 License  
+
+> This project is licensed under the [MIT License](LICENSE)  
+
+---
+
+## 📞 Contact  
+
+> For any inquiries, contact at:  
+`skrabbi.019@gmail.com`  
+
+---
+
+## 🔗 Contributing  
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.   
+
