@@ -23,6 +23,8 @@ import AdminRoute from "../routes/AdminRoute";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import GiveFunding from "../pages/Funding/GiveFunding";
 import Messages from "../components/Dashboard/Pages/Message/Messages";
+import Funding from "../pages/Funding/Funding";
+import UpdateDonationRequest from "../components/Dashboard/Pages/UpdateDonationRequest";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +66,12 @@ export const router = createBrowserRouter([
                 path: '/give-funding',
                 element: <PrivateRoute>
                     <GiveFunding />
+                </PrivateRoute>
+            },
+            {
+                path: 'funding',
+                element: <PrivateRoute>
+                    <Funding />
                 </PrivateRoute>
             }
         ]
@@ -125,6 +133,10 @@ export const router = createBrowserRouter([
                 element: <SharedRoute>
                     <Messages />
                 </SharedRoute>
+            },
+            {
+                path:'edit-request/:id',
+                Component: UpdateDonationRequest
             }
         ]
     }

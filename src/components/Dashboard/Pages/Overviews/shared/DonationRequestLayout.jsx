@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { FaEye, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
+import { FaEye, FaCheck, FaTimes, FaTrash, FaEdit } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from 'react-router';
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled"];
 const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete }) => {
-
+    const navigate = useNavigate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -137,15 +138,15 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, do
                                             >
                                                 <FaEye />
                                             </button>
-                                            {
-                                                allowDelete && <button
-                                                className="btn btn-sm btn-outline btn-error cursor-pointer"
-                                                onClick={() => handleDelete(request._id)}
-                                                title="Delete Request"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                            }
+                                            {allowDelete && (
+                                                <button
+                                                    className="btn btn-sm btn-outline btn-error cursor-pointer"
+                                                    onClick={() => handleDelete(request._id)}
+                                                    title="Delete Request"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            )}
                                             {request.status === "in_progress" && (
                                                 <>
                                                     <button
@@ -163,6 +164,15 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, isLoading, do
                                                         <FaCheck />
                                                     </button>
                                                 </>
+                                            )}
+                                            {request.status === "pending" && (
+                                                <button
+                                                    className="btn btn-sm btn-outline btn-warning cursor-pointer"
+                                                    onClick={() => navigate(`/dashboard/edit-request/${request._id}`)}
+                                                    title="Edit Request"
+                                                >
+                                                    <FaEdit />
+                                                </button>
                                             )}
                                         </td>
                                     </tr>
