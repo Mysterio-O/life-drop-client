@@ -58,7 +58,7 @@ const Register = () => {
 
         // console.log(newData);
         const image = newData.photo[0];
-        console.log(image);
+        // console.log(image);
         const formData = new FormData();
         formData.append('image', image);
 
@@ -76,7 +76,7 @@ const Register = () => {
                 delete_url: res?.data?.data?.delete_url,
                 photoURL: res?.data?.data?.url
             }
-            console.log(imageObject)
+            // console.log(imageObject)
         }
         catch (error) {
             console.log('error uploading image', error);
@@ -113,7 +113,7 @@ const Register = () => {
 
         createUser(email, password)
             .then(result => {
-                console.log(result);
+                // console.log(result);
 
                 const accountInfo = {
                     email, name, photo: imageObject?.photoURL, provider: 'password'
@@ -125,7 +125,7 @@ const Register = () => {
                         console.log('profile informations updated');
 
                         const res = await axiosPublic.post('/users', userData);
-                        console.log(res.data)
+                        // console.log(res.data)
                         if (res.data.insertedId) {
                             Swal.fire({
                                 icon: 'success',
@@ -260,6 +260,7 @@ const Register = () => {
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.4 }}
+                        className='relative'
                     >
                         <input
                             type={`${isClosed ? 'text' : 'password'}`}
@@ -275,11 +276,11 @@ const Register = () => {
                                 }
                             })}
                             placeholder="Password"
-                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350"
                         />
                         <span
                             onClick={() => setIsClosed(!isClosed)}
-                            className="absolute right-[31%] top-[64%]"
+                            className="absolute right-3 top-2"
                         >
                             {
                                 isClosed ? <FaEyeSlash size={30} />
@@ -296,6 +297,7 @@ const Register = () => {
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.5 }}
+                        className='relative'
                     >
                         <input
                             type={`${isClosedConfirm ? 'text' : 'password'}`}
@@ -305,11 +307,11 @@ const Register = () => {
                                     value === watch('password') || "Passwords do not match"
                             })}
                             placeholder="Confirm Password"
-                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
+                            className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
                         />
                         <span
                             onClick={() => setIsClosedConfirm(!isClosedConfirm)}
-                            className="absolute right-[31%] top-[75%]"
+                            className="absolute right-3 top-2"
                         >
                             {
                                 isClosedConfirm ? <FaEyeSlash size={28} />

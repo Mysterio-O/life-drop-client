@@ -31,6 +31,7 @@ const ContentManagement = () => {
             return res.data.blogs;
         }
     });
+    // console.log(blogs);
 
     useEffect(()=> {
         document.title = "Content Management";

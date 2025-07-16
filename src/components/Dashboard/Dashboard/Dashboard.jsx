@@ -115,7 +115,7 @@ const Dashboard = ({ closeDashboard }) => {
                 <nav className='flex flex-col gap-3'>
                     {navItems.map((item, idx) => (
                         <motion.div
-                            key={item.name_idx}
+                            key={idx}
                             initial={{ x: -30, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.3, delay: idx * 0.1, ease: 'easeInOut' }}

@@ -13,13 +13,28 @@ LifeDrop is a full-stack web application that bridges the gap between blood dono
 
 ## 🚀 Live Demo  
 
-- Live URL: `https://life-drop-bd.netlify.app`
+# Live Link
+[LifeDrop](https://life-drop-bd.netlify.app)
 
-- Client: `https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O`  
+# Client Side Repository
+[Client](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O)
 
-- Server: `https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O`  
+# Server Side Repository
+[Server](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O)
 
 ---
+
+## 🌐 Admin Email + Password
+ 
+ | Email               | Password   |
+ |---------------------|------------|
+ | **admin@gmail.com** | Admin123   |
+
+
+
+ ---
+
+
 
 ## 🧑‍💻 User Roles & Permissions  
 
@@ -60,7 +75,8 @@ LifeDrop is a full-stack web application that bridges the gap between blood dono
 The dashboard is role-based with server-side verification and contains:  
 - **Sidebar Navigation**  
 - **Main Content Panel**  
-- **Account Management** (Switch Account / Logout)  
+- **Account Management** (Switch Account / Logout)
+- **Delete Account** (From Setting)
 
 ---
 
@@ -121,11 +137,11 @@ The dashboard is role-based with server-side verification and contains:
 
 ### Backend Dependencies  
 - **Express.js**  
-- **MongoDB & Mongoose**  
+- **MongoDB**  
 - **Stripe Node SDK**  
 - **dotenv**  
 - **CORS**  
-- **JWT**  
+- **Firebase Admin**  
 
 ---
 

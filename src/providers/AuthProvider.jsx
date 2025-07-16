@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
 
 
@@ -27,9 +27,9 @@ const AuthProvider = ({ children }) => {
             if (currentUser) {
                 setUser(currentUser);
                 setLoading(false);
-                console.log('user from auth state change->', currentUser);
+                // console.log('user from auth state change->', currentUser);
             } else {
-                console.log('user state from auth state->', currentUser);
+                // console.log('user state from auth state->', currentUser);
                 setUser(null);
             }
             setLoading(false);
@@ -51,6 +51,12 @@ const AuthProvider = ({ children }) => {
     }
 
 
+    const deleteUserFirebase = ()=> {
+        setLoading(true);
+        return deleteUser(auth.currentUser)
+    }
+
+
 
     const contextValue = {
         createUser,
@@ -59,6 +65,7 @@ const AuthProvider = ({ children }) => {
         loading,
         setUserProfile,
         userLogOut,
+        deleteUserFirebase
     }
 
     return <AuthContext value={contextValue}>

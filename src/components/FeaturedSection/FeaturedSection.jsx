@@ -33,7 +33,7 @@ const FeaturedSection = () => {
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="py-16 bg-white dark:bg-[#0F172A] relative overflow-hidden"
+            className="py-16 bg-white dark:bg-[#0F172A]  overflow-hidden"
         >
             <div className="container mx-auto px-4 py-10">
                 <motion.div
@@ -88,18 +88,25 @@ const FeaturedSection = () => {
                         <motion.button
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 1 }}
                             transition={{ delay: 1.0, duration: 0.5 }}
                             onClick={handleFundingClick}
-                            className="px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-md hover:bg-[#B71C1C] transition-colors w-full md:w-auto"
+                            className="px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-md hover:bg-[#B71C1C] transition-colors w-full md:w-auto cursor-pointer"
                         >
-                            Give Funding
+                            <div className='flex gap-3 items-center'>
+                                <span>Give Funding</span>
+                                <span>
+                                    <FaHandsHelping size={24}/>
+                                </span>
+                            </div>
                         </motion.button>
                         <motion.button
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.2, duration: 0.5 }}
                             onClick={handleRequestClick}
-                            className="px-6 py-3 border-2 border-[#D32F2F] text-[#D32F2F] font-semibold rounded-md hover:bg-[#D32F2F] hover:text-white transition-colors w-full md:w-auto mt-4 md:mt-0"
+                            className="px-6 py-3 border-2 border-[#D32F2F] text-[#D32F2F] font-semibold rounded-md hover:bg-[#D32F2F] hover:text-white transition-colors w-full md:w-auto mt-4 md:mt-0 cursor-pointer"
                         >
                             Request Blood
                         </motion.button>

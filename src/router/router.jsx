@@ -28,6 +28,7 @@ import UpdateDonationRequest from "../components/Dashboard/Pages/UpdateDonationR
 import AboutUs from "../pages/AboutUs/AboutUs";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndService from "../pages/TermsAndService/TermsAndService";
+import Setting from "../components/Dashboard/Pages/Setting";
 
 export const router = createBrowserRouter([
     {
@@ -152,6 +153,10 @@ export const router = createBrowserRouter([
             {
                 path: 'edit-request/:id',
                 Component: UpdateDonationRequest
+            },
+            {
+                path: 'setting',
+                Component: Setting
             }
         ]
     }

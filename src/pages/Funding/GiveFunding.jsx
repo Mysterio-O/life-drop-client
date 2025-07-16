@@ -13,7 +13,7 @@ const GiveFunding = () => {
 
     return (
         <Elements stripe={stripePromise}>
-            <Payment />
+            <Payment className="z-10"/>
         </Elements>
     );
 };

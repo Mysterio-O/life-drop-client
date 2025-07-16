@@ -18,7 +18,7 @@ const ContactUs = () => {
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
+        // console.log(data);
 
         try {
             const res = await axiosPublic.post('/contact-messages', data);

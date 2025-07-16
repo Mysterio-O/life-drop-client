@@ -19,7 +19,7 @@ const useUserStatus = () => {
         refetchOnWindowFocus: true
     })
 
-    console.log(status);
+    // console.log(status);
 
 
     return { status, status_loading: AuthLoading || roleLoading, refetch }

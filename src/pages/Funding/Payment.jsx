@@ -69,13 +69,13 @@ const Payment = () => {
             setLoading(false);
         } else {
             setError('');
-            console.log('[PaymentMethod]', paymentMethod);
+            // console.log('[PaymentMethod]', paymentMethod);
 
             const res = await axiosSecure.post('/create-payment-intent', {
                 amount: amountInCents,
                 paymentMethodId: paymentMethod.id,
             });
-            console.log(res);
+            // console.log(res);
 
             const clientSecret = res.data.clientSecret;
 
@@ -101,7 +101,7 @@ const Payment = () => {
                 setLoading(false)
             } else if (paymentIntent.status === 'succeeded') {
                 setError('');                
-                console.log('payment succeeded', paymentIntent);
+                // console.log('payment succeeded', paymentIntent);
 
                 const paymentData = {
                     donated_by: user.email,

@@ -92,17 +92,16 @@ const Navbar = () => {
 
     // Define guestLinks as an array of JSX elements
     const guestLinks = [
-        <span onClick={handleCategories}>
-            <NavLink
-                key="donation-requests"
-                to="/#donation-requests"
-                className={
-                    `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
-                }
-            >
-                Donation Requests
-            </NavLink>
-        </span>,
+        <NavLink
+            onClick={handleCategories}
+            key="donation-requests"
+            to="/#donation-requests"
+            className={
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
+            }
+        >
+            Donation Requests
+        </NavLink>,
         <NavLink
             key="blog"
             to="/blog"
@@ -127,17 +126,16 @@ const Navbar = () => {
 
     // Define userLinks as an array of JSX elements
     const userLinks = [
-        <span onClick={handleCategories}>
-            <NavLink
-                key="donation-requests"
-                to="/#donation-requests"
-                className={
-                    `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
-                }
-            >
-                Donation Requests
-            </NavLink>
-        </span>,
+        <NavLink
+            onClick={handleCategories}
+            key="donation-requests"
+            to="/#donation-requests"
+            className={({ isActive }) =>
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors`
+            }
+        >
+            Donation Requests
+        </NavLink>,
         <NavLink
             key="blog"
             to="/blog"
@@ -187,7 +185,7 @@ const Navbar = () => {
                 tabIndex={0}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.5 }}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-[#F9FAFB] dark:bg-[#1E293B] rounded-box w-52"
             >
                 <li>
@@ -231,9 +229,11 @@ const Navbar = () => {
                             {userLinks.map((link, index) => (
                                 <motion.div
                                     key={index}
-                                    initial={{ x: -10, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{ delay: 0.1 * index }}
+                                    initial={{ y: -10, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration:0.3 }}
+                                    whileHover={{scale:1.15,y:5}}
+                                    whileTap={{scale:1,y:0}}
                                 >
                                     {link}
                                 </motion.div>
@@ -247,6 +247,8 @@ const Navbar = () => {
                                     initial={{ x: -10, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ delay: 0.1 * index }}
+                                    whileHover={{backgroundColor: '#D32F2F'}}
+                                    className="inline-block"
                                 >
                                     {link}
                                 </motion.div>

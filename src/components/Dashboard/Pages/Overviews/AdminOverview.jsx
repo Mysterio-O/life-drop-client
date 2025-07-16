@@ -10,7 +10,6 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import useUserRole from '../../../../hooks/useUserRole';
 
 const AdminOverview = () => {
-    const [searchText, setSearchText] = useState('');
 
     const [funding, setFunding] = useState(10);
     const axiosSecure = useAxiosSecure();
@@ -43,7 +42,7 @@ const AdminOverview = () => {
         }
     })
 
-    console.log(requests);
+    // console.log(requests);
 
     const cardData = [
         {
@@ -113,8 +112,6 @@ const AdminOverview = () => {
                         type="search"
                         name="search"
                         placeholder="Search"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
                         className="bg-transparent focus:outline-none px-4 py-2 text-sm text-gray-700 placeholder-gray-500 w-40 md:w-64"
                     />
                     <button

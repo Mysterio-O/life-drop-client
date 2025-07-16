@@ -8,7 +8,7 @@ import useUserRole from '../../../hooks/useUserRole';
 const AllDonations = () => {
 
     const { role, role_loading } = useUserRole();
-    console.log(role);
+    // console.log(role);
 
     const limit = 10;
     const [currentPage, setCurrentPage] = useState(1);

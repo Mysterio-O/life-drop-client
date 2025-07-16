@@ -41,7 +41,7 @@ const AllUsers = () => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(['all-users']);
-            console.log(data);
+            // console.log(data);
             if (data.modifiedCount > 0) {
                 Swal.fire({
                     icon: 'success',
@@ -81,7 +81,7 @@ const AllUsers = () => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(['all-users']);
-            console.log(data);
+            // console.log(data);
             Swal.fire({
                 icon: 'success',
                 toast: true,

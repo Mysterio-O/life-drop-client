@@ -101,16 +101,17 @@ const Login = () => {
             initial={{ x: -10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
+            className="relative"
           >
             <input
               {...register("password", { required: "Password is required" })}
               type={`${isClosed ? 'text' : 'password'}`}
               placeholder="Password"
-              className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] relative"
+              className="w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] placeholder-[#4B5563] dark:placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350]"
             />
             <span
               onClick={() => setIsClosed(!isClosed)}
-              className="absolute right-[31%] top-[59%]">
+              className="absolute right-3 top-2">
               {
                 isClosed ? <FaEyeSlash size={30} />
                   : <FaEye size={30} />

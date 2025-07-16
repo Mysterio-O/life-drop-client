@@ -44,7 +44,7 @@ const OverviewCharts = () => {
             return res.data;
         }
     })
-    console.log(users);
+    // console.log(users);
 
 
 
@@ -53,7 +53,7 @@ const OverviewCharts = () => {
 
     useEffect(() => {
         donationStatus.map(status => {
-            console.log(status);
+            // console.log(status);
             if (status.name === 'done') {
                 setDone(status.value || 0)
             } else if (status.name === 'in_progress') {

@@ -66,7 +66,7 @@ const UpdateContent = () => {
 
             // Update the blog
             const res = await axiosSecure.patch(`/blog/${id}`, blogData);
-            console.log(res);
+            // console.log(res);
             if (res.data.result.modifiedCount > 0) {
                 Swal.fire({
                     icon: 'success',

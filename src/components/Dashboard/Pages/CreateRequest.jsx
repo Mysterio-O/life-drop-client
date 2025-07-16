@@ -16,7 +16,7 @@ const CreateRequest = () => {
     const [loading, setLoading] = useState(false);
 
     const { status, status_loading } = useUserStatus();
-    console.log(status);
+    // console.log(status);
 
     const navigate = useNavigate();
 
@@ -77,7 +77,7 @@ const CreateRequest = () => {
         // await axiosSecure.post('/donation-requests', donationRequest);
         try {
             const res = await axiosSecure.post('/create-request', donationRequest)
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.result.insertedId) {
                 setLoading(false);
                 Swal.fire({
@@ -179,7 +179,7 @@ const CreateRequest = () => {
                     <h2 className="text-xl font-bold mb-2">Account Blocked</h2>
                     <p className="mb-4">Your account is currently blocked. You cannot create a request at this time.</p>
                     <p className="mb-4">Please contact the admin for more information.</p>
-                    <span onClick={handleContactAdmin} className="text-[#F8FAFC] hover:underline">Contact Admin</span>
+                    <span onClick={handleContactAdmin} className="text-[#F8FAFC] cursor-pointer">Contact Admin</span>
                 </motion.div>
             </motion.div>
         );

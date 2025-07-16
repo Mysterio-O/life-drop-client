@@ -19,11 +19,9 @@ const Funding = () => {
         },
     });
 
-
-
-useEffect(()=> {
-    document.title = 'Fundings'
-},[])
+    useEffect(() => {
+        document.title = 'Fundings';
+    }, []);
 
     const totalItems = fundingData.count;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -43,6 +41,10 @@ useEffect(()=> {
                             className="bg-gray-300 dark:bg-gray-700 animate-pulse h-10 rounded-lg mb-2"
                         />
                     ))}
+                    <div className="mt-6">
+                        <div className="bg-gray-300 dark:bg-gray-700 animate-pulse h-10 mb-2 rounded-lg"></div>
+                        <div className="bg-gray-300 dark:bg-gray-700 animate-pulse h-20 rounded-lg"></div>
+                    </div>
                 </div>
             </div>
         );
@@ -138,6 +140,28 @@ useEffect(()=> {
                         Next
                     </motion.button>
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="mt-6 bg-[#F9FAFB] dark:bg-[#1E293B] rounded-lg shadow-md p-4"
+                >
+                    <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] mb-4">
+                        How Donations Are Used
+                    </h3>
+                    <p className="text-[#111827] dark:text-[#F8FAFC] mb-2">
+                        These donations are spent on those who are in need, supporting critical medical treatments and emergency blood supplies.
+                    </p>
+                    <p className="text-[#111827] dark:text-[#F8FAFC] mb-2">
+                        Funds also help maintain our platform, ensuring seamless coordination between donors and recipients across Bangladesh.
+                    </p>
+                    <p className="text-[#111827] dark:text-[#F8FAFC]">
+                        Additionally, donations contribute to community awareness campaigns and volunteer training to expand our reach.
+                    </p>
+                </motion.div>
+
+
             </div>
         </div>
     );

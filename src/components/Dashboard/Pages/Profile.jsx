@@ -52,6 +52,7 @@ const Profile = () => {
     const filteredUpazilas = selectedDistrict
         ? upazilas.filter(u => u.district_id === selectedDistrict)
         : [];
+        // console.log(filteredDistricts, filteredUpazilas);
 
     useEffect(() => {
         fetch('/division.json').then(res => res.json()).then(data => setDivisions(data)).catch(err => console.log('error fetching division data', err));
@@ -132,7 +133,7 @@ const Profile = () => {
         if (data.bloodGroup && data.bloodGroup !== selectedUser.blood_group) updatedData.blood_group = data.bloodGroup;
 
         const { photo } = data;
-        console.log(photo.length);
+        // console.log(photo.length);
         // console.log(photo);
         const formData = new FormData();
         let imageObject = {};
@@ -151,12 +152,12 @@ const Profile = () => {
                 const res = await axios.post(uploadURL, formData, {
                     'content-type': 'multipart/form-data'
                 })
-                console.log('image after upload->', res.data.data);
+                // console.log('image after upload->', res.data.data);
                 imageObject = {
                     delete_url: res?.data?.data?.delete_url,
                     photoURL: res?.data?.data?.url
                 }
-                console.log(imageObject)
+                // console.log(imageObject)
             }
             catch (error) {
                 console.log('error uploading image', error);
@@ -203,8 +204,8 @@ const Profile = () => {
             });
             return;
         }
-        console.log(updatedData);
-        console.log(updateFB);
+        // console.log(updatedData);
+        // console.log(updateFB);
 
         if (updateFB) {
             setUserProfile(updateFB)
@@ -229,7 +230,7 @@ const Profile = () => {
             const res = await axiosSecure.patch(`/user/update/${selectedUser._id}`, updatedData);
             setLoading(false);
             setEdit(false);
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.result.modifiedCount === 1) {
                 refetch();
                 Swal.fire({
@@ -241,7 +242,7 @@ const Profile = () => {
                         confirmButton: 'dark:bg-[#F8FAFC]'
                     }
                 });
-                console.log('user info updated');
+                // console.log('user info updated');
             }
         }
         catch (error) {

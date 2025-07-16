@@ -10,7 +10,7 @@ const SharedRoute = ({ children }) => {
     const location = useLocation();
     const from = location.pathname;
 
-console.log(role);
+// console.log(role);
     if (loading || role_loading) {
         return <span className="loading loading-ring loading-xl"></span>;
     }

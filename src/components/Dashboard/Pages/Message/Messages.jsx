@@ -31,7 +31,7 @@ const Messages = () => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(['messages']);
-            console.log('from on success->', data);
+            // console.log('from on success->', data);
             if (data.modifiedCount > 0) {
                 Swal.fire({
                     icon: 'success',
@@ -112,7 +112,7 @@ const Messages = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Placeholder for marking as read (extend backend if needed)
-                console.log(`Marked as read: ${id}`);
+                // console.log(`Marked as read: ${id}`);
                 handleRead({ id });
             }
             setDropdownOpen(null);

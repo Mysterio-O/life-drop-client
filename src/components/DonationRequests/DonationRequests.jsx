@@ -95,14 +95,18 @@ const DonationRequests = () => {
                                         <strong>Time:</strong> {fnHandleTime(req.donationTime)}
                                     </p>
                                 </div>
-                                <div className="mt-4">
+                                <motion.div
+                                    initial={{ scale: 1 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="mt-4">
                                     <Link
                                         to={`/donation-request/${req._id}`}
                                         className="btn btn-sm bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 btn-block"
                                     >
                                         View
                                     </Link>
-                                </div>
+                                </motion.div>
                             </motion.div>
                         ))}
                     </div>

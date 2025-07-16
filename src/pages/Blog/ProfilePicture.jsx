@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 const ProfilePicture = ({ email }) => {
 
     const axiosPublic = useAxiosPublic();
-    console.log(email, 'frm profile picture');
+    // console.log(email, 'frm profile picture');
 
     const { data: userInfo, isLoading } = useQuery({
         queryKey: ['photoURL', email],
@@ -27,7 +27,7 @@ const ProfilePicture = ({ email }) => {
 
     // console.log(userInfo);
     const { name, photoURL } = userInfo.userInfo;
-    console.log(name,photoURL);
+    // console.log(name,photoURL);
 
     return (
         <div className='flex flex-col items-center'>
