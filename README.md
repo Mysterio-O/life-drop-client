@@ -16,11 +16,8 @@ LifeDrop is a full-stack web application that bridges the gap between blood dono
 # Live Link
 [LifeDrop](https://life-drop-bd.netlify.app)
 
-# Client Side Repository
-[Client](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-Mysterio-O)
-
 # Server Side Repository
-[Server](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-Mysterio-O)
+[Server](https://github.com/Mysterio-O/life-drop-server)
 
 ---
 
