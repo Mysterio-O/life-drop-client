@@ -7,6 +7,7 @@ import Footer from '../../components/Footer/Footer';
 import FeaturedSection from '../../components/FeaturedSection/FeaturedSection';
 import VolunteerSection from '../../components/VolunteerSection/VolunteerSection';
 import ReviewsCarousel from '../../components/ReviewsCarousel/ReviewsCarousel';
+import Newsletter from '../../components/Newsletter/Newsletter';
 
 const Home = () => {
 
@@ -65,6 +66,9 @@ const Home = () => {
             </section>
             <section id='contact-us'>
                 <ContactUs />
+            </section>
+            <section>
+                <Newsletter/>
             </section>
         </div>
     );

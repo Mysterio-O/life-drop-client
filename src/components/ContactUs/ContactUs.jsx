@@ -46,7 +46,7 @@ const ContactUs = () => {
             initial={{ opacity: 0, y: -150, scale: 0.75 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0F172A] p-4 my-10 rounded-xl relative overflow-hidden"
+            className="flex items-center justify-center bg-white dark:bg-[#0F172A] p-4  rounded-xl relative overflow-hidden my-10 mx-2 md:mx-4"
         >
             {/* Background Pattern */}
             {/* <div className="absolute inset-0 bg-[#D32F2F] opacity-5 dark:opacity-10" style={{ zIndex: -1 }}></div> */}
@@ -54,7 +54,7 @@ const ContactUs = () => {
             <motion.div
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
-                className="max-w-4xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-lg border border-[#E5E7EB] dark:border-[#334155]"
+                className="w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-lg border border-[#E5E7EB] dark:border-[#334155]"
             >
                 <motion.h2
                     initial={{ y: -20, opacity: 0 }}
@@ -78,7 +78,7 @@ const ContactUs = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.5 }}
-                        className="w-full md:w-2/3"
+                        className="w-full md:w-2/4"
                     >
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                             <div className="relative">
@@ -132,12 +132,11 @@ const ContactUs = () => {
                             </motion.button>
                         </form>
                     </motion.div>
-                    {/* Enhanced Contact Info */}
                     <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
-                        className="w-full md:w-1/3 text-center md:text-left space-y-6"
+                        className="w-full md:w-2/4 text-center md:text-left space-y-6"
                     >
                         <h3 className="text-2xl font-semibold text-[#111827] dark:text-[#F8FAFC]">
                             Get in Touch

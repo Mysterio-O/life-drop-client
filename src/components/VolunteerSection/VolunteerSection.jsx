@@ -12,17 +12,17 @@ const VolunteerSection = () => {
 
     return (
         <motion.section
-            initial={{ opacity: 0, x: 100 }}
+            initial={{ opacity: 0, x: "-20%" }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="py-2 bg-white dark:bg-[#0F172A] overflow-hidden"
         >
-            <div className="container mx-auto px-4 py-10">
+            <div className="container mx-auto px-4 md:px-0 py-10">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="max-w-6xl mx-auto bg-white dark:bg-[#1E293B] p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center justify-between gap-8"
+                    className="bg-white dark:bg-[#1E293B] p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center justify-between gap-8"
                 >
                     {/* Text and Icon Column */}
                     <div className="text-center md:text-left space-y-6 flex-1">
