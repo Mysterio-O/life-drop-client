@@ -5,6 +5,7 @@ import { useLocation } from 'react-router';
 import ContactUs from '../../components/ContactUs/ContactUs';
 import Footer from '../../components/Footer/Footer';
 import FeaturedSection from '../../components/FeaturedSection/FeaturedSection';
+import VolunteerSection from '../../components/VolunteerSection/VolunteerSection';
 
 const Home = () => {
 
@@ -54,6 +55,9 @@ const Home = () => {
             </section>
             <section>
                 <FeaturedSection />
+            </section>
+            <section>
+                <VolunteerSection/>
             </section>
             <section id='contact-us'>
                 <ContactUs />

@@ -50,9 +50,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/donation-request/:id',
-                element: <PrivateRoute>
-                    <Request />
-                </PrivateRoute>
+                Component: Request
             },
             {
                 path: '/search-donors',

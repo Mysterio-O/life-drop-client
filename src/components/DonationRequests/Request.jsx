@@ -7,11 +7,13 @@ import Swal from 'sweetalert2';
 import { motion } from 'motion/react';
 import { IoIosDoneAll } from 'react-icons/io';
 import useUserStatus from '../../hooks/useUserStatus';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Request = () => {
     const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic();
     const { user } = useAuth();
-    const { status, status_loading } = useUserStatus();
+    const { status } = useUserStatus();
     const { id } = useParams();
     const queryClient = useQueryClient();
     const [showModal, setShowModal] = useState(false);
@@ -23,10 +25,11 @@ const Request = () => {
         queryKey: ['donation-request', id],
         enabled: !!id,
         queryFn: async () => {
-            const res = await axiosSecure.get(`donation-request/${id}`);
+            const res = await axiosPublic.get(`donation-request/${id}`);
             return res.data;
         },
     });
+    console.log(donationRequest);
 
     const { mutate: confirmDonation, isPending } = useMutation({
         mutationFn: async () => {
@@ -48,19 +51,11 @@ const Request = () => {
         },
     });
 
-    useEffect(()=> {
+    useEffect(() => {
         document.title = "Donation Details"
-    },[])
+    }, []);
 
-    const fnHandleTime = (time) => {
-        const [hourStr, minute] = time.split(":");
-        let hour = parseInt(hourStr);
-        const ampm = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12 || 12;
-        return `${hour}:${minute} ${ampm}`;
-    };
-
-    if (isLoading || status_loading) {
+    if (isLoading) {
         return (
             <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4">
                 <div className="skeleton h-10 w-2/3 mb-6 dark:bg-gray-700"></div>
@@ -72,6 +67,37 @@ const Request = () => {
             </div>
         );
     };
+
+    const fnHandleTime = (time) => {
+        if (!time) return;
+        console.log(time);
+        const [hourStr, minute] = time.split(":");
+        let hour = parseInt(hourStr);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${ampm}`;
+    };
+
+    const handleDonate = () => {
+        if (!user) {
+            Swal.fire({
+                title: "Sign In Required",
+                text: "Please Sign In To Donate.",
+                icon: "warning",
+                confirmButtonText: "Go to Sign In",
+                showCancelButton: true,
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if(result.isConfirmed){
+                    navigate('/login');
+                }
+            });
+            return;
+        }
+        setShowModal(true);
+    };
+
+
 
 
     return (
@@ -125,12 +151,12 @@ const Request = () => {
 
                 </div>
 
-                {status === 'active' && donationRequest.status === 'pending' && user.email !== donationRequest.requesterEmail && (
+                {donationRequest.status === 'pending' && (
                     <div className="flex justify-center mt-6">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => setShowModal(true)}
+                            onClick={handleDonate}
                             className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
                         >
                             Donate

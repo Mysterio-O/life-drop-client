@@ -1,39 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
-import { FaHeart, FaHandsHelping } from 'react-icons/fa';
+import { FaUserPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 
-const FeaturedSection = () => {
+const VolunteerSection = () => {
     const navigate = useNavigate();
-    const [livesSaved, setLivesSaved] = useState(0);
 
-    useEffect(() => {
-        const target = 1500;
-        let start = 0;
-        const duration = 5000;
-        const stepTime = Math.abs(Math.floor(duration / target));
-        const timer = setInterval(() => {
-            start += 1;
-            setLivesSaved(start);
-            if (start >= target) clearInterval(timer);
-        }, stepTime);
-        return () => clearInterval(timer);
-    }, []);
-
-    const handleFundingClick = () => {
-        navigate('/give-funding');
-    };
-
-    const handleRequestClick = () => {
-        navigate('/dashboard/create-donation-request');
+    const handleVolunteerClick = () => {
+        navigate('/volunteer-request');
     };
 
     return (
         <motion.section
-            initial={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="py-2 bg-white dark:bg-[#0F172A]  overflow-hidden"
+            className="py-2 bg-white dark:bg-[#0F172A] overflow-hidden"
         >
             <div className="container mx-auto px-4 py-10">
                 <motion.div
@@ -42,7 +24,7 @@ const FeaturedSection = () => {
                     transition={{ delay: 0.2, duration: 0.6 }}
                     className="max-w-6xl mx-auto bg-white dark:bg-[#1E293B] p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center justify-between gap-8"
                 >
-                    {/* Text and Stats Column */}
+                    {/* Text and Icon Column */}
                     <div className="text-center md:text-left space-y-6 flex-1">
                         <motion.h1
                             initial={{ scale: 0.9 }}
@@ -50,7 +32,7 @@ const FeaturedSection = () => {
                             transition={{ delay: 0.4, duration: 0.5 }}
                             className="text-4xl md:text-5xl font-bold text-[#111827] dark:text-[#F8FAFC]"
                         >
-                            Welcome to LifeDrop
+                            Join as a Volunteer
                         </motion.h1>
                         <motion.p
                             initial={{ opacity: 0 }}
@@ -58,8 +40,7 @@ const FeaturedSection = () => {
                             transition={{ delay: 0.6, duration: 0.5 }}
                             className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl"
                         >
-                            Saving lives, one drop at a time. Join our mission to provide
-                            urgent blood donations across Bangladesh.
+                            Make a difference by helping coordinate blood donations and support our community efforts across Bangladesh.
                         </motion.p>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -70,20 +51,17 @@ const FeaturedSection = () => {
                             <motion.div
                                 animate={{ scale: [1, 1.2, 1] }}
                                 transition={{ duration: 1.5, repeat: Infinity }}
-                                className="text-[#D32F2F]"
+                                className="text-[#D32F2F] dark:text-[#EF5350]"
                             >
-                                <FaHeart className="text-3xl" />
+                                <FaUserPlus className="text-3xl" />
                             </motion.div>
-                            <span className="text-3xl font-semibold text-[#D32F2F] dark:text-[#EF5350]">
-                                {livesSaved}+
-                            </span>
                             <span className="text-lg text-gray-600 dark:text-gray-300">
-                                Lives Saved
+                                Become Part of the Team
                             </span>
                         </motion.div>
                     </div>
 
-                    {/* Buttons Column */}
+                    {/* Button Column */}
                     <div className="flex-1 space-x-4 text-center md:text-right space-y-4">
                         <motion.button
                             initial={{ opacity: 0, x: 50 }}
@@ -91,24 +69,15 @@ const FeaturedSection = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 1 }}
                             transition={{ delay: 1.0, duration: 0.5 }}
-                            onClick={handleFundingClick}
-                            className="px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-md hover:bg-[#B71C1C] transition-colors w-full md:w-auto cursor-pointer"
+                            onClick={handleVolunteerClick}
+                            className="px-6 py-3 bg-[#D32F2F] dark:bg-[#EF5350] text-white font-semibold rounded-md hover:bg-[#B71C1C] dark:hover:bg-[#F44336] transition-colors w-full md:w-auto cursor-pointer"
                         >
                             <div className='flex gap-3 items-center'>
-                                <span>Give Funding</span>
+                                <span>Be a Volunteer</span>
                                 <span>
-                                    <FaHandsHelping size={24}/>
+                                    <FaUserPlus size={24}/>
                                 </span>
                             </div>
-                        </motion.button>
-                        <motion.button
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 1.2, duration: 0.5 }}
-                            onClick={handleRequestClick}
-                            className="px-6 py-3 border-2 border-[#D32F2F] text-[#D32F2F] font-semibold rounded-md hover:bg-[#D32F2F] hover:text-white transition-colors w-full md:w-auto mt-4 md:mt-0 cursor-pointer"
-                        >
-                            Request Blood
                         </motion.button>
                     </div>
                 </motion.div>
@@ -121,4 +90,4 @@ const FeaturedSection = () => {
     );
 };
 
-export default FeaturedSection;
+export default VolunteerSection;
