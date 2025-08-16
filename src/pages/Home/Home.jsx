@@ -6,6 +6,7 @@ import ContactUs from '../../components/ContactUs/ContactUs';
 import Footer from '../../components/Footer/Footer';
 import FeaturedSection from '../../components/FeaturedSection/FeaturedSection';
 import VolunteerSection from '../../components/VolunteerSection/VolunteerSection';
+import ReviewsCarousel from '../../components/ReviewsCarousel/ReviewsCarousel';
 
 const Home = () => {
 
@@ -55,6 +56,9 @@ const Home = () => {
             </section>
             <section>
                 <FeaturedSection />
+            </section>
+            <section>
+                <ReviewsCarousel/>
             </section>
             <section>
                 <VolunteerSection/>
