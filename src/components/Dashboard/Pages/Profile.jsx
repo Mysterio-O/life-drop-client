@@ -36,6 +36,7 @@ const Profile = () => {
             return res.data;
         }
     });
+    console.log(selectedUser);
 
 
     // console.log(selectedUser);
@@ -52,7 +53,7 @@ const Profile = () => {
     const filteredUpazilas = selectedDistrict
         ? upazilas.filter(u => u.district_id === selectedDistrict)
         : [];
-        // console.log(filteredDistricts, filteredUpazilas);
+    // console.log(filteredDistricts, filteredUpazilas);
 
     useEffect(() => {
         fetch('/division.json').then(res => res.json()).then(data => setDivisions(data)).catch(err => console.log('error fetching division data', err));
@@ -120,7 +121,7 @@ const Profile = () => {
 
 
     const onSubmit = async (data) => {
-        // console.log(data);
+        console.log(data);
         setLoading(true)
 
         const updatedData = {};
@@ -131,6 +132,13 @@ const Profile = () => {
             updateFB.displayName = data.name
         }
         if (data.bloodGroup && data.bloodGroup !== selectedUser.blood_group) updatedData.blood_group = data.bloodGroup;
+
+        if (data?.number) {
+            updatedData.number = data.number
+        }
+        if (data?.address) {
+            updatedData.address = data.address
+        }
 
         const { photo } = data;
         // console.log(photo.length);
@@ -225,6 +233,8 @@ const Profile = () => {
                     });
                 })
         }
+
+        console.log(updatedData);
 
         try {
             const res = await axiosSecure.patch(`/user/update/${selectedUser._id}`, updatedData);
@@ -429,6 +439,32 @@ const Profile = () => {
                                 </option>
                             ))}
                         </select>
+                    </motion.div>
+                    <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.7 }}
+                    >
+                        <input
+                            {...register('number')}
+                            defaultValue={selectedUser?.number}
+                            type="number"
+                            placeholder='Enter Your Number'
+                            disabled={!edit}
+                            className={`w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] ${!edit ? 'border-0 cursor-not-allowed' : ''}`} />
+                    </motion.div>
+                    <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.7 }}
+                    >
+                        <input
+                            {...register('address')}
+                            defaultValue={selectedUser?.address}
+                            type="text"
+                            placeholder='Enter Your Address'
+                            disabled={!edit}
+                            className={`w-full p-3 rounded-md border border-[#E5E7EB] dark:border-[#334155] bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC] focus:outline-none focus:ring-2 focus:ring-[#D32F2F] dark:focus:ring-[#EF5350] ${!edit ? 'border-0 cursor-not-allowed' : ''}`} />
                     </motion.div>
                     <AnimatePresence>
                         {
