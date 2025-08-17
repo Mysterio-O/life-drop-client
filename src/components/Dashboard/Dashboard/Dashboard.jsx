@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
 import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog, FaEnvelope, FaUserPlus } from 'react-icons/fa';
+import { TbUrgent } from "react-icons/tb";
 import LogoutButton from '../../../shared/LogoutButton';
 import { motion } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
@@ -63,6 +64,7 @@ const Dashboard = ({ closeDashboard }) => {
         (role === 'admin') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true },
         (role === 'admin') && { name: 'Volunteer Application', icon: <FaUserPlus />, path: "/dashboard/volunteer-applications", end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'All Messages', icon: <FaEnvelope />, path: "/dashboard/all-message", end: true },
+        (role === 'admin' || role === 'volunteer') && { name: 'Emergency Request', icon: <TbUrgent />, path: "/dashboard/emergency-requests", end: true },
     ].filter(Boolean);
 
     const handleClick = () => {

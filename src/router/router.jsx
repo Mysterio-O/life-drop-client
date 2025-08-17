@@ -31,6 +31,9 @@ import TermsAndService from "../pages/TermsAndService/TermsAndService";
 import Setting from "../components/Dashboard/Pages/Setting";
 import BeAVolunteer from "../pages/BeAVolunteer/BeAVolunteer";
 import VolunteerApplications from "../components/Dashboard/Pages/VolunteerApplications/VolunteerApplications";
+import ReqAndRes from "../components/VolunteerSection/ReqAndRes";
+import EmergencyRequests from "../components/EmergencyRequests/EmergencyRequests";
+import EmergencyRequestsAdmin from "../components/Dashboard/Pages/EmergencyRequests/EmergencyRequestsAdmin";
 
 export const router = createBrowserRouter([
     {
@@ -79,9 +82,9 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
-                path:'/be-a-volunteer',
+                path: '/be-a-volunteer',
                 element: <PrivateRoute>
-                    <BeAVolunteer/>
+                    <BeAVolunteer />
                 </PrivateRoute>
             },
             {
@@ -95,6 +98,10 @@ export const router = createBrowserRouter([
             {
                 path: '/terms',
                 Component: TermsAndService
+            },
+            {
+                path: '/responsibilities',
+                Component: ReqAndRes
             }
         ]
     },
@@ -145,6 +152,12 @@ export const router = createBrowserRouter([
                 </SharedRoute>
             },
             {
+                path: 'emergency-requests',
+                element: <SharedRoute>
+                    <EmergencyRequestsAdmin />
+                </SharedRoute>
+            },
+            {
                 path: "all-users",
                 element: <AdminRoute>
                     <AllUsers />
@@ -152,8 +165,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'volunteer-applications',
-                element:<AdminRoute>
-                    <VolunteerApplications/>
+                element: <AdminRoute>
+                    <VolunteerApplications />
                 </AdminRoute>
             },
             {

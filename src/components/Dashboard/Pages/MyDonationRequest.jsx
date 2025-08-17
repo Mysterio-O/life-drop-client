@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
@@ -19,11 +19,12 @@ const MyDonationRequest = () => {
     const [limit] = useState(10);
     const [allowDelete] = useState(true);
     const [isUser] = useState(true);
+    const [reqLoading, setReqLoading] = useState(false);
 
 
-    useEffect(()=> {
+    useEffect(() => {
         document.title = 'My Requests'
-    },[])
+    }, [])
 
 
     const { data: donationRequests = [], refetch, isLoading } = useQuery({
@@ -37,6 +38,15 @@ const MyDonationRequest = () => {
         },
         enabled: !!user?.email,
     });
+
+    const {mutateAsync: sendRequest}=useMutation({
+        mutationFn: async({id,status})=> {
+            console.log(id,status);
+            const res = await axiosSecure.post(`/send-emergency-request/${id}`,{status});
+            console.log(res);
+            return res.data;
+        }
+    })
 
     const totalPages = donationRequests?.totalPages || 1;
 
@@ -117,12 +127,29 @@ const MyDonationRequest = () => {
         }
     };
 
+    const handleRequestEmergency = (id, status) => {
+        console.log('clicked', id, status);
+
+        Swal.fire({
+                    title: `Are you sure?`,
+                    text: `You want to set ${status} this request?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#D32F2F',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        sendRequest({id,status});
+                    }
+                });
+    }
+
     const title = 'My Donation Requests'
     const showEmergency = false;
 
     return (
         <>
-            <DonationRequestLayout showEmergency={showEmergency} statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} allowDelete={allowDelete} isUser={isUser} />
+            <DonationRequestLayout handleRequestEmergency={handleRequestEmergency} showEmergency={showEmergency} statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} allowDelete={allowDelete} isUser={isUser} />
         </>
     );
 };

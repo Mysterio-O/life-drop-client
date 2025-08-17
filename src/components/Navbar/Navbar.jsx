@@ -113,6 +113,26 @@ const Navbar = () => {
             Blog
         </NavLink>,
         <NavLink
+            key="about-us"
+            to="/about-us"
+            className={({ isActive }) =>
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
+                }`
+            }
+        >
+            About Us
+        </NavLink>,
+        <NavLink
+            key="responsibilities"
+            to="/responsibilities"
+            className={({ isActive }) =>
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
+                }`
+            }
+        >
+            Volunteer Responsibilities
+        </NavLink>,
+        <NavLink
             key="login"
             to="/login"
             className={({ isActive }) =>
@@ -175,6 +195,16 @@ const Navbar = () => {
             }
         >
             Be a Volunteer
+        </NavLink>,
+        <NavLink
+            key="responsibilities"
+            to="/responsibilities"
+            className={({ isActive }) =>
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
+                }`
+            }
+        >
+            Volunteer Responsibilities
         </NavLink>,
         <div key="dropdown" className="dropdown dropdown-end">
             <motion.div

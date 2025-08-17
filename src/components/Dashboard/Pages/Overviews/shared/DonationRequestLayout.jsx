@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { FaEye, FaCheck, FaTimes, FaTrash, FaEdit, FaEllipsisV, FaExclamationTriangle } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react";
 import { useNavigate } from 'react-router';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled", "emergency"];
-const DonationRequestLayout = ({ statusFilter, showEmergency, handleStatusChange, actionLoading, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete, isUser }) => {
+const DonationRequestLayout = ({ statusFilter, handleRequestEmergency, showEmergency, handleStatusChange, actionLoading, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete, isUser }) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -135,18 +136,23 @@ const DonationRequestLayout = ({ statusFilter, showEmergency, handleStatusChange
                                         <td className="text-center">{fnHandleTime(request.donationTime)}</td>
                                         <td className="text-center">{request.bloodGroup || '--'}</td>
                                         <td className="text-center">
-                                            <span className={`badge ${request.status === "done"
-                                                ? "badge-success"
-                                                : request.status === "pending"
-                                                    ? "badge-warning"
-                                                    : request.status === "in_progress"
-                                                        ? "badge-info"
-                                                        : request.status === "emergency"
-                                                            ? "badge-error"
-                                                            : "badge-error"
-                                                }`}>
-                                                {request.status}
-                                            </span>
+                                            {
+                                                request.emergencyRequest ? <span className="badge badge-info">
+                                                    Requested
+                                                </span>
+                                                    : <span className={`badge ${request.status === "done"
+                                                        ? "badge-success"
+                                                        : request.status === "pending"
+                                                            ? "badge-warning"
+                                                            : request.status === "in_progress"
+                                                                ? "badge-info"
+                                                                : request.status === "emergency"
+                                                                    ? "badge-error"
+                                                                    : "badge-error"
+                                                        }`}>
+                                                        {request.status}
+                                                    </span>
+                                            }
                                         </td>
                                         <td>
                                             {request.status === 'in_progress' || request.status === 'done' || request.status === 'emergency'
@@ -242,6 +248,33 @@ const DonationRequestLayout = ({ statusFilter, showEmergency, handleStatusChange
                                                                     <FaExclamationTriangle /> Mark as Emergency
                                                                 </button>
                                                             )}
+                                                            {
+                                                                request.status === "pending" && !showEmergency && (
+                                                                    <button
+                                                                        className={`flex items-center gap-2 w-full px-4 py-2 text-sm ${request?.emergencyRequest ? 'text-green-500' : 'text-[#F59E0B] dark:text-[#FBBF24]'} hover:bg-[#F1F5F9] dark:hover:bg-[#475569]`}
+                                                                        onClick={() => {
+                                                                            handleRequestEmergency(request._id, 'emergency');
+                                                                            toggleMenu(null);
+                                                                        }}
+                                                                        disabled={actionLoading || request?.emergencyRequest}
+                                                                    >
+                                                                        {
+                                                                            request?.emergencyRequest ? <>
+                                                                                <IoCheckmarkDoneOutline />
+                                                                                <span className='text-balance'>
+                                                                                    Requested
+                                                                                </span>
+                                                                            </>
+                                                                                : <>
+                                                                                    <FaExclamationTriangle />
+                                                                                    <span className='text-balance'>
+                                                                                        Req for Emergency
+                                                                                    </span>
+                                                                                </>
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            }
                                                         </div>
                                                     </motion.div>
                                                 )}

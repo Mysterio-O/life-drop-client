@@ -95,7 +95,7 @@ const Login = () => {
       >
         <span
           onClick={() => setCredentials(!credentials)}
-          className={`absolute dark:text-black text-white text-xl top-0 right-0 ${credentials ? 'bg-red-500' : 'bg-green-400'} px-4 py-2 rounded-b-full hover:scale-110 transition-all duration-300 cursor-pointer`}>
+          className={`absolute dark:text-black text-white text-xl -top-3 right-0 ${credentials ? 'bg-red-500' : 'bg-green-400'} px-4 py-2 rounded-b-full hover:scale-110 transition-all duration-300 cursor-pointer`}>
           {
             credentials ? 'Remove Credentials' : 'Admin Credentials'
           }
