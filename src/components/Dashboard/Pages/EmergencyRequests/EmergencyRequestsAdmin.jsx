@@ -32,6 +32,7 @@ const EmergencyRequestsAdmin = () => {
       return res.data;
     }
   });
+  // console.log(emergencyData);
 
   const { emergencyRequests = [], total = 0 } = emergencyData;
   const totalPages = Math.ceil(total / limit) || 1;
