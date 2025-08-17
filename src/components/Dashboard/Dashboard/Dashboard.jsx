@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router';
 import ThemeSwitch from '../../../shared/ThemeSwitch';
-import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog, FaEnvelope } from 'react-icons/fa';
+import { FaHeart, FaUser, FaUserMd, FaPlusSquare, FaList, FaFileAlt, FaUsersCog, FaEnvelope, FaUserPlus } from 'react-icons/fa';
 import LogoutButton from '../../../shared/LogoutButton';
 import { motion } from 'motion/react';
 import useAuth from '../../../hooks/useAuth';
@@ -61,6 +61,7 @@ const Dashboard = ({ closeDashboard }) => {
         (role === 'admin' || role === 'volunteer') && { name: 'All Request', icon: <FaUserMd />, path: "/dashboard/all-blood-donation-request", end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'Content Management', icon: <FaFileAlt />, path: "/dashboard/content-management", end: true },
         (role === 'admin') && { name: 'All Users', icon: <FaUsersCog />, path: "/dashboard/all-users", end: true },
+        (role === 'admin') && { name: 'Volunteer Application', icon: <FaUserPlus />, path: "/dashboard/volunteer-applications", end: true },
         (role === 'admin' || role === 'volunteer') && { name: 'All Messages', icon: <FaEnvelope />, path: "/dashboard/all-message", end: true },
     ].filter(Boolean);
 
@@ -73,7 +74,7 @@ const Dashboard = ({ closeDashboard }) => {
             initial={{ x: -30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen'>
+            className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen overflow-scroll'>
             {/* Logo and Theme Toggle */}
             <div>
                 <div className='flex items-center justify-around gap-2 mb-8'>

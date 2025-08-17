@@ -166,6 +166,16 @@ const Navbar = () => {
         >
             Give Funding
         </NavLink>,
+        <NavLink
+            key="be-a-volunteer"
+            to="/be-a-volunteer"
+            className={({ isActive }) =>
+                `text-[#111827] dark:text-[#F8FAFC] px-3 py-2 rounded-md hover:bg-[#D32F2F] hover:text-white dark:hover:bg-[#EF5350] transition-colors ${isActive ? "font-bold bg-[#EF5350]" : ""
+                }`
+            }
+        >
+            Be a Volunteer
+        </NavLink>,
         <div key="dropdown" className="dropdown dropdown-end">
             <motion.div
                 tabIndex={0}

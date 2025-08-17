@@ -2,12 +2,31 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { FaUserPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const VolunteerSection = () => {
     const navigate = useNavigate();
+    const {user}=useAuth()
 
     const handleVolunteerClick = () => {
-        navigate('/volunteer-request');
+        if(!user){
+            Swal.fire({
+                title:"SignIn Required!",
+                icon:'warning',
+                text:"Sign In to submit an application.",
+                confirmButtonText:"Go to sign in",
+                showCancelButton: true,
+                cancelButtonText:"Cancel",
+                cancelButtonColor:'red',
+                confirmButtonColor:'green'
+            })
+            .then((result)=> {
+                if(result.isConfirmed){
+                    navigate('/be-a-volunteer');
+                }
+            })
+        }
     };
 
     return (

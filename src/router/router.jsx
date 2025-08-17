@@ -29,6 +29,8 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndService from "../pages/TermsAndService/TermsAndService";
 import Setting from "../components/Dashboard/Pages/Setting";
+import BeAVolunteer from "../pages/BeAVolunteer/BeAVolunteer";
+import VolunteerApplications from "../components/Dashboard/Pages/VolunteerApplications/VolunteerApplications";
 
 export const router = createBrowserRouter([
     {
@@ -74,6 +76,12 @@ export const router = createBrowserRouter([
                 path: 'funding',
                 element: <PrivateRoute>
                     <Funding />
+                </PrivateRoute>
+            },
+            {
+                path:'/be-a-volunteer',
+                element: <PrivateRoute>
+                    <BeAVolunteer/>
                 </PrivateRoute>
             },
             {
@@ -140,6 +148,12 @@ export const router = createBrowserRouter([
                 path: "all-users",
                 element: <AdminRoute>
                     <AllUsers />
+                </AdminRoute>
+            },
+            {
+                path: 'volunteer-applications',
+                element:<AdminRoute>
+                    <VolunteerApplications/>
                 </AdminRoute>
             },
             {
