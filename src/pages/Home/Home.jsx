@@ -8,6 +8,7 @@ import FeaturedSection from '../../components/FeaturedSection/FeaturedSection';
 import VolunteerSection from '../../components/VolunteerSection/VolunteerSection';
 import ReviewsCarousel from '../../components/ReviewsCarousel/ReviewsCarousel';
 import Newsletter from '../../components/Newsletter/Newsletter';
+import EmergencyRequests from '../../components/EmergencyRequests/EmergencyRequests';
 
 const Home = () => {
 
@@ -57,6 +58,9 @@ const Home = () => {
             </section>
             <section>
                 <FeaturedSection />
+            </section>
+            <section>
+                <EmergencyRequests/>
             </section>
             <section>
                 <ReviewsCarousel/>

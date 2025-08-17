@@ -6,27 +6,24 @@ import DonationRequestLayout from './Overviews/shared/DonationRequestLayout';
 import useUserRole from '../../../hooks/useUserRole';
 
 const AllDonations = () => {
-
     const { role, role_loading } = useUserRole();
-    // console.log(role);
-
     const limit = 10;
     const [currentPage, setCurrentPage] = useState(1);
     const axiosSecure = useAxiosSecure();
     const [statusFilter, setStatusFilter] = useState("all");
     const [allowDelete, setAllowDelete] = useState(true);
-
-    const [isUser]=useState(false)
+    const [isUser] = useState(false);
+    const [actionLoading,setActionLoading]=useState(false);
 
     useEffect(() => {
         if (role === 'volunteer') {
-            setAllowDelete(false)
+            setAllowDelete(false);
         }
     }, [role]);
 
-    useEffect(()=> {
-        document.title = "All Requests"
-    },[])
+    useEffect(() => {
+        document.title = "All Requests";
+    }, []);
 
     const { data: donationRequests = [], isLoading, refetch } = useQuery({
         queryKey: ['all-blood-donation-request', limit, currentPage, statusFilter],
@@ -40,9 +37,6 @@ const AllDonations = () => {
             return res.data;
         }
     });
-
-    // console.log(donationRequests);
-    // console.log(statusFilter);
 
     const totalPages = donationRequests?.totalPages || 1;
 
@@ -66,9 +60,11 @@ const AllDonations = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
+                setActionLoading(true);
                 axiosSecure.delete(`/donation-requests/${id}`)
                     .then(res => {
                         if (res.data.result.deletedCount > 0) {
+                            setActionLoading(false);
                             refetch();
                             Swal.fire({
                                 icon: 'success',
@@ -80,6 +76,7 @@ const AllDonations = () => {
                                 },
                             });
                         }
+                        setActionLoading(false);
                     });
             }
         });
@@ -98,6 +95,12 @@ const AllDonations = () => {
                 text: "This will mark the request as canceled but keep it in your history.",
                 icon: "warning",
                 success: "Request has been canceled."
+            },
+            emergency: {
+                title: "Mark as Emergency?",
+                text: "This will prioritize the request as an emergency.",
+                icon: "warning",
+                success: "Request marked as emergency."
             }
         };
 
@@ -106,28 +109,53 @@ const AllDonations = () => {
             text: statusMessages[newStatus].text,
             icon: statusMessages[newStatus].icon,
             showCancelButton: true,
-            confirmButtonText: `Yes, ${newStatus === 'done' ? 'mark done' : 'cancel it'}`,
+            confirmButtonColor: '#111827',
+            cancelButtonColor: '#D32F2F',
+            confirmButtonText: `Yes, ${newStatus === 'done' ? 'mark done' : newStatus === 'canceled' ? 'cancel it' : 'mark as emergency'}`,
+            customClass: {
+                confirmButton: 'dark:bg-[#F8FAFC]',
+                cancelButton: 'dark:bg-[#EF5350]',
+            },
         });
 
         if (confirm.isConfirmed) {
             try {
+                setActionLoading(true);
                 const res = await axiosSecure.patch(`/donation-requests/${id}`, { status: newStatus, donorEmail: donor_email });
                 if (res.data.result.modifiedCount) {
                     Swal.fire("Success!", statusMessages[newStatus].success, "success");
+                    setActionLoading(false);
                     refetch();
                 }
             } catch (err) {
                 console.log(`error updating status to ${newStatus}`, err);
+                setActionLoading(false);
                 Swal.fire("Error", "Something went wrong.", "error");
             }
         }
     };
 
-    const title = 'All Donation Requests'
+    const title = 'All Donation Requests';
 
     return (
         <>
-            <DonationRequestLayout statusFilter={statusFilter} handleStatusChange={handleStatusChange} isLoading={isLoading} donationRequests={donationRequests} currentPage={currentPage} limit={limit} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} setCurrentPage={setCurrentPage} totalPages={totalPages} title={title} role_loading={role_loading} allowDelete={allowDelete} isUser={isUser} />
+            <DonationRequestLayout
+                statusFilter={statusFilter}
+                handleStatusChange={handleStatusChange}
+                isLoading={isLoading}
+                donationRequests={donationRequests}
+                currentPage={currentPage}
+                limit={limit}
+                handleDelete={handleDelete}
+                handleStatusUpdate={handleStatusUpdate}
+                setCurrentPage={setCurrentPage}
+                totalPages={totalPages}
+                title={title}
+                role_loading={role_loading}
+                allowDelete={allowDelete}
+                isUser={isUser}
+                actionLoading={actionLoading}
+            />
         </>
     );
 };

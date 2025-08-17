@@ -74,7 +74,7 @@ const Dashboard = ({ closeDashboard }) => {
             initial={{ x: -30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen overflow-scroll'>
+            className='sticky top-0 flex flex-col justify-between pt-16 pb-6 px-4 bg-[#F9FAFB] dark:bg-[#1E293B] shadow-lg rounded-r-lg h-screen overflow-y-scroll'>
             {/* Logo and Theme Toggle */}
             <div>
                 <div className='flex items-center justify-around gap-2 mb-8'>
