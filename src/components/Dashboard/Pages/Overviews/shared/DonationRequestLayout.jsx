@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useNavigate } from 'react-router';
 
 const statusOptions = ["all", "pending", "in_progress", "done", "canceled", "emergency"];
-const DonationRequestLayout = ({ statusFilter, handleStatusChange, actionLoading, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete, isUser }) => {
+const DonationRequestLayout = ({ statusFilter, showEmergency, handleStatusChange, actionLoading, isLoading, donationRequests, currentPage, limit, handleDelete, handleStatusUpdate, setCurrentPage, totalPages, title, role_loading, allowDelete, isUser }) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -230,7 +230,7 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, actionLoading
                                                                     <FaEdit /> Edit Request
                                                                 </button>
                                                             )}
-                                                            {request.status === "pending" && (
+                                                            {request.status === "pending" && showEmergency && (
                                                                 <button
                                                                     className="flex items-center gap-2 w-full px-4 py-2 text-sm text-[#F59E0B] dark:text-[#FBBF24] hover:bg-[#F1F5F9] dark:hover:bg-[#475569]"
                                                                     onClick={() => {
@@ -315,9 +315,9 @@ const DonationRequestLayout = ({ statusFilter, handleStatusChange, actionLoading
                             {(selectedRequest.status === 'done' || selectedRequest.status === 'in_progress' || selectedRequest.status === 'emergency') && (
                                 <p>
                                     <strong>
-                                        {selectedRequest.status === 'done' ? 'Donated By:' : 
-                                         selectedRequest.status === 'in_progress' ? 'Donor Info:' : 
-                                         selectedRequest.status === 'emergency' ? 'Donor Info:' : ''}
+                                        {selectedRequest.status === 'done' ? 'Donated By:' :
+                                            selectedRequest.status === 'in_progress' ? 'Donor Info:' :
+                                                selectedRequest.status === 'emergency' ? 'Donor Info:' : ''}
                                     </strong> {selectedRequest.donor_name} ({selectedRequest.donor_email || '--'}) ({selectedRequest.donor_number || '--'})
                                 </p>
                             )}

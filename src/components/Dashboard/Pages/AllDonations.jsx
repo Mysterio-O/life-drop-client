@@ -136,11 +136,13 @@ const AllDonations = () => {
     };
 
     const title = 'All Donation Requests';
+    const showEmergency = true;
 
     return (
         <>
             <DonationRequestLayout
                 statusFilter={statusFilter}
+                showEmergency={showEmergency}
                 handleStatusChange={handleStatusChange}
                 isLoading={isLoading}
                 donationRequests={donationRequests}

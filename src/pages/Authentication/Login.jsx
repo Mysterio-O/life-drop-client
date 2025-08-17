@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setAccountToLocalStorage } from "../../hooks/getAccountsFromLocalStorage";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -12,7 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
 
   const [isClosed, setIsClosed] = useState(false);
-
+  const [credentials, setCredentials] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state;
@@ -20,7 +20,23 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    setValue
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
+  useEffect(() => {
+    if (credentials) {
+      setValue('email', 'admin@gmail.com');
+      setValue("password", 'Admin123');
+    }else{
+      setValue('email', '');
+      setValue("password", '');
+    }
+  }, [credentials,setValue])
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -63,6 +79,7 @@ const Login = () => {
     }
   };
 
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -74,8 +91,15 @@ const Login = () => {
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="max-w-xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md"
+        className="max-w-xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-8 rounded-xl shadow-md relative"
       >
+        <span
+          onClick={() => setCredentials(!credentials)}
+          className={`absolute dark:text-black text-white text-xl top-0 right-0 ${credentials ? 'bg-red-500' : 'bg-green-400'} px-4 py-2 rounded-b-full hover:scale-110 transition-all duration-300 cursor-pointer`}>
+          {
+            credentials ? 'Remove Credentials' : 'Admin Credentials'
+          }
+        </span>
         <h2 className="text-2xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
           Login to LifeDrop
         </h2>
