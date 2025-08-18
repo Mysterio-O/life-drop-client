@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { FaCheckCircle, FaTasks } from 'react-icons/fa';
 
 const ReqAndRes = () => {
+
+ useEffect(()=> {
+        document.title = 'Volunteer Terms'
+    },[])
+
   const containerVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },

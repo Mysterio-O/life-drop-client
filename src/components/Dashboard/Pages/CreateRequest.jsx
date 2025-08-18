@@ -71,7 +71,7 @@ const CreateRequest = () => {
         donationRequest.division = division.name;
         donationRequest.district = district.name;
 
-        console.log(donationRequest);
+        // console.log(donationRequest);
 
         // You can send it to your server here using axiosSecure
         // await axiosSecure.post('/donation-requests', donationRequest);

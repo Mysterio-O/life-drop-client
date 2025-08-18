@@ -26,7 +26,7 @@ const Newsletter = () => {
                 customClass: { confirmButton: 'dark:bg-[#F8FAFC]' },
             });
             reset();
-            console.log(variables);
+            // console.log(variables);
 
             /**
              * sending welcome email with email js

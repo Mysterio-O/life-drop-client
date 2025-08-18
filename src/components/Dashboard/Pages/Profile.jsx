@@ -121,7 +121,7 @@ const Profile = () => {
 
 
     const onSubmit = async (data) => {
-        console.log(data);
+        // console.log(data);
         setLoading(true)
 
         const updatedData = {};
@@ -234,7 +234,7 @@ const Profile = () => {
                 })
         }
 
-        console.log(updatedData);
+        // console.log(updatedData);
 
         try {
             const res = await axiosSecure.patch(`/user/update/${selectedUser._id}`, updatedData);

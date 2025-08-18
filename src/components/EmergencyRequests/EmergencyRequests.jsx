@@ -14,16 +14,16 @@ const EmergencyRequests = () => {
         queryKey: ["emergency-donation-requests", currentPage],
         queryFn: async () => {
             const res = await axiosPublic.get(`/donation-requests/emergency?page=${currentPage}&limit=${limit}`);
-            console.log(res)
+            // console.log(res)
             return res.data;
         },
     });
-    console.log(responseData);
+    // console.log(responseData);
 
     const pendingRequests = responseData.requests || [];
     const totalRequests = responseData.total || 0;
     const totalPages = Math.ceil(totalRequests / limit);
-    console.log(pendingRequests);
+    // console.log(pendingRequests);
 
     const fnHandleTime = (time) => {
         const [hourStr, minute] = time.split(":");

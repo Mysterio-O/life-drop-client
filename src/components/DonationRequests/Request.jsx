@@ -4,234 +4,313 @@ import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { IoIosDoneAll } from 'react-icons/io';
+import { FaUser, FaHospital, FaMapMarkerAlt, FaCalendar, FaExclamationTriangle } from 'react-icons/fa';
 import useUserStatus from '../../hooks/useUserStatus';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Request = () => {
-    const axiosSecure = useAxiosSecure();
-    const axiosPublic = useAxiosPublic();
-    const { user } = useAuth();
-    const { status } = useUserStatus();
-    const { id } = useParams();
-    const queryClient = useQueryClient();
-    const [showModal, setShowModal] = useState(false);
-    const [mobile, setMobile] = useState('');
+  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+  const { status } = useUserStatus();
+  const { id } = useParams();
+  const queryClient = useQueryClient();
+  const [showModal, setShowModal] = useState(false);
+  const [mobile, setMobile] = useState('');
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const { data: donationRequest = {}, isLoading } = useQuery({
+    queryKey: ['donation-request', id],
+    enabled: !!id,
+    queryFn: async () => {
+      const res = await axiosPublic.get(`donation-request/${id}`);
+      return res.data;
+    },
+  });
 
-    const { data: donationRequest = {}, isLoading } = useQuery({
-        queryKey: ['donation-request', id],
-        enabled: !!id,
-        queryFn: async () => {
-            const res = await axiosPublic.get(`donation-request/${id}`);
-            return res.data;
-        },
-    });
-    console.log(donationRequest);
+  const { mutate: confirmDonation, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await axiosSecure.patch(`/donation-requests/${id}`, {
+        status: 'in_progress',
+        donorMobile: mobile || null,
+        donorEmail: user.email || '',
+        donorName: user.displayName || ''
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Donation confirmed.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+      setShowModal(false);
+      queryClient.invalidateQueries(['donation-request', id]);
+    },
+    onError: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong.',
+        confirmButtonColor: '#D32F2F'
+      });
+    },
+  });
 
-    const { mutate: confirmDonation, isPending } = useMutation({
-        mutationFn: async () => {
-            const res = await axiosSecure.patch(`/donation-requests/${id}`, {
-                status: 'in_progress',
-                donorMobile: mobile || null,
-                donorEmail: user.email || '',
-                donorName: user.displayName || ''
-            });
-            return res.data;
-        },
-        onSuccess: () => {
-            Swal.fire('Success!', 'Donation confirmed.', 'success');
-            setShowModal(false);
-            queryClient.invalidateQueries(['donation-request', id]);
-        },
-        onError: () => {
-            Swal.fire('Error', 'Something went wrong.', 'error');
-        },
-    });
+  useEffect(() => {
+    document.title = 'Donation Details | LifeDrop';
+  }, []);
 
-    useEffect(() => {
-        document.title = "Donation Details"
-    }, []);
+  const fnHandleTime = (time) => {
+    if (!time) return '--';
+    const [hourStr, minute] = time.split(':');
+    let hour = parseInt(hourStr);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12;
+    return `${hour}:${minute} ${ampm}`;
+  };
 
-    if (isLoading) {
-        return (
-            <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4">
-                <div className="skeleton h-10 w-2/3 mb-6 dark:bg-gray-700"></div>
-                <div className="max-w-3xl w-full bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md space-y-4">
-                    {[...Array(7)].map((_, idx) => (
-                        <div key={idx} className="skeleton h-6 w-full dark:bg-gray-700"></div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
-
-    const fnHandleTime = (time) => {
-        if (!time) return;
-        console.log(time);
-        const [hourStr, minute] = time.split(":");
-        let hour = parseInt(hourStr);
-        const ampm = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12 || 12;
-        return `${hour}:${minute} ${ampm}`;
-    };
-
-    const handleDonate = () => {
-        if (!user) {
-            Swal.fire({
-                title: "Sign In Required",
-                text: "Please Sign In To Donate.",
-                icon: "warning",
-                confirmButtonText: "Go to Sign In",
-                showCancelButton: true,
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if(result.isConfirmed){
-                    navigate('/login');
-                }
-            });
-            return;
+  const handleDonate = () => {
+    if (!user) {
+      Swal.fire({
+        title: 'Sign In Required',
+        text: 'Please sign in to donate.',
+        icon: 'warning',
+        confirmButtonText: 'Go to Sign In',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#D32F2F',
+        customClass: {
+          confirmButton: 'dark:bg-[#EF5350]',
+          cancelButton: 'dark:bg-gray-700'
         }
-        setShowModal(true);
-    };
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
+      return;
+    }
+    setShowModal(true);
+  };
 
-
-
-
+  if (isLoading) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl min-h-[calc(100vh-64px)] mx-auto p-4 dark:text-white"
-        >
-            <h2 className="text-3xl font-bold mb-6 text-center text-[#111827] dark:text-[#F8FAFC]">
-                Donation Request Details
-            </h2>
-            <motion.div
-                initial={{ scale: 0.98 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 space-y-4"
-            >
-                <div className="flex flex-col gap-4 divide-y">
-                    <div className="flex justify-between items-center py-2">
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Created At:</strong> {new Date(donationRequest.createdAt).toLocaleDateString()}</p>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Requester Name:</strong> {donationRequest.requesterName}</p>
-                    </div>
-                    <div className='flex justify-between items-center py-2'>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Requester Email:</strong> {donationRequest.requesterEmail}</p>
-                        <p className="text-lg col-span-2 text-center"><strong className="text-[#111827] dark:text-[#F8FAFC]">Status:</strong> {donationRequest.status}</p>
-                    </div>
-                    <div className='flex justify-between items-center py-2'>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Recipient Name:</strong> {donationRequest.recipientName}</p>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Recipient Number:</strong> {donationRequest.recipientNumber}</p>
-                    </div>
-                    <div className='flex justify-around items-center py-2'>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Division:</strong> {donationRequest.division}</p>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">District:</strong> {donationRequest.district}</p>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Upazila:</strong> {donationRequest.upazila}</p>
-                    </div>
-
-                    <div className='flex justify-between items-center py-2'>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Hospital Name:</strong> {donationRequest.hospitalName}</p>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Address:</strong> {donationRequest.address}</p>
-                    </div>
-                    <div className='flex justify-between items-center py-2'>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Blood Group:</strong> {donationRequest.bloodGroup}</p>
-                        <p className="text-lg col-span-2"><strong className="text-[#111827] dark:text-[#F8FAFC]">Request Message:</strong> {donationRequest.requestMessage}</p>
-                    </div>
-                    <div className='flex justify-between items-center py-2'>
-                        <p className="text-lg text-right"><strong className="text-[#111827] dark:text-[#F8FAFC]">Donation Date:</strong> {donationRequest.donationDate}</p>
-                        <p className="text-lg"><strong className="text-[#111827] dark:text-[#F8FAFC]">Donation Time:</strong> {fnHandleTime(donationRequest.donationTime)}</p>
-                    </div>
-
-
-                </div>
-
-                {donationRequest.status === 'pending' && (
-                    <div className="flex justify-center mt-6">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={handleDonate}
-                            className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
-                        >
-                            Donate
-                        </motion.button>
-                    </div>
-                )}
-
-                {
-                    status === 'blocked' && <p className='text-balance text-red-500 text-center font-semibold underline'>Your account has been blocked. An user cannot donate while they are blocked! Contact Admin
-                    </p>
-                }
-
-            </motion.div>
-
-            {/* Modal */}
-            {showModal && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                    onClick={() => setShowModal(false)}
-                >
-                    <motion.div
-                        initial={{ scale: 0.9, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.9, y: 20 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3 className="text-xl font-bold mb-4 text-center text-[#111827] dark:text-[#F8FAFC]">Confirm Donation</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Name</label>
-                                <input type="text" readOnly value={user?.displayName || ''} className="input input-bordered w-full bg-gray-100 dark:bg-gray-800" />
-                            </div>
-                            <div>
-                                <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Email</label>
-                                <input type="email" readOnly value={user?.email || ''} className="input input-bordered w-full bg-gray-100 dark:bg-gray-800" />
-                            </div>
-                            <div>
-                                <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Mobile (optional)</label>
-                                <input
-                                    type="tel"
-                                    value={mobile}
-                                    onChange={(e) => setMobile(e.target.value)}
-                                    className="input input-bordered w-full"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-end mt-6 space-x-2">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => setShowModal(false)}
-                                className="btn btn-outline text-[#D32F2F] dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                Cancel
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={confirmDonation}
-                                disabled={isPending}
-                                className="btn bg-[#D32F2F] text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500"
-                            >
-                                {isPending ? 'Confirming...' : 'Confirm'}
-                            </motion.button>
-                        </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </motion.div>
+      <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4 bg-white dark:bg-[#0F172A]">
+        <div className="skeleton h-12 w-3/4 mb-8 max-w-md dark:bg-gray-700"></div>
+        <div className="max-w-3xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-6 sm:p-8 rounded-xl shadow-md space-y-6">
+          {[...Array(8)].map((_, idx) => (
+            <div key={idx} className="skeleton h-8 w-full dark:bg-gray-700"></div>
+          ))}
+        </div>
+      </div>
     );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4 sm:p-6 bg-white dark:bg-[#0F172A]"
+    >
+      <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-center text-[#111827] dark:text-[#F8FAFC]">
+        Donation Request Details
+      </h2>
+      <motion.article
+        initial={{ scale: 0.98, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="max-w-3xl w-full bg-[#F9FAFB] dark:bg-[#1E293B] p-6 sm:p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+        aria-labelledby="donation-details-heading"
+      >
+        <section className="space-y-6">
+          {/* Requester Info */}
+          <div>
+            <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
+              <FaUser className="text-[#D32F2F] dark:text-[#EF5350]" /> Requester Information
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[#4B5563] dark:text-[#94A3B8]">
+              <p><strong>Name:</strong> {donationRequest.requesterName || '--'}</p>
+              <p><strong>Email:</strong> {donationRequest.requesterEmail || '--'}</p>
+              <p className="sm:col-span-2">
+                <strong>Status:</strong>
+                <span className={`badge ml-2 ${donationRequest.status === 'done'
+                  ? 'badge-success'
+                  : donationRequest.status === 'pending'
+                    ? 'badge-warning'
+                    : donationRequest.status === 'in_progress'
+                      ? 'badge-info'
+                      : 'badge-error'}`}>
+                  {donationRequest.status || '--'}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Recipient Info */}
+          <div>
+            <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
+              <FaUser className="text-[#D32F2F] dark:text-[#EF5350]" /> Recipient Information
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[#4B5563] dark:text-[#94A3B8]">
+              <p><strong>Name:</strong> {donationRequest.recipientName || '--'}</p>
+              <p><strong>Number:</strong> {donationRequest.recipientNumber || '--'}</p>
+            </div>
+          </div>
+
+          {/* Location Info */}
+          <div>
+            <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
+              <FaMapMarkerAlt className="text-[#D32F2F] dark:text-[#EF5350]" /> Location
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[#4B5563] dark:text-[#94A3B8]">
+              <p><strong>Division:</strong> {donationRequest.division || '--'}</p>
+              <p><strong>District:</strong> {donationRequest.district || '--'}</p>
+              <p><strong>Upazila:</strong> {donationRequest.upazila || '--'}</p>
+              <p className="sm:col-span-3"><strong>Address:</strong> {donationRequest.address || '--'}</p>
+              <p className="sm:col-span-3"><strong>Hospital:</strong> {donationRequest.hospitalName || '--'}</p>
+            </div>
+          </div>
+
+          {/* Donation Details */}
+          <div>
+            <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
+              <FaCalendar className="text-[#D32F2F] dark:text-[#EF5350]" /> Donation Details
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[#4B5563] dark:text-[#94A3B8]">
+              <p><strong>Blood Group:</strong> {donationRequest.bloodGroup || '--'}</p>
+              <p><strong>Date:</strong> {donationRequest.donationDate || '--'}</p>
+              <p><strong>Time:</strong> {fnHandleTime(donationRequest.donationTime)}</p>
+              <p className="sm:col-span-2"><strong>Message:</strong> {donationRequest.requestMessage || '--'}</p>
+              <p className="sm:col-span-2"><strong>Created At:</strong> {new Date(donationRequest.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }) || '--'}</p>
+            </div>
+          </div>
+
+          {/* Blocked User Warning */}
+          {status === 'blocked' && (
+            <div className="bg-red-100 dark:bg-red-900/30 border-l-4 border-[#D32F2F] dark:border-[#EF5350] p-4 rounded-md flex items-center gap-2">
+              <FaExclamationTriangle className="text-[#D32F2F] dark:text-[#EF5350]" />
+              <p className="text-[#D32F2F] dark:text-[#EF5350] font-semibold">
+                Your account is blocked. Please contact an admin to donate.
+              </p>
+            </div>
+          )}
+
+          {/* Donate Button */}
+          {donationRequest.status === 'pending' && status !== 'blocked' && (
+            <div className="flex justify-center mt-6">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleDonate}
+                className="btn btn-lg bg-[#D32F2F] dark:bg-[#EF5350] text-white hover:bg-[#B71C1C] dark:hover:bg-[#F44336] transition-colors px-8"
+                aria-label="Donate blood for this request"
+              >
+                <IoIosDoneAll className="mr-2" /> Donate
+              </motion.button>
+            </div>
+          )}
+        </section>
+      </motion.article>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50"
+            onClick={() => setShowModal(false)}
+            aria-modal="true"
+            role="dialog"
+            aria-labelledby="confirm-donation-heading"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="bg-[#F9FAFB] dark:bg-[#1E293B] p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 id="confirm-donation-heading" className="text-xl sm:text-2xl font-bold mb-4 text-center text-[#111827] dark:text-[#F8FAFC]">
+                Confirm Donation
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Name</label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={user?.displayName || '--'}
+                    className="input input-bordered w-full bg-gray-100 dark:bg-[#334155] text-[#4B5563] dark:text-[#94A3B8]"
+                    aria-readonly="true"
+                  />
+                </div>
+                <div>
+                  <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Email</label>
+                  <input
+                    type="email"
+                    readOnly
+                    value={user?.email || '--'}
+                    className="input input-bordered w-full bg-gray-100 dark:bg-[#334155] text-[#4B5563] dark:text-[#94A3B8]"
+                    aria-readonly="true"
+                  />
+                </div>
+                <div>
+                  <label className="block font-medium text-[#111827] dark:text-[#F8FAFC] mb-1">Donor Mobile (optional)</label>
+                  <input
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    className="input input-bordered w-full bg-white dark:bg-[#1E293B] text-[#111827] dark:text-[#F8FAFC]"
+                    placeholder="Enter mobile number"
+                    aria-label="Donor mobile number"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end mt-6 space-x-3">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-outline text-[#D32F2F] dark:text-[#EF5350] hover:bg-gray-100 dark:hover:bg-[#475569] px-6"
+                  aria-label="Cancel donation confirmation"
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={confirmDonation}
+                  disabled={isPending}
+                  className="btn bg-[#D32F2F] dark:bg-[#EF5350] text-white hover:bg-[#B71C1C] dark:hover:bg-[#F44336] px-6"
+                  aria-label="Confirm donation"
+                >
+                  {isPending ? (
+                    <span className="loading loading-spinner"></span>
+                  ) : (
+                    <>Confirm <IoIosDoneAll className="ml-2" /></>
+                  )}
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 };
 
 export default Request;

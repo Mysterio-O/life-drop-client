@@ -93,7 +93,7 @@ const EmergencyRequestsAdmin = () => {
         success: 'Emergency request removed.'
       }
     };
-    console.log(id, newStatus);
+    // console.log(id, newStatus);
 
     const confirm = await Swal.fire({
       title: statusMessages[newStatus].title,
@@ -116,9 +116,9 @@ const EmergencyRequestsAdmin = () => {
           ? { emergencyRequest: false, status: 'cancel' }
           : { emergencyRequest: false, status: 'accept' };
 
-        console.log(payload);
+        // console.log(payload);
         const res = await axiosSecure.patch(`/emergency/donation-requests/${id}`, payload);
-        console.log(res);
+        // console.log(res);
         if (res.data.modifiedCount) {
           Swal.fire('Success!', statusMessages[newStatus].success, 'success');
           refetch();

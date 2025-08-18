@@ -41,9 +41,9 @@ const MyDonationRequest = () => {
 
     const {mutateAsync: sendRequest}=useMutation({
         mutationFn: async({id,status})=> {
-            console.log(id,status);
+            // console.log(id,status);
             const res = await axiosSecure.post(`/send-emergency-request/${id}`,{status});
-            console.log(res);
+            // console.log(res);
             return res.data;
         }
     })
@@ -128,7 +128,7 @@ const MyDonationRequest = () => {
     };
 
     const handleRequestEmergency = (id, status) => {
-        console.log('clicked', id, status);
+        // console.log('clicked', id, status);
 
         Swal.fire({
                     title: `Are you sure?`,

@@ -50,6 +50,7 @@ LifeDrop is a full-stack web application that bridges the gap between blood dono
 - **Request Details Page** (login required): View full details & donate  
 - **Donate Modal:** Captures donor info (auto-filled name/email, optional phone)  
 - Donation status changes: `Pending` ➔ `In Progress` ➔ `Done` or `Canceled`  
+- You can request for an emergency from My Requests (Dashboard)
 
 ### 🔍 Search Donor  
 - Filter donors by **Blood Group**, **Division**, **District**, **Upazila**  
@@ -61,6 +62,10 @@ LifeDrop is a full-stack web application that bridges the gap between blood dono
 ### 📰 Blog System  
 - View blogs posted by **Admin/Volunteers**  
 - Like & comment on blogs  
+
+### Be a Volunteer
+- Users can apply for volunteer role from here.
+- After applying, admins will verify and either accept or reject it.
 
 ### 📬 Contact Us  
 - Contact form to send messages directly to **Volunteers/Admins**  
@@ -79,8 +84,8 @@ The dashboard is role-based with server-side verification and contains:
 
 ### 👤 User Dashboard  
 - **Overview:** Recent 3 donation requests (view, update, delete)  
-- **My Requests:** Manage all created donation requests with status filters  
-- **Profile:** Update profile info (except email)  
+- **My Requests:** Manage all created donation requests with status filters and also request for an emergency for pending requests
+- **Profile:** Update profile info (except email) + add number and address
 
 ---
 
@@ -91,6 +96,7 @@ The dashboard is role-based with server-side verification and contains:
   - Add blog with image upload & rich text editor  
 - **Messages:**  
   - View unread messages, mark as read, delete  
+- **Emergency Request** Can see emergency requests information and can accept or reject the request
 
 ---
 
@@ -102,6 +108,8 @@ The dashboard is role-based with server-side verification and contains:
   - Assign roles (Make Volunteer/Admin)  
 - **All Messages:** Same as Volunteer view  
 - **Content Management:** Full control over publishing & deleting blogs  
+- **Volunteer Application** Admin can review from here the volunteer applications and can either accept or reject them
+- **Emergency Request** Can see emergency requests information and can accept or reject the request
 
 ---
 

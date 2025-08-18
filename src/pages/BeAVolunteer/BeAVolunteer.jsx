@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { FaUser, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaComment, FaBriefcase, FaHeartbeat, FaClock, FaUserShield, FaCalendar, FaUserPlus } from 'react-icons/fa';
@@ -16,12 +16,16 @@ const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+    useEffect(()=> {
+        document.title = 'Be a Volunteer'
+    },[])
+
     // TanStack Query mutation for submitting volunteer application
     const { mutate, isPending } = useMutation({
         mutationKey: ['volunteer-application'],
         mutationFn: async (data) => {
             const response = await axiosSecure.post('/volunteer-applications', data);
-            console.log(response);
+            // console.log(response);
             return response.data;
         },
         onSuccess: () => {

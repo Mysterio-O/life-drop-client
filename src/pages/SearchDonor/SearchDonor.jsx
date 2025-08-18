@@ -7,6 +7,10 @@ import { motion } from 'motion/react';
 const SearchDonor = () => {
     const axiosPublic = useAxiosPublic();
 
+     useEffect(()=> {
+            document.title = 'Search Donor'
+        },[])
+
     const [divisions, setDivisions] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [upazilas, setUpazilas] = useState([]);

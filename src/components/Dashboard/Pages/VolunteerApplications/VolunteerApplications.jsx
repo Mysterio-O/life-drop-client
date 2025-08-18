@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaUserPlus, FaCheck, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -9,6 +9,10 @@ const VolunteerApplications = () => {
 const axiosSecure = useAxiosSecure();
     const [selectedApp, setSelectedApp] = useState(null);
 
+     useEffect(()=> {
+            document.title = 'Volunteer Applications'
+        },[])
+
     // Fetch volunteer applications
     const { data: applications = [], isLoading, refetch } = useQuery({
         queryKey: ['volunteer-applications'],
@@ -17,6 +21,7 @@ const axiosSecure = useAxiosSecure();
             return response.data;
         },
     });
+    // console.log(applications);
 
     // Mutation to update application status
     const { mutate } = useMutation({
@@ -25,7 +30,7 @@ const axiosSecure = useAxiosSecure();
             return response.data;
         },
         onSuccess: (data) => {
-            console.log(data);
+            // console.log(data);
             refetch();
             setSelectedApp(null); // Close modal on success
             Swal.fire({

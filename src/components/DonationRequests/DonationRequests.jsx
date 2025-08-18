@@ -20,7 +20,7 @@ const DonationRequests = () => {
     const pendingRequests = responseData.result || [];
     const totalRequests = responseData.total || 0;
     const totalPages = Math.ceil(totalRequests / limit);
-    console.log(pendingRequests);
+    // console.log(pendingRequests);
 
     const fnHandleTime = (time) => {
         const [hourStr, minute] = time.split(":");
