@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoIosDoneAll } from 'react-icons/io';
 import { FaUser, FaHospital, FaMapMarkerAlt, FaCalendar, FaExclamationTriangle } from 'react-icons/fa';
+import { IoIosArrowRoundBack } from "react-icons/io";
 import useUserStatus from '../../hooks/useUserStatus';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
@@ -116,11 +117,15 @@ const Request = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4 sm:p-6 bg-white dark:bg-[#0F172A]"
+      className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4 sm:p-6 bg-white dark:bg-[#0F172A] overflow-x-hidden"
     >
-      <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-center text-[#111827] dark:text-[#F8FAFC]">
+      <motion.h2
+      initial={{opacity:0,y:-10}}
+      animate={{opacity:1,y:0}}
+      transition={{duration:0.5, ease:"easeInOut"}}
+      className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-center text-[#111827] dark:text-[#F8FAFC]">
         Donation Request Details
-      </h2>
+      </motion.h2>
       <motion.article
         initial={{ scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -129,8 +134,21 @@ const Request = () => {
         aria-labelledby="donation-details-heading"
       >
         <section className="space-y-6">
+          <motion.span
+          title='Back to donations'
+            onClick={() => navigate(-1)}
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className='flex gap-1 items-center text-[#111827] dark:text-[#F8FAFC] text-xl font-bold cursor-pointer'>
+            <IoIosArrowRoundBack size={30} /> Back
+          </motion.span>
           {/* Requester Info */}
-          <div>
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0, x: 60 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
             <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
               <FaUser className="text-[#D32F2F] dark:text-[#EF5350]" /> Requester Information
             </h3>
@@ -150,10 +168,14 @@ const Request = () => {
                 </span>
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Recipient Info */}
-          <div>
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0, x: -60 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.3 }}
+          >
             <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
               <FaUser className="text-[#D32F2F] dark:text-[#EF5350]" /> Recipient Information
             </h3>
@@ -161,10 +183,14 @@ const Request = () => {
               <p><strong>Name:</strong> {donationRequest.recipientName || '--'}</p>
               <p><strong>Number:</strong> {donationRequest.recipientNumber || '--'}</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Location Info */}
-          <div>
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0, x: 60 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.5 }}
+          >
             <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
               <FaMapMarkerAlt className="text-[#D32F2F] dark:text-[#EF5350]" /> Location
             </h3>
@@ -175,10 +201,14 @@ const Request = () => {
               <p className="sm:col-span-3"><strong>Address:</strong> {donationRequest.address || '--'}</p>
               <p className="sm:col-span-3"><strong>Hospital:</strong> {donationRequest.hospitalName || '--'}</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Donation Details */}
-          <div>
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0, x: -60 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.7 }}
+          >
             <h3 className="text-xl font-semibold text-[#111827] dark:text-[#F8FAFC] flex items-center gap-2 mb-3">
               <FaCalendar className="text-[#D32F2F] dark:text-[#EF5350]" /> Donation Details
             </h3>
@@ -193,7 +223,7 @@ const Request = () => {
                 day: 'numeric'
               }) || '--'}</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Blocked User Warning */}
           {status === 'blocked' && (
