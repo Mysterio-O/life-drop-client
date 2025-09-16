@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import bannerImage from '../../assets/banner.png';
 import useAuth from '../../hooks/useAuth';
 import { motion } from 'motion/react';
+import TextType from './TextType';
 
 const Banner = () => {
     const { user } = useAuth();
@@ -23,7 +24,13 @@ const Banner = () => {
                     className="flex-1 text-center md:text-left space-y-6"
                 >
                     <h1 className="text-4xl md:text-5xl font-bold text-[#D32F2F] dark:text-[#EF5350] leading-tight">
-                        Find Blood Donors, <br /> Save Lives
+                        Find Blood Donors, <br /> <TextType
+                            text={["Save Life,", "Give Funds,", "Rebuild Society!"]}
+                            typingSpeed={75}
+                            pauseDuration={1500}
+                            showCursor={true}
+                            cursorCharacter="|"
+                        />
                     </h1>
                     <p className="text-base md:text-lg text-[#4B5563] dark:text-[#94A3B8]">
                         Connect with donors instantly and join our mission to save lives across Bangladesh.
