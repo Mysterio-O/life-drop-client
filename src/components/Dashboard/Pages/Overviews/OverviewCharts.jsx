@@ -16,6 +16,7 @@ import {
     Cell,
 } from 'recharts';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
+import { motion } from 'motion/react';
 
 const OverviewCharts = () => {
 
@@ -75,7 +76,23 @@ const OverviewCharts = () => {
     });
 
     if (doantionLoading || userLoading) {
-        return '...loading'
+        return (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 py-6">
+                {[1, 2, 3].map((i) => (
+                    <div
+                        key={i}
+                        className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-4 animate-pulse"
+                    >
+                        <div className="h-6 w-1/3 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        <div className="h-64 w-full bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                        <div className="flex space-x-3">
+                            <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                            <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
     }
 
     // console.log(done, inProgress, canceled);
@@ -102,13 +119,36 @@ const OverviewCharts = () => {
 
     const colors = ['#7E22CE', '#facc15', '#f87171'];
 
+    const boxVariant = {
+        initial: { opacity: 0, y: 10 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.3, ease: "easeInOut" }
+    }
+
+    const titleVariant = {
+        initial: { opacity: 0, x: -10 },
+        animate: { opacity: 1, x: 0 },
+        transition: { duration: 0.3, ease: "easeInOut", delay: 0.2 }
+    }
+
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 py-6">
             {/* Bar Chart - donation status distribution */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <motion.div
+                variants={boxVariant}
+                initial="initial"
+                animate="animate"
+                transition="transition"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                <motion.h3
+                    variants={titleVariant}
+                    initial="initial"
+                    animate="animate"
+                    transition="transition"
+                    className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     Donation status Distribution
-                </h3>
+                </motion.h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={barData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -125,13 +165,23 @@ const OverviewCharts = () => {
                         <Bar dataKey="value" fill="#7E22CE" barSize={30} radius={[10, 10, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
-            </div>
+            </motion.div>
 
             {/* Line Chart - My Plants Trend */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <motion.div
+                variants={boxVariant}
+                initial="initial"
+                animate="animate"
+                transition="transition"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                <motion.h3
+                    variants={titleVariant}
+                    initial="initial"
+                    animate="animate"
+                    transition="transition"
+                    className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     Completed Donations Ratio
-                </h3>
+                </motion.h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={lineData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -154,13 +204,23 @@ const OverviewCharts = () => {
                         />
                     </LineChart>
                 </ResponsiveContainer>
-            </div>
+            </motion.div>
 
             {/* Pie Chart - User Activity */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <motion.div
+                variants={boxVariant}
+                initial="initial"
+                animate="animate"
+                transition="transition"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                <motion.h3
+                    variants={titleVariant}
+                    initial="initial"
+                    animate="animate"
+                    transition="transition"
+                    className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     User Activity
-                </h3>
+                </motion.h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                         <Pie
@@ -187,7 +247,7 @@ const OverviewCharts = () => {
                         <Legend />
                     </PieChart>
                 </ResponsiveContainer>
-            </div>
+            </motion.div>
         </div>
     );
 };

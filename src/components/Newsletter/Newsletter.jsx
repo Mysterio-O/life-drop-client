@@ -31,7 +31,7 @@ const Newsletter = () => {
             /**
              * sending welcome email with email js
              */
-            
+
             const templateParams = {
                 email: variables
             };
@@ -66,6 +66,7 @@ const Newsletter = () => {
     const onSubmit = (data) => {
         mutate(data.email);
     };
+
 
     return (
         <motion.section
